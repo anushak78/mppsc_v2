@@ -1,0 +1,62 @@
+<div class="box-container">
+    <div class="grid-3">
+        <div>
+            <h2 class="mat-h2">Waiting List</h2>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Search</mat-label>
+                <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="right">
+        </div>
+    </div>
+    <mat-table #table [dataSource]="table_data">
+
+        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
+            <ng-container *ngIf="disCol != 'edit'">
+                <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
+            </ng-container>
+            <mat-cell *matCellDef="let element " style="cursor: default;"
+                (click)="openDialogWithTemplateRef(candModal)">
+                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
+                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
+</div>
+
+<ng-template #candModal>
+    <div class="grid-2">
+        <h2 matDialogTitle>Candidate Data</h2>
+        <a class="right">
+            <mat-icon matDialogClose style="font-size: medium!important;">close</mat-icon>
+        </a>
+    </div>
+    <hr>
+    <mat-dialog-content>
+        <div class="right">
+            <button mat-raised-button color="warn">Mark Absent</button>
+        </div>
+        <div>
+            <div class="field">
+                <mat-form-field>
+                    <input type="number" matInput name="marks" placeholder="Enter Marks">
+                </mat-form-field>
+            </div>
+        </div>
+        <br>
+    </mat-dialog-content>
+    <hr>
+    <mat-dialog-actions align="center">
+        <button mat-raised-button style="background-color: green!important;color: whitesmoke;">Submit</button>
+    </mat-dialog-actions>
+</ng-template>

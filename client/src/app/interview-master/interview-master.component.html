@@ -1,0 +1,156 @@
+<div class="box-container">
+    <div class="grid-2">
+        <h2 class="mat-h2">Interview Master</h2>
+        <div class="right">
+            <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button>
+        </div>
+    </div>
+    <div>
+        <mat-tab-group>
+            <div class="center">
+                <mat-form-field>
+                    <mat-label>Search</mat-label>
+                    <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <mat-tab label="Interview Master">
+                <mat-table #table [dataSource]="table_data">
+
+                    <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index"
+                        matColumnDef="{{disCol}}">
+                        <ng-container *ngIf="disCol != 'edit'">
+                            <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
+                        </ng-container>
+                        <ng-container *ngIf="disCol == 'edit'">
+                            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        </ng-container>
+                        <mat-cell *matCellDef="let element " style="cursor: default;">
+                            <span *ngIf="disCol == 'edit'">
+                                <mat-icon>edit</mat-icon>
+                                <mat-icon>delete</mat-icon>
+                            </span>
+                            <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
+                            <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+
+                <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+            </mat-tab>
+            <mat-tab label="Add Interview">
+                <mat-tab-group>
+                    <mat-tab label="Step 1">
+                        <div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <input matInput type="text" name="name" placeholder="Enter Name" required>
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <input matInput type="text" name="notification_no"
+                                        placeholder="Enter Notification No." required>
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>From date</mat-label>
+                                    <!-- #docregion toggle -->
+                                    <input matInput [matDatepicker]="picker">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <!-- #enddocregion toggle -->
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>To date</mat-label>
+                                    <!-- #docregion toggle -->
+                                    <input matInput [matDatepicker]="topicker">
+                                    <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #topicker></mat-datepicker>
+                                    <!-- #enddocregion toggle -->
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <button mat-raised-button color="primary">Next</button>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Step 2">
+                        <div>
+                            Space left for marks input
+                        </div>
+                        <div class="right">
+                            <button mat-raised-button color="primary">Next</button>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Step 3">
+                        <div class="grid-3">
+                            <div class="field">
+                                <mat-form-field>
+                                    <input matInput type="text" name="name" placeholder="Enter Board Name" required>
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>Date</mat-label>
+                                    <!-- #docregion toggle -->
+                                    <input matInput [matDatepicker]="boardpicker">
+                                    <mat-datepicker-toggle matSuffix [for]="boardpicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #boardpicker></mat-datepicker>
+                                    <!-- #enddocregion toggle -->
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <button mat-mini-fab color="default">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <button mat-raised-button color="primary">Next</button>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Step 4">
+                        <div class="grid-4">
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>Select Board</mat-label>
+                                    <mat-select name="board">
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>Select Board/Chairmen</mat-label>
+                                    <mat-select name="board">
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>Select Guest Members</mat-label>
+                                    <mat-select name="board">
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <button mat-mini-fab color="default">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <button mat-raised-button color="primary">Submit</button>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+<div class="right">
+    <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button>
+</div>
+<div class="box-container">
+    <div class="grid-3">
+        <div>
+            <h2 class="mat-h2">User Master</h2>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Search</mat-label>
+                <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="right">
+            <button mat-raised-button color="primary" (click)="openDialogWithTemplateRef(userModal)">Add User</button>
+        </div>
+    </div>
+    <mat-table #table [dataSource]="table_data">
+
+        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
+            <ng-container *ngIf="disCol != 'edit'">
+                <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'edit'">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            </ng-container>
+            <mat-cell *matCellDef="let element " style="cursor: default;">
+                <span *ngIf="disCol == 'edit'">
+                    <mat-icon>edit</mat-icon>
+                    <mat-icon>delete</mat-icon>
+                </span>
+                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
+                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
+</div>
+
+<ng-template #userModal>
+    <div class="grid-2">
+        <h2 matDialogTitle>User Data</h2>
+        <a class="right">
+            <mat-icon matDialogClose style="font-size: medium!important;">close</mat-icon>
+        </a>
+    </div>
+    <hr>
+    <mat-dialog-content>
+        <form [formGroup]="userData">
+            <div class="grid-2">
+                <div class="field">
+                    <mat-form-field>
+                        <input matInput type="text" name="name" formControlName="name" placeholder="Enter Name"
+                            required>
+                    </mat-form-field>
+                </div>
+                <div class="field">
+                    <mat-form-field>
+                        <mat-label>Select Title</mat-label>
+                        <mat-select formControlName="title" name="title">
+                            <mat-option [value]="0">
+                                Mr.
+                            </mat-option>
+                            <mat-option [value]="1">
+                                Mrs.
+                            </mat-option>
+                            <mat-option [value]="2">
+                                Miss
+                            </mat-option>
+                            <mat-option [value]="3">
+                                Dr.
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="field">
+                    <mat-form-field>
+                        <mat-label>Select Role</mat-label>
+                        <mat-select formControlName="role" name="role">
+                            <mat-option [value]="0">
+                                Board Member
+                            </mat-option>
+                            <mat-option [value]="1">
+                                Chairman
+                            </mat-option>
+                            <mat-option [value]="2">
+                                Verification Officer
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="field" *ngIf="userData.value.role == 2">
+                    <mat-form-field>
+                        <input matInput type="text" name="user_id" formControlName="user_id" placeholder="Enter Login ID"
+                            required>
+                    </mat-form-field>
+                </div>
+                <div class="field" *ngIf="userData.value.role == 2">
+                    <mat-form-field>
+                      <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
+                        placeholder="Enter Password" required>
+                    </mat-form-field>
+                </div>
+                <div class="field" *ngIf="userData.value.role == 2">
+                    <mat-form-field>
+                      <input matInput appBlockCopyPaste type="password" formControlName="confirm_password" name="confirm_password"
+                        placeholder="Enter Confirm Password" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            
+        </form>
+    </mat-dialog-content>
+    <hr>
+    <mat-dialog-actions align="center">
+        <button mat-raised-button style="background-color: green!important;color: whitesmoke;">Add User</button>
+    </mat-dialog-actions>
+</ng-template>
