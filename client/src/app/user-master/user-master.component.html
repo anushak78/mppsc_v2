@@ -28,7 +28,7 @@
             </ng-container>
             <mat-cell *matCellDef="let element " style="cursor: default;">
                 <span *ngIf="disCol == 'edit'">
-                    <mat-icon>edit</mat-icon>
+                    <a (click)="editDialogWithTemplateRef(userModal, element)"><mat-icon>edit</mat-icon></a>
                     <mat-icon>delete</mat-icon>
                 </span>
                 <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
@@ -117,6 +117,9 @@
             </div>
             
         </form>
+        <div class="right">
+            <button mat-raised-button color="primary">Add fingerprint</button>
+        </div>
     </mat-dialog-content>
     <hr>
     <mat-dialog-actions align="center">

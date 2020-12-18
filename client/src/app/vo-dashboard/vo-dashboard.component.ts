@@ -44,7 +44,7 @@ export class VoDashboardComponent implements OnInit {
         right: '0px'
       },
       height: '100%',
-      width: '50vw',
+      width: '80%',
       panelClass: 'full-screen-modal',
     };
     this.dialog.open(templateRef, config)

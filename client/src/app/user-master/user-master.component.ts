@@ -73,6 +73,21 @@ export class UserMasterComponent implements OnInit {
     this.dialog.open(templateRef, config)
   }
 
+  editDialogWithTemplateRef(templateRef: TemplateRef<any>, user_data) {
+    let config = {
+      position: {
+        top: '0px',
+        right: '0px'
+      },
+      height: '100%',
+      width: '50vw',
+      panelClass: 'full-screen-modal',
+    };
+    //setting of data
+    this.userData.controls['name'].setValue(user_data.name);
+    this.dialog.open(templateRef, config)
+  }
+
   gotoPage(pageName: string) {
     this.router.navigate([pageName])
   }

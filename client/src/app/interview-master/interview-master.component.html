@@ -7,14 +7,18 @@
     </div>
     <div>
         <mat-tab-group>
-            <div class="center">
-                <mat-form-field>
-                    <mat-label>Search</mat-label>
-                    <input type="text" matInput (keyup)="applyFilter($event.target.value)">
-                    <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
-            </div>
             <mat-tab label="Interview Master">
+                <div class="grid-3">
+                    <div></div>
+                    <div class="center">
+                        <mat-form-field>
+                            <mat-label>Search</mat-label>
+                            <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div></div>
+                </div>
                 <mat-table #table [dataSource]="table_data">
 
                     <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index"
@@ -56,6 +60,13 @@
                                         placeholder="Enter Notification No." required>
                                 </mat-form-field>
                             </div>
+                        </div>
+                        <div class="right">
+                            <button mat-raised-button color="primary">Next</button>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Step 2">
+                        <div>
                             <div class="field">
                                 <mat-form-field>
                                     <mat-label>From date</mat-label>
@@ -81,7 +92,7 @@
                             <button mat-raised-button color="primary">Next</button>
                         </div>
                     </mat-tab>
-                    <mat-tab label="Step 2">
+                    <mat-tab label="Step 3">
                         <div>
                             Space left for marks input
                         </div>
@@ -89,7 +100,7 @@
                             <button mat-raised-button color="primary">Next</button>
                         </div>
                     </mat-tab>
-                    <mat-tab label="Step 3">
+                    <mat-tab label="Step 4">
                         <div class="grid-3">
                             <div class="field">
                                 <mat-form-field>
@@ -116,7 +127,7 @@
                             <button mat-raised-button color="primary">Next</button>
                         </div>
                     </mat-tab>
-                    <mat-tab label="Step 4">
+                    <mat-tab label="Step 5">
                         <div class="grid-4">
                             <div class="field">
                                 <mat-form-field>
