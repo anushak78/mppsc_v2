@@ -1,10 +1,12 @@
 import argparse
 import sys
 
-from pyramid.paster import bootstrap, setup_logging
+from pyramid.paster import bootstrap, setup_logging, get_appsettings
 from sqlalchemy.exc import OperationalError
+from sqlalchemy import engine_from_config
 
 from .. import models
+from ..models.meta import Base
 
 
 def setup_models(dbsession):
@@ -29,6 +31,9 @@ def main(argv=sys.argv):
     args = parse_args(argv)
     setup_logging(args.config_uri)
     env = bootstrap(args.config_uri)
+    settings = get_appsettings(args.config_uri)
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    Base.metadata.create_all(engine)
 
     try:
         with env['request'].tm:
