@@ -2,7 +2,8 @@ from sqlalchemy import (
     Column,
     Integer,
     Text,
-    DateTime
+    DateTime,
+    ForeignKey
 )
 
 from .meta import Base
@@ -21,13 +22,14 @@ class InterviewMaster(Base):
 class BoardInterviewMap(Base):
     __tablename__ = 'board_interview_map'
     id = Column(Integer, primary_key=True)
-    interview_id = Column(Integer)
-    board_id = Column(Integer)
+    interview_id = Column(Integer, ForeignKey('interview_master.id'))
+    board_id = Column(Integer, ForeignKey('board_master.id'))
     date = Column(DateTime)
 
 
 class BoardUserMap(Base):
     __tablename__ = 'board_user_map'
     id = Column(Integer, primary_key=True)
-    boardmap_id = Column(Integer)
+    boardmap_id = Column(Integer, ForeignKey('board_interview_map.id'))
     user_id = Column(Integer)
+    user_role = Column(Integer)

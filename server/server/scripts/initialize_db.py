@@ -6,7 +6,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy import engine_from_config
 
 from .. import models
-from ..models.meta import Base
+from ..models.meta import Base, DBSession
 
 
 def setup_models(dbsession):
@@ -33,6 +33,7 @@ def main(argv=sys.argv):
     env = bootstrap(args.config_uri)
     settings = get_appsettings(args.config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
+    DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
 
     try:

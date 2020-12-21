@@ -2,7 +2,8 @@ from sqlalchemy import (
     Column,
     Integer,
     Text,
-    DateTime
+    DateTime,
+    ForeignKey
 )
 
 from .meta import Base
@@ -21,6 +22,6 @@ class GuestUserMaster(Base):
 class GuestUserDateMap(Base):
     __tablename__ = 'guest_date_map'
     id = Column(Integer, primary_key=True)
-    guest_id = Column(Integer)
+    guest_id = Column(Integer, ForeignKey('guest_user_master.id'))
     to_date = Column(DateTime)
     from_date = Column(DateTime)

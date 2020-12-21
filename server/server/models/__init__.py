@@ -6,8 +6,8 @@ import zope.sqlalchemy
 # import or define all models here to ensure they are attached to the
 # Base.metadata prior to any initialization routines
 from .mymodel import MyModel  # flake8: noqa
+from .candidate import CandidateMaster
 from .boardmaster import BoardMaster
-from .boardstatus import BoardStatus
 from .document import (
     DocumentMaster,
     QuestionMaster,
@@ -24,12 +24,14 @@ from .interview import (
 )
 from .usermaster import (
     UserMaster,
-    UserFingerPrintMap
+    UserFingerPrintMap,
+    UserLoginMaster
 )
 from .verificationstatus import (
     VerificationStatus,
     VerificationAnswers
 )
+from .boardstatus import BoardStatus
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup
