@@ -6,8 +6,8 @@
         </div>
     </div>
     <div>
-        <mat-tab-group>
-            <mat-tab label="Guest User Master">
+        <mat-tab-group dynamicHeight [(selectedIndex)]="parentTabIndex">
+            <mat-tab label="Guest User List" [disabled]="flag_edit">
                 <div class="grid-3">
                     <div></div>
                     <div class="center">
@@ -31,7 +31,7 @@
                         </ng-container>
                         <mat-cell *matCellDef="let element " style="cursor: default;">
                             <span *ngIf="disCol == 'edit'">
-                                <mat-icon>edit</mat-icon>
+                                <a (click)="edit(element)"><mat-icon>edit</mat-icon></a>
                                 <mat-icon>delete</mat-icon>
                             </span>
                             <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
@@ -45,89 +45,231 @@
 
                 <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
             </mat-tab>
-            <mat-tab label="Add Guest User">
-                <mat-tab-group>
-                    <mat-tab label="Step 1">
-                        <div>
-                            <form [formGroup]="guestUserData">
-                                <div class="box-container">
-                                    <div class="field">
-                                        <mat-form-field>
-                                            <input matInput type="text" name="name" formControlName="name"
-                                                placeholder="Enter Name" required>
-                                        </mat-form-field>
+            <mat-tab label="Add Guest User" [disabled]="flag_edit">
+                <ng-template matTabContent>
+                    <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex">
+                        <mat-tab label="Step 1" [disabled]="true">
+                            <div>
+                                <form [formGroup]="guestUserData">
+                                    <div class="box-container">
+                                        <div class="grid-2 center">
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <input matInput type="text" name="name" formControlName="name"
+                                                        placeholder="Enter Name" required>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <mat-label>Select Title</mat-label>
+                                                    <mat-select formControlName="title" name="title">
+                                                        <mat-option [value]="0">
+                                                            Mr.
+                                                        </mat-option>
+                                                        <mat-option [value]="1">
+                                                            Mrs.
+                                                        </mat-option>
+                                                        <mat-option [value]="2">
+                                                            Miss
+                                                        </mat-option>
+                                                        <mat-option [value]="3">
+                                                            Dr.
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <input matInput type="email" name="email" formControlName="email"
+                                                        placeholder="Enter Email" required>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <input matInput type="text" name="phone_no"
+                                                        formControlName="phone_no" placeholder="Enter Phone No."
+                                                        required>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="field">
-                                        <mat-form-field>
-                                            <mat-label>Select Title</mat-label>
-                                            <mat-select formControlName="title" name="title">
-                                                <mat-option [value]="0">
-                                                    Mr.
-                                                </mat-option>
-                                                <mat-option [value]="1">
-                                                    Mrs.
-                                                </mat-option>
-                                                <mat-option [value]="2">
-                                                    Miss
-                                                </mat-option>
-                                                <mat-option [value]="3">
-                                                    Dr.
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="field">
-                                        <mat-form-field>
-                                            <input matInput type="email" name="email" formControlName="email"
-                                                placeholder="Enter Email" required>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="field">
-                                        <mat-form-field>
-                                            <input matInput type="text" name="phone_no" formControlName="phone_no"
-                                                placeholder="Enter Phone No." required>
-                                        </mat-form-field>
+                                </form>
+                                <div class="right">
+                                    <button mat-raised-button color="primary" (click)="onNext()"
+                                        [disabled]="nextActivated()">Next</button>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Step 2" [disabled]="true">
+                            <div class="box-container">
+                                <div *ngFor="let item of date_list; let i=index">
+                                    <div class="grid-3">
+                                        <div class="field">
+                                            <mat-form-field>
+                                                <mat-label>From date</mat-label>
+                                                <!-- #docregion toggle -->
+                                                <input matInput [matDatepicker]="picker" [(ngModel)]="item['from_date']"
+                                                    [disabled]="flag_dates">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                                <!-- #enddocregion toggle -->
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="field">
+                                            <mat-form-field>
+                                                <mat-label>To date</mat-label>
+                                                <!-- #docregion toggle -->
+                                                <input matInput [matDatepicker]="topicker" [(ngModel)]="item['to_date']"
+                                                    [disabled]="flag_dates">
+                                                <mat-datepicker-toggle matSuffix [for]="topicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #topicker></mat-datepicker>
+                                                <!-- #enddocregion toggle -->
+                                            </mat-form-field>
+                                        </div>
+                                        <div *ngIf="i == date_list.length-1">
+                                            <button mat-mini-fab color="default" (click)="addDateItem()"
+                                                [disabled]="flag_dates">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </div>
+                                        <div *ngIf="i != date_list.length-1">
+                                            <button mat-mini-fab color="default" (click)="deleteDateItem(i)"
+                                                [disabled]="flag_dates">
+                                                <mat-icon>remove</mat-icon>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
-                            <div class="right">
-                                <button mat-raised-button color="primary">Next</button>
+                                <div class="right">
+                                    <button mat-raised-button color="primary" (click)="addDates()"
+                                        [disabled]="flag_dates">Done</button>
+                                </div>
+                                <div *ngIf="flag_dates">
+                                    <div *ngFor="let item of date_list; let i=index">
+                                        <mat-checkbox></mat-checkbox> {{item['from_date']}} to {{item['to_date']}}
+                                    </div>
+                                    <div class="right">
+                                        <button mat-raised-button color="primary">Send Email</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="Step 2">
-                        <div class="grid-3">
-                            <div class="field">
-                                <mat-form-field>
-                                    <mat-label>From date</mat-label>
-                                    <!-- #docregion toggle -->
-                                    <input matInput [matDatepicker]="picker">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                    <!-- #enddocregion toggle -->
-                                </mat-form-field>
-                            </div>
-                            <div class="field">
-                                <mat-form-field>
-                                    <mat-label>To date</mat-label>
-                                    <!-- #docregion toggle -->
-                                    <input matInput [matDatepicker]="topicker">
-                                    <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #topicker></mat-datepicker>
-                                    <!-- #enddocregion toggle -->
-                                </mat-form-field>
-                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Edit Guest User" *ngIf="flag_edit">
+                <ng-template matTabContent>
+                    <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex">
+                        <mat-tab label="Step 1" [disabled]="true">
                             <div>
-                                <button mat-mini-fab color="default">
-                                    <mat-icon>add</mat-icon>
-                                </button>
+                                <form [formGroup]="guestUserData">
+                                    <div class="box-container">
+                                        <div class="grid-2 center">
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <input matInput type="text" name="name" formControlName="name"
+                                                        placeholder="Enter Name" required [(ngModel)]="editGuestUserData['name']">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <mat-label>Select Title</mat-label>
+                                                    <mat-select formControlName="title" name="title">
+                                                        <mat-option [value]="0">
+                                                            Mr.
+                                                        </mat-option>
+                                                        <mat-option [value]="1">
+                                                            Mrs.
+                                                        </mat-option>
+                                                        <mat-option [value]="2">
+                                                            Miss
+                                                        </mat-option>
+                                                        <mat-option [value]="3">
+                                                            Dr.
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <input matInput type="email" name="email" formControlName="email"
+                                                        placeholder="Enter Email" required>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <input matInput type="text" name="phone_no"
+                                                        formControlName="phone_no" placeholder="Enter Phone No."
+                                                        required>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="right">
+                                    <button mat-raised-button color="primary" (click)="onNext()"
+                                        [disabled]="nextActivated()">Next</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="right">
-                            <button mat-raised-button color="primary">Done</button>
-                        </div>
-                    </mat-tab>
-                </mat-tab-group>
+                        </mat-tab>
+                        <mat-tab label="Step 2" [disabled]="true">
+                            <div class="box-container">
+                                <div *ngFor="let item of date_list; let i=index">
+                                    <div class="grid-3">
+                                        <div class="field">
+                                            <mat-form-field>
+                                                <mat-label>From date</mat-label>
+                                                <!-- #docregion toggle -->
+                                                <input matInput [matDatepicker]="picker" [(ngModel)]="item['from_date']"
+                                                    [disabled]="flag_dates">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                                <!-- #enddocregion toggle -->
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="field">
+                                            <mat-form-field>
+                                                <mat-label>To date</mat-label>
+                                                <!-- #docregion toggle -->
+                                                <input matInput [matDatepicker]="topicker" [(ngModel)]="item['to_date']"
+                                                    [disabled]="flag_dates">
+                                                <mat-datepicker-toggle matSuffix [for]="topicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #topicker></mat-datepicker>
+                                                <!-- #enddocregion toggle -->
+                                            </mat-form-field>
+                                        </div>
+                                        <div *ngIf="i == date_list.length-1">
+                                            <button mat-mini-fab color="default" (click)="addDateItem()"
+                                                [disabled]="flag_dates">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </div>
+                                        <div *ngIf="i != date_list.length-1">
+                                            <button mat-mini-fab color="default" (click)="deleteDateItem(i)"
+                                                [disabled]="flag_dates">
+                                                <mat-icon>remove</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right">
+                                    <button mat-raised-button color="primary" (click)="addDates()"
+                                        [disabled]="flag_dates">Done</button>
+                                </div>
+                                <div *ngIf="flag_dates">
+                                    <div *ngFor="let item of date_list; let i=index">
+                                        <mat-checkbox></mat-checkbox> {{item['from_date']}} to {{item['to_date']}}
+                                    </div>
+                                    <div class="right">
+                                        <button mat-raised-button color="primary">Send Email</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </ng-template>
             </mat-tab>
         </mat-tab-group>
     </div>

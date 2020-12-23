@@ -35,13 +35,13 @@ export class LoginComponent implements OnInit {
   }
 
   async submit() {
-    /*this.login.login(this.signInForm.controls['user_id'].value, this.signInForm.controls['password'].value)
+    this.login.login(this.signInForm.controls['user_id'].value, this.signInForm.controls['password'].value)
       .pipe(first())
       .subscribe(
         data => { 
           console.log(data);
           //TODO: add navigation
-    })*/
+    })
     sessionStorage.setItem('role', this.signInForm.controls['role'].value)
     if (this.signInForm.controls['role'].value == 0) {
       this.router.navigate(['admin-dashboard'])

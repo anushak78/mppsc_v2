@@ -15,3 +15,9 @@ class BoardStatus(Base):
     cand_id = Column(Integer, ForeignKey('candidate_master.id'))
     status = Column(Integer)
     marks = Column(Integer)
+
+    def __init__(self, boardmap_id, cand_id, status, marks):
+        self.boardmap_id = boardmap_id
+        self.cand_id = cand_id
+        self.status = status
+        self.marks = marks

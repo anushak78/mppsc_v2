@@ -15,7 +15,7 @@ export class LoginService {
   }
 
   login(username: string, password: string) {
-    return this.http.post('API', { username, password })
+    return this.http.post('/ui/login', { login: username, password: password })
       .pipe(map(user => {
         sessionStorage.setItem('currentUser', JSON.stringify(user));
         return user;

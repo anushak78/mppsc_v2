@@ -4,7 +4,8 @@ from sqlalchemy import (
     Text,
     ForeignKey,
 )
-
+import hashlib
+import six
 from .meta import Base
 
 
@@ -17,12 +18,23 @@ class UserMaster(Base):
     designation = Column(Text)
     status = Column(Text)
 
+    def __init__(self, name, role, title, designation, status):
+        self.name = name
+        self.role = role
+        self.title = title
+        self.designation = designation
+        self.status = status
+
 
 class UserFingerPrintMap(Base):
     __tablename__ = 'user_fingerprint'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user_master.id'))
     file_name = Column(Text)
+
+    def __init__(self, user_id, file_name):
+        self.user_id = user_id
+        self.file_name = file_name
 
 
 class UserLoginMaster(Base):
@@ -35,3 +47,27 @@ class UserLoginMaster(Base):
     title = Column(Integer)
     designation = Column(Text)
     status = Column(Text)
+
+    def __init__(self, login, name, role, title, designation, status):
+        self.login = login
+        self.name = name
+        self.role = role
+        self.title = title
+        self.designation = designation
+        self.status = status
+
+    def set_password(self, password):
+        self.password = _sha512(password)
+
+    def check_password(self, password):
+        return self.password == _sha512(password)
+
+    @classmethod
+    def by_login(cls, DBSession, login):
+        return DBSession.query(User).filter_by(login=login).first()
+
+
+def _sha512(text):
+    sha = hashlib.sha512()
+    sha.update(six.b(text))
+    return sha.hexdigest()
