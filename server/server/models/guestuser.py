@@ -25,6 +25,10 @@ class GuestUserMaster(Base):
         self.phone_no = phone_no
         self.status = status
 
+    @classmethod
+    def get_users(cls, DBSession):
+        return DBSession.query(GuestUserMaster).all()
+
 
 class GuestUserDateMap(Base):
     __tablename__ = 'guest_date_map'

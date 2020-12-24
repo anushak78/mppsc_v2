@@ -26,6 +26,10 @@ class BoardMaster(Base):
     def set_password(self, password):
         self.password = _sha512(password)
 
+    @classmethod
+    def get_boards(cls, DBSession):
+        return DBSession.query(BoardMaster).all()
+
 
 def _sha512(text):
     sha = hashlib.sha512()

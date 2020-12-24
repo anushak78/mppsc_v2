@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
   async submit() {
     const userId = this.signInForm.controls['user_id'].value;
     const password = this.signInForm.controls['password'].value;
-    const rel = this.authService.login(userId, password);
+    const role = this.signInForm.controls['role'].value;
+    const rel = this.authService.login(userId, password, role);
     if (rel) {
       sessionStorage.setItem('role', this.signInForm.controls['role'].value);
       if (this.signInForm.controls['role'].value == 0) {

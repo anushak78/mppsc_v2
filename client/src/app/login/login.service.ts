@@ -19,9 +19,10 @@ export class LoginService {
     return JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
-  login(username: string, password: string) {
-    return this.http.post('/ui/login', {login: username, password: password})
+  login(username: string, password: string, role: Number) {
+    return this.http.post('http://0.0.0.0:6543/ui/login', {login: username, password: password, role: role})
       .toPromise().then((user => {
+        console.log(user)
         sessionStorage.setItem('currentUser', JSON.stringify(user));
         return true;
       })).catch((error: HttpErrorResponse) => {

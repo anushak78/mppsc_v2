@@ -25,6 +25,10 @@ class UserMaster(Base):
         self.designation = designation
         self.status = status
 
+    @classmethod
+    def get_users(cls, DBSession):
+        return DBSession.query(UserMaster).all()
+
 
 class UserFingerPrintMap(Base):
     __tablename__ = 'user_fingerprint'
@@ -64,7 +68,11 @@ class UserLoginMaster(Base):
 
     @classmethod
     def by_login(cls, DBSession, login):
-        return DBSession.query(User).filter_by(login=login).first()
+        return DBSession.query(UserLoginMaster).filter_by(login=login).first()
+
+    @classmethod
+    def get_vo_users(cls, DBSession):
+        return DBSession.query(UserMaster).filter_by(role=1).all()
 
 
 def _sha512(text):
