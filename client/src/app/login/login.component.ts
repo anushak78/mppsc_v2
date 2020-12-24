@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { LoginService } from '../Service/login.service';
-import { first } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {LoginService} from './login.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(private router: Router,
-    private login: LoginService) {
+              private authService: LoginService) {
   }
 
   ngOnInit() {
@@ -35,22 +35,20 @@ export class LoginComponent implements OnInit {
   }
 
   async submit() {
-    this.login.login(this.signInForm.controls['user_id'].value, this.signInForm.controls['password'].value)
-      .pipe(first())
-      .subscribe(
-        data => { 
-          console.log(data);
-          //TODO: add navigation
-    })
-    sessionStorage.setItem('role', this.signInForm.controls['role'].value)
-    if (this.signInForm.controls['role'].value == 0) {
-      this.router.navigate(['admin-dashboard'])
-    }
-    if (this.signInForm.controls['role'].value == 1) {
-      this.router.navigate(['board-dashboard'])
-    }
-    if (this.signInForm.controls['role'].value == 2) {
-      this.router.navigate(['vo-dashboard'])
+    const userId = this.signInForm.controls['user_id'].value;
+    const password = this.signInForm.controls['password'].value;
+    const rel = this.authService.login(userId, password);
+    if (rel) {
+      sessionStorage.setItem('role', this.signInForm.controls['role'].value);
+      if (this.signInForm.controls['role'].value == 0) {
+        this.router.navigate(['admin-dashboard']);
+      }
+      if (this.signInForm.controls['role'].value == 1) {
+        this.router.navigate(['board-dashboard']);
+      }
+      if (this.signInForm.controls['role'].value == 2) {
+        this.router.navigate(['vo-dashboard']);
+      }
     }
   }
 }

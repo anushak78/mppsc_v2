@@ -34,13 +34,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
-import { UserMasterComponent } from './user-master/user-master.component';
 import { BoardMasterComponent } from './board-master/board-master.component';
 import { GuestMasterComponent } from './guest-master/guest-master.component';
 import { InterviewMasterComponent } from './interview-master/interview-master.component';
 import { CandidateMasterComponent } from './candidate-master/candidate-master.component';
 import { VoDashboardComponent } from './vo-dashboard/vo-dashboard.component';
 import { BoardDashboardComponent } from './board-dashboard/board-dashboard.component';
+import { AddUserComponent } from './user-master/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -48,13 +48,13 @@ import { BoardDashboardComponent } from './board-dashboard/board-dashboard.compo
     LoginComponent,
     AdminDashboardComponent,
     LayoutComponent,
-    UserMasterComponent,
     BoardMasterComponent,
     GuestMasterComponent,
     InterviewMasterComponent,
     CandidateMasterComponent,
     VoDashboardComponent,
-    BoardDashboardComponent
+    BoardDashboardComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,

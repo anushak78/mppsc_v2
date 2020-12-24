@@ -25,4 +25,8 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate([pageName])
   }
 
+
+  gotoPage(pageName: string) {
+    this.router.navigate([pageName]);
+  }
 }

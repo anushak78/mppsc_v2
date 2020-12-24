@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
-import { UserMasterComponent } from './user-master/user-master.component';
 import { BoardMasterComponent } from './board-master/board-master.component';
 import { GuestMasterComponent } from './guest-master/guest-master.component';
 import { InterviewMasterComponent } from './interview-master/interview-master.component';
@@ -25,8 +24,10 @@ const routes: Routes = [
         component: AdminDashboardComponent
       },
       {
-        path: 'user-master',
-        component: UserMasterComponent
+        path: 'users',
+        loadChildren: () => import('./user-master/user-master.module').then(
+          m => m.UserMasterModule
+        )
       },
       {
         path: 'board-master',

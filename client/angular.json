@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "mppsc"
+  "defaultProject": "mppsc",
+  "cli": {
+    "analytics": "2a66e363-ebd4-49a2-9583-aee90dabfc70"
+  }
 }
