@@ -1,5 +1,8 @@
+<!-- Form Value: {{ userData.value | json }}
+<div></div>
+Form Status: {{ userData.status }} -->
 <div class="right">
-    <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button>
+    <!-- <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button> -->
 </div>
 <div class="box-container">
     <div class="grid-3">
@@ -15,6 +18,9 @@
         </div>
         <div class="right">
             <button mat-raised-button color="primary" (click)="openDialogWithTemplateRef(userModal)">Add User</button>
+            <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
+                style="margin-left: 10px;">Back</button>
+
         </div>
     </div>
     <mat-table #table [dataSource]="table_data">
@@ -26,10 +32,14 @@
             <ng-container *ngIf="disCol == 'edit'">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
             </ng-container>
-            <mat-cell *matCellDef="let element " style="cursor: default;">
+            <mat-cell *matCellDef="let element;let i = index " style="cursor: default;">
                 <span *ngIf="disCol == 'edit'">
-                    <a (click)="editDialogWithTemplateRef(userModal, element)"><mat-icon>edit</mat-icon></a>
-                    <mat-icon>delete</mat-icon>
+                    <a (click)="editDialogWithTemplateRef(userModal, element)">
+                        <mat-icon>edit</mat-icon>
+                    </a>
+                    <a>
+                        <mat-icon (click)="deldata(i)">delete</mat-icon>
+                    </a>
                 </span>
                 <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
                 <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
@@ -55,67 +65,102 @@
     <mat-dialog-content>
         <form [formGroup]="userData">
             <div class="grid-2">
-                <div class="field">
+                <div>
                     <mat-form-field>
                         <input matInput type="text" name="name" formControlName="name" placeholder="Enter Name"
                             required>
+                        <!-- <span *ngIf="userData.controls.name.touched && userData.controls.name.errors?.required">
+                                Please first name.!
+                              </span> -->
                     </mat-form-field>
+                    <div  class="error-message">
+                        <span *ngIf="userData.controls.name.touched && userData.controls.name.errors?.required">
+                            Please Enter Name
+                        </span>
+                    </div>
+
                 </div>
+
                 <div class="field">
                     <mat-form-field>
                         <mat-label>Select Title</mat-label>
-                        <mat-select formControlName="title" name="title">
-                            <mat-option [value]="0">
+                        <mat-select formControlName="title" name="title" required>
+                            <mat-option [value]="'Mr'">
                                 Mr.
                             </mat-option>
-                            <mat-option [value]="1">
+                            <mat-option [value]="'Mrs'">
                                 Mrs.
                             </mat-option>
-                            <mat-option [value]="2">
+                            <mat-option [value]="'Miss'">
                                 Miss
                             </mat-option>
-                            <mat-option [value]="3">
+                            <mat-option [value]="'Dr'">
                                 Dr.
                             </mat-option>
                         </mat-select>
+                       
                     </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="userData.controls.title.touched && userData.controls.title.errors?.required">
+                            Please Enter Title
+                        </span>
+                    </div>
                 </div>
                 <div class="field">
-                    <mat-form-field>
+                    <mat-form-field (change)="onChange($event.target.value)">
                         <mat-label>Select Role</mat-label>
-                        <mat-select formControlName="role" name="role">
-                            <mat-option [value]="0">
+                        <mat-select formControlName="role" name="role" required>
+                            <mat-option [value]="'Board Member'">
                                 Board Member
                             </mat-option>
-                            <mat-option [value]="1">
+                            <mat-option [value]="'Chairman'">
                                 Chairman
                             </mat-option>
-                            <mat-option [value]="2">
+                            <mat-option [value]="'Verification Officer'">
                                 Verification Officer
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="userData.controls.role.touched && userData.controls.role.errors?.required">
+                            Please Enter Role
+                        </span>
+                    </div>
                 </div>
-                <div class="field" *ngIf="userData.value.role == 2">
+                <div class="field" *ngIf="userData.value.role == 'Verification Officer'">
                     <mat-form-field>
-                        <input matInput type="text" name="user_id" formControlName="user_id" placeholder="Enter Login ID"
-                            required>
+                        <input matInput type="text" name="user_id" formControlName="user_id"
+                            placeholder="Enter Login ID" required>
                     </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="userData.controls.user_id.touched && userData.controls.user_id.errors?.required">
+                            Please Enter User Id
+                        </span>
+                    </div>
                 </div>
-                <div class="field" *ngIf="userData.value.role == 2">
+                <div class="field" *ngIf="userData.value.role == 'Verification Officer'">
                     <mat-form-field>
-                      <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
-                        placeholder="Enter Password" required>
+                        <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
+                            placeholder="Enter Password" required>
                     </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="userData.controls.password.touched && userData.controls.password.errors?.required">
+                            Please Password
+                        </span>
+                    </div>
                 </div>
-                <div class="field" *ngIf="userData.value.role == 2">
+                <div class="field" *ngIf="userData.value.role == 'Verification Officer'">
                     <mat-form-field>
-                      <input matInput appBlockCopyPaste type="password" formControlName="confirm_password" name="confirm_password"
-                        placeholder="Enter Confirm Password" required>
+                        <input matInput appBlockCopyPaste type="password" formControlName="confirm_password"
+                            name="confirm_password" placeholder="Enter Confirm Password" required>
                     </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="userData.controls.confirm_password.touched && userData.controls.confirm_password.errors?.required">
+                            Please Confirm Password
+                        </span>
+                    </div>
                 </div>
             </div>
-            
         </form>
         <div class="right">
             <button mat-raised-button color="primary">Add fingerprint</button>
@@ -123,6 +168,8 @@
     </mat-dialog-content>
     <hr>
     <mat-dialog-actions align="center">
-        <button mat-raised-button style="background-color: green!important;color: whitesmoke;">Add User</button>
+        <button mat-raised-button
+            style="background-color: green!important;color: whitesmoke;" (click)="check()">Add
+            User</button>
     </mat-dialog-actions>
 </ng-template>

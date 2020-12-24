@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChildren, QueryList, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,10 +14,21 @@ export class UserMasterComponent implements OnInit {
 
   displayedColumns: string[];
   table_data;
+  submitted = false;
+  // data = []
+  data = [
+    { user_id: '123', name: 'a1', title: 'abc', role: 'some data', designation: 'manager', status: null },
+    { user_id: '456', name: 'a2', title: 'def', role: 'some data', designation: 'manager', status: null },
+    { user_id: '789', name: 'a3', title: 'ghi', role: 'some data', designation: 'manager', status: null },
+    { user_id: '123', name: 'a4', title: 'abc', role: 'some data', designation: 'manager', status: null },
+    { user_id: '456', name: 'a5', title: 'def', role: 'some data', designation: 'manager', status: null },
+    { user_id: '789', name: 'a6', title: 'ghi', role: 'some data', designation: 'manager', status: null },
+    { user_id: '123', name: 'a7', title: 'abc', role: 'some data', designation: 'manager', status: null },
+    { user_id: '456', name: 'a8', title: 'def', role: 'some data', designation: 'manager', status: null },
+    { user_id: '789', name: 'a9', title: 'ghi', role: 'some data', designation: 'manager', status: null },
+  ]
+
   userData = new FormGroup({
-    user_id: new FormControl('', [
-      Validators.required,
-    ]),
     name: new FormControl('', [
       Validators.required,
     ]),
@@ -27,15 +38,15 @@ export class UserMasterComponent implements OnInit {
     role: new FormControl(null, [
       Validators.required,
     ]),
-    status: new FormControl(null, [
-      Validators.required,
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-    ]),
-    confirm_password: new FormControl('', [
-      Validators.required,
-    ]),
+    // user_id: new FormControl('', [
+    //   Validators.required,
+    // ]),
+    // password: new FormControl('', [
+    //   Validators.required,
+    // ]),
+    // confirm_password: new FormControl('', [
+    //   Validators.required,
+    // ]),
   });
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   constructor(private router: Router,
@@ -43,21 +54,13 @@ export class UserMasterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.displayedColumns = ['user_id', 'title', 'role', 'status', 'edit']
-    let data = []
-    data = [
-      {user_id: '123', title: 'abc', role: 'some data', status: null},
-      {user_id: '456', title: 'def', role: 'some data', status: null},
-      {user_id: '789', title: 'ghi', role: 'some data', status: null},
-      {user_id: '123', title: 'abc', role: 'some data', status: null},
-      {user_id: '456', title: 'def', role: 'some data', status: null},
-      {user_id: '789', title: 'ghi', role: 'some data', status: null}                                                                                                                                                        
-    ]
-    this.table_data = new MatTableDataSource(data)
+    this.displayedColumns = ['user_id', 'name', 'title', 'role', 'designation', 'status', 'edit']
+    this.table_data = new MatTableDataSource(this.data)
   }
 
   ngAfterViewInit() {
     this.table_data.paginator = this.paginator.toArray()[0];
+    this.onChange(0);
   }
 
   openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
@@ -98,4 +101,32 @@ export class UserMasterComponent implements OnInit {
     this.table_data.filter = filterValue;
   }
 
+  deldata(colIndex) {
+    this.data.splice(colIndex, 1);
+    this.table_data = new MatTableDataSource(this.data)
+    console.log("colIndex", this.data);
+  }
+
+  check() {
+    if (this.userData.invalid) {
+      console.log("invalid");
+      Object.keys(this.userData.controls).forEach(key => {
+        this.userData.get(key).markAsTouched();
+      });
+      return;
+    }
+    else {
+      console.log("data:", this.userData.value);
+      this.dialog.closeAll();
+    }
+  }
+
+  onChange(event: any) {
+    let va1 = this.userData.controls.role.value;
+    console.log("a1",event);
+    
+   // let selectedDay = event.target.value;
+   // console.log("v1",selectedDay);
+    
+  }
 }
