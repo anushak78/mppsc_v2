@@ -16,11 +16,6 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-  // {
-  //   path: 'home',
-  //   redirectTo: 'login', pathMatch: 'full',
-  //   component: LoginComponent
-  // },
   {
     path: '',
     component: LayoutComponent,
