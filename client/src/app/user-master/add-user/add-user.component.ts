@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {UserMaster} from '../model/UserMaster';
+import {UserMasterService} from '../user-master.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
@@ -8,16 +9,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
+  userMaster = new UserMaster();
 
-  constructor(private router: Router) { }
+  constructor(private userMasterService: UserMasterService,
+              private router: Router) {
+  }
 
   ngOnInit(): void {
   }
 
-  model: any = {};
-
-  onSubmit() {
-    this.router.navigate([`/users`]);
-    console.log(JSON.stringify(this.model, null, 4));
+  async onSubmit() {
+    alert(JSON.stringify(this.userMaster));
+    let rel;
+    rel = await this.userMasterService.addUser(this.userMaster);
+    if (!rel) {
+      alert(this.userMasterService.getErrorMessage);
+    } else {
+      this.router.navigate([`/users`]);
+    }
   }
 }

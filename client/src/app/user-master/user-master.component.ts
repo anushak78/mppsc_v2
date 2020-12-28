@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChildren, QueryList, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import {Component, OnInit, ViewChildren, QueryList, TemplateRef} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {Router} from '@angular/router';
+import {UserMaster} from "./model/UserMaster";
+import {UserMasterService} from "./user-master.service";
 
 @Component({
   selector: 'app-user-master',
@@ -15,17 +17,18 @@ export class UserMasterComponent implements OnInit {
   displayedColumns: string[];
   table_data;
   submitted = false;
+  users: UserMaster[] = [];
   // data = []
   data = [
-    { user_id: '123', name: 'a1', title: 'abc', role: 'some data', designation: 'manager', status: null },
-    { user_id: '456', name: 'a2', title: 'def', role: 'some data', designation: 'manager', status: null },
-    { user_id: '789', name: 'a3', title: 'ghi', role: 'some data', designation: 'manager', status: null },
-    { user_id: '123', name: 'a4', title: 'abc', role: 'some data', designation: 'manager', status: null },
-    { user_id: '456', name: 'a5', title: 'def', role: 'some data', designation: 'manager', status: null },
-    { user_id: '789', name: 'a6', title: 'ghi', role: 'some data', designation: 'manager', status: null },
-    { user_id: '123', name: 'a7', title: 'abc', role: 'some data', designation: 'manager', status: null },
-    { user_id: '456', name: 'a8', title: 'def', role: 'some data', designation: 'manager', status: null },
-    { user_id: '789', name: 'a9', title: 'ghi', role: 'some data', designation: 'manager', status: null },
+    {user_id: '123', name: 'a1', title: 'abc', role: 'some data', designation: 'manager', status: null},
+    {user_id: '456', name: 'a2', title: 'def', role: 'some data', designation: 'manager', status: null},
+    {user_id: '789', name: 'a3', title: 'ghi', role: 'some data', designation: 'manager', status: null},
+    {user_id: '123', name: 'a4', title: 'abc', role: 'some data', designation: 'manager', status: null},
+    {user_id: '456', name: 'a5', title: 'def', role: 'some data', designation: 'manager', status: null},
+    {user_id: '789', name: 'a6', title: 'ghi', role: 'some data', designation: 'manager', status: null},
+    {user_id: '123', name: 'a7', title: 'abc', role: 'some data', designation: 'manager', status: null},
+    {user_id: '456', name: 'a8', title: 'def', role: 'some data', designation: 'manager', status: null},
+    {user_id: '789', name: 'a9', title: 'ghi', role: 'some data', designation: 'manager', status: null},
   ]
 
   userData = new FormGroup({
@@ -49,13 +52,20 @@ export class UserMasterComponent implements OnInit {
     // ]),
   });
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+
   constructor(private router: Router,
-    private dialog: MatDialog) {
+              private dialog: MatDialog, private userMasterService: UserMasterService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.displayedColumns = ['user_id', 'name', 'title', 'role', 'designation', 'status', 'edit']
-    this.table_data = new MatTableDataSource(this.data)
+    this.table_data = new MatTableDataSource(this.data);
+    let rel = await this.userMasterService.fetchUserList();
+    if (rel) {
+      this.users = this.userMasterService.getUserList;
+    } else {
+      alert(this.userMasterService.getErrorMessage);
+    }
   }
 
   ngAfterViewInit() {
@@ -113,8 +123,7 @@ export class UserMasterComponent implements OnInit {
         this.userData.get(key).markAsTouched();
       });
       return;
-    }
-    else {
+    } else {
       console.log("data:", this.userData.value);
       this.dialog.closeAll();
     }

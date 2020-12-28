@@ -11,7 +11,7 @@ Form Status: {{ f.status }} -->
             <div class="grid-2">
                 <div>
                     <mat-form-field>
-                        <input matInput type="text" name="name" [(ngModel)]="model.name" #name="ngModel"
+                        <input matInput type="text" name="name" [(ngModel)]="userMaster.name" #name="ngModel"
                             placeholder="Enter Name" required>
                     </mat-form-field>
                     <div class="error-message">
@@ -24,7 +24,7 @@ Form Status: {{ f.status }} -->
                 <div>
                     <mat-form-field>
                         <mat-label>Select Title</mat-label>
-                        <mat-select [(ngModel)]="model.title" #title="ngModel" name="title" required>
+                        <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
                             <mat-option [value]="'Mr'">
                                 Mr.
                             </mat-option>
@@ -50,7 +50,7 @@ Form Status: {{ f.status }} -->
                     <div>
                         <mat-form-field>
                             <mat-label>Select Role</mat-label>
-                            <mat-select [(ngModel)]="model.role" #role="ngModel" name="role" required>
+                            <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
                                 <mat-option [value]="'Board Member'">
                                     Board Member
                                 </mat-option>
@@ -70,9 +70,9 @@ Form Status: {{ f.status }} -->
                     </div>
                 </div>
                 <div class="grid-3">
-                    <div class="field" *ngIf="model.role == 'Verification Officer'">
+                    <div class="field" *ngIf="userMaster.role == 'Verification Officer'">
                         <mat-form-field>
-                            <input matInput type="text" name="user_id" [(ngModel)]="model.user_id" #user_id="ngModel"
+                            <input matInput type="text" name="user_id" [(ngModel)]="userMaster.userId" #user_id="ngModel"
                                 placeholder="Enter Login ID" required>
                         </mat-form-field>
                         <div class="error-message">
@@ -81,9 +81,9 @@ Form Status: {{ f.status }} -->
                             </div>
                         </div>
                     </div>
-                    <div class="field" *ngIf="model.role == 'Verification Officer'">
+                    <div class="field" *ngIf="userMaster.role == 'Verification Officer'">
                         <mat-form-field>
-                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="model.password"
+                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.password"
                                 #password="ngModel" name="password" placeholder="Enter Password" required>
                         </mat-form-field>
                         <div class="error-message">
@@ -92,9 +92,9 @@ Form Status: {{ f.status }} -->
                             </div>
                         </div>
                     </div>
-                    <div class="field" *ngIf="model.role == 'Verification Officer'">
+                    <div class="field" *ngIf="userMaster.role == 'Verification Officer'">
                         <mat-form-field>
-                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="model.c_password"
+                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.confirmPassword"
                                 #c_password="ngModel" name="confirm_password" placeholder="Enter Confirm Password"
                                 required>
                         </mat-form-field>
@@ -106,11 +106,11 @@ Form Status: {{ f.status }} -->
                     </div>
                 </div>
             </div>
-            <div class="right">
-                <button mat-raised-button color="primary">Add fingerprint</button>
-            </div>
+<!--            <div class="right">-->
+<!--                <button mat-raised-button color="primary">Add fingerprint</button>-->
+<!--            </div>-->
             <div>
-                <button mat-raised-button style="background-color: green!important;color: whitesmoke;" type="submit">Add
+                <button [disabled]="!f.valid"  mat-raised-button style="background-color: green!important;color: whitesmoke;" type="submit">Add
                     User</button>
             </div>
         </form>
