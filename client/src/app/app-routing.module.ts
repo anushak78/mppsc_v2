@@ -24,6 +24,10 @@ const routes: Routes = [
         component: AdminDashboardComponent
       },
       {
+        path: '',
+        component: AdminDashboardComponent
+      },
+      {
         path: 'users',
         loadChildren: () => import('./user-master/user-master.module').then(
           m => m.UserMasterModule

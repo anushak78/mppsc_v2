@@ -8,15 +8,10 @@ const routes: Routes = [
   {
     path: '',
     component: UserMasterComponent,
-    children: [
-      { path:'addUser', component: AddUserComponent}
-      // {
-      //   path: 'addUser',
-      //   loadChildren: () => import('./add-user/add-user.component').then(
-      //     m => m.AddUserComponent
-      //   )
-      // },
-    ]
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent
   }
 ];
 
