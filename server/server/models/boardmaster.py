@@ -30,6 +30,19 @@ class BoardMaster(Base):
     def get_boards(cls, DBSession):
         return DBSession.query(BoardMaster).all()
 
+    @classmethod
+    def get_board(cls, DBSession, login_id):
+        return DBSession.query(BoardMaster).filter_by(id=id).first()
+
+    @classmethod
+    def check_board(cls, DBSession, login_id):
+        return DBSession.query(BoardMaster).filter_by(login_id=login_id).first()
+
+    @classmethod
+    def delete_board(cls, DBSession, id):
+        DBSession.query(BoardMaster).filter_by(id=id).delete()
+        return true
+
 
 def _sha512(text):
     sha = hashlib.sha512()

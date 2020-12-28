@@ -29,6 +29,19 @@ class UserMaster(Base):
     def get_users(cls, DBSession):
         return DBSession.query(UserMaster).all()
 
+    @classmethod
+    def check_user(cls, DBSession, name):
+        return  DBSession.query(UserMaster).filter_by(name=name).first()
+
+    @classmethod
+    def get_user(cls, DBSession, id):
+        return  DBSession.query(UserMaster).filter_by(id=id).first()
+
+    @classmethod
+    def delete_user(cls, DBSession, id):
+        DBSession.query(UserMaster).filter_by(id=id).delete()
+        return true
+
 
 class UserFingerPrintMap(Base):
     __tablename__ = 'user_fingerprint'
@@ -72,7 +85,20 @@ class UserLoginMaster(Base):
 
     @classmethod
     def get_vo_users(cls, DBSession):
-        return DBSession.query(UserMaster).filter_by(role=1).all()
+        return DBSession.query(UserMaster).filter_by(role=2).all()
+
+    @classmethod
+    def check_user(cls, DBSession, login):
+        return DBSession.query(UserLoginMaster).filter_by(login=login).first()
+
+    @classmethod
+    def get_user(cls, DBSession, id):
+        return  DBSession.query(UserLoginMaster).filter_by(id=id).first()
+
+    @classmethod
+    def delete_user(cls, DBSession, id):
+        DBSession.query(UserLoginMaster).filter_by(id=id).delete()
+        return true
 
 
 def _sha512(text):

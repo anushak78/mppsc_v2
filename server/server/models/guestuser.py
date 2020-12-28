@@ -5,6 +5,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey
 )
+from sqlalchemy import or_
 
 from .meta import Base
 
@@ -29,6 +30,25 @@ class GuestUserMaster(Base):
     def get_users(cls, DBSession):
         return DBSession.query(GuestUserMaster).all()
 
+    @classmethod
+    def get_user(cls, DBSession, id):
+        return DBSession.query(GuestUserMaster).filter_by(id=id).first()
+
+    @classmethod
+    def check_user(cls, DBSession, email, phone_no):
+        users = DBSession.query(GuestUserMaster).filter(
+            or_(GuestUserMaster.email == email, GuestUserMaster.phone_no == phone_no))
+        user_list = []
+        for ele in users:
+            user_list.append({
+                id: ele.id,
+                title: ele.title,
+                name: ele.name,
+                email: ele.email,
+                phone_no: ele.phone_no,
+                status: ele.status
+            })
+
 
 class GuestUserDateMap(Base):
     __tablename__ = 'guest_date_map'
@@ -41,3 +61,7 @@ class GuestUserDateMap(Base):
         self.guest_id = guest_id
         self.to_date = to_date
         self.from_date = from_date
+
+    @classmethod
+    def get_user_dates(cls, DBSession):
+        return DBSession.query(GuestUserDateMap).all()
