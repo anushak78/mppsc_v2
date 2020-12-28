@@ -51,7 +51,7 @@ def get_guest_user_list(request):
             "dates": dates
         })
     return {
-        "code": 1,
+        "code": 0,
         "message": "success",
         "users": user_data
     }
@@ -76,7 +76,7 @@ def add_guest_user(request):
     request.dbsession.add(user)
     
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
@@ -92,7 +92,7 @@ def add_guest_user_dates(request):
         request.dbsession.add(entry)
 
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
@@ -104,7 +104,7 @@ def delete_guest_user(request):
     delete_data = request.dbsession(GuestUserMaster).filter_by(id=id).delete()
 
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
@@ -132,7 +132,7 @@ def edit_guest_user(request):
     request.dbsession.commit()
     
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
@@ -150,6 +150,6 @@ def edit_guest_user_dates(request):
         request.dbsession.add(entry)
 
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }

@@ -58,11 +58,13 @@ export class UserMasterComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.displayedColumns = ['user_id', 'name', 'title', 'role', 'designation', 'status', 'edit']
+    this.displayedColumns = ['id', 'name', 'title', 'role', 'designation', 'status', 'edit']
     this.table_data = new MatTableDataSource(this.data);
     let rel = await this.userMasterService.fetchUserList();
     if (rel) {
       this.users = this.userMasterService.getUserList;
+      console.log(this.users)
+      this.table_data = new MatTableDataSource(this.users);
     } else {
       alert(this.userMasterService.getErrorMessage);
     }

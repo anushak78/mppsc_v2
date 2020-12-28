@@ -23,7 +23,7 @@ export class UserMasterService {
     return await this.http.get(
       apiUrl.getApiUserMastercollectionEndPoint).toPromise()
       .then((response) => {
-        let result = response['result'];
+        let result = response['data'];
         this.users = [];
         for (let u of result) {
           this.users.push(UserMaster.fromJson(u));
@@ -37,7 +37,7 @@ export class UserMasterService {
     return await this.http.post(
       apiUrl.getApiAddUserMastercollectionEndPoint, user.toJSON()).toPromise()
       .then((response) => {
-        this.httpErrorMessage = 'User added';
+        this.httpErrorMessage = response['message'];
         return true;
       }).catch((error) => this);
   }

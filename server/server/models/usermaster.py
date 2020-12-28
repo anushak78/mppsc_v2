@@ -85,7 +85,7 @@ class UserLoginMaster(Base):
 
     @classmethod
     def get_vo_users(cls, DBSession):
-        return DBSession.query(UserMaster).filter_by(role=2).all()
+        return DBSession.query(UserLoginMaster).filter_by(role=2).all()
 
     @classmethod
     def check_user(cls, DBSession, login):

@@ -71,7 +71,7 @@ def logout(request):
     headers = forget(request)
     request.response.headerlist.extend(headers)
     return {
-        "code": 1,
+        "code": 0,
         "message": "success",
         "data": {}
     }

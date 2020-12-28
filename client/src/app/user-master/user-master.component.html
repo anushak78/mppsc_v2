@@ -41,8 +41,18 @@ Form Status: {{ userData.status }} -->
                         <mat-icon (click)="deldata(i)">delete</mat-icon>
                     </a>
                 </span>
-                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
-                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
+                <span *ngIf="disCol != 'edit' && disCol != 'role' && disCol != 'title'">{{element[disCol]}}</span>
+                <span *ngIf="disCol == 'role'">
+                    <span *ngIf="element['role'] == 0">Board Member</span>
+                    <span *ngIf="element['role'] == 1">Chairman</span>
+                    <span *ngIf="element['role'] == 2">Verification Officer</span>
+                </span>
+                <span *ngIf="disCol == 'title'">
+                    <span *ngIf="element['title'] == 0">Mr.</span>
+                    <span *ngIf="element['title'] == 1">Mrs.</span>
+                    <span *ngIf="element['title'] == 2">Miss</span>
+                    <span *ngIf="element['title'] == 3">Dr.</span>
+                </span>
             </mat-cell>
         </ng-container>
 
