@@ -2,175 +2,56 @@
 <div></div>
 Form Status: {{ userData.status }} -->
 <div class="right">
-    <!-- <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button> -->
+  <!-- <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button> -->
 </div>
 <div class="box-container">
-    <div class="grid-3">
-        <div>
-            <h2 class="mat-h2">Add User</h2>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Search</mat-label>
-                <input type="text" matInput (keyup)="applyFilter($event.target.value)">
-                <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-        </div>
-        <div class="right">
-            <button mat-raised-button color="primary" (click)="gotoPage('users/add-user')">Add User</button>
-            <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
-                style="margin-left: 10px;">Back</button>
-            <!-- <button mat-raised-button color="primary" (click)="gotoPage('users/addUser')"  style="margin-left: 10px;">Back</button> -->
-        </div>
+  <div class="grid-3">
+    <div>
+      <h2 class="mat-h2">User List</h2>
     </div>
-    <mat-table #table [dataSource]="table_data">
-
-        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
-            <ng-container *ngIf="disCol != 'edit'">
-                <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
-            </ng-container>
-            <ng-container *ngIf="disCol == 'edit'">
-                <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            </ng-container>
-            <mat-cell *matCellDef="let element;let i = index " style="cursor: default;">
-                <span *ngIf="disCol == 'edit'">
-                    <a (click)="editDialogWithTemplateRef(userModal, element)">
-                        <mat-icon>edit</mat-icon>
-                    </a>
-                    <a>
-                        <mat-icon (click)="deldata(i)">delete</mat-icon>
-                    </a>
-                </span>
-                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
-                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
-            </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-
-    <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
-
+    <div>
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div class="right">
+      <button mat-raised-button color="primary" (click)="gotoPage('users/add-user')">Add User</button>
+      <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
+              style="margin-left: 10px;">Back
+      </button>
+      <!-- <button mat-raised-button color="primary" (click)="gotoPage('users/addUser')"  style="margin-left: 10px;">Back</button> -->
+    </div>
+  </div>
+  <ng-container *ngIf="users.length > 0">
+    <div class="grid-venue-header">
+      <div class="sub-grid-venue list-head">
+        <div>Name</div>
+        <div>Role</div>
+      </div>
+    </div>
+    <div class="grid-venue" *ngFor="let v of users;">
+      <div class="sub-grid-venue"
+           matTooltip="Details">
+        <div>{{v.name}}</div>
+        <div>{{v.role}}</div>
+      </div>
+      <div class="icon-column">
+        <mat-icon (click)="updateUser(v.id)" matTooltip="Edit">
+          edit
+        </mat-icon>
+      </div>
+      <div class="icon-column">
+        <mat-icon matTooltip="Delete">
+          delete
+        </mat-icon>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="users.length == 0">
+    <div class="no-data">
+      Currently, there are no users defined
+    </div>
+  </ng-container>
 </div>
-
-<ng-template #userModal>
-    <div class="grid-2">
-        <h2 matDialogTitle>User Data</h2>
-        <a class="right">
-            <mat-icon matDialogClose style="font-size: medium!important;">close</mat-icon>
-        </a>
-    </div>
-    <hr>
-    <mat-dialog-content>
-        <form [formGroup]="userData">
-            <div class="grid-2">
-                <div>
-                    <mat-form-field>
-                        <input matInput type="text" name="name" formControlName="name" placeholder="Enter Name"
-                            required>
-                        <!-- <span *ngIf="userData.controls.name.touched && userData.controls.name.errors?.required">
-                                Please first name.!
-                              </span> -->
-                    </mat-form-field>
-                    <div class="error-message">
-                        <span *ngIf="userData.controls.name.touched && userData.controls.name.errors?.required">
-                            Please Enter Name
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="field">
-                    <mat-form-field>
-                        <mat-label>Select Title</mat-label>
-                        <mat-select formControlName="title" name="title" required>
-                            <mat-option [value]="'Mr'">
-                                Mr.
-                            </mat-option>
-                            <mat-option [value]="'Mrs'">
-                                Mrs.
-                            </mat-option>
-                            <mat-option [value]="'Miss'">
-                                Miss
-                            </mat-option>
-                            <mat-option [value]="'Dr'">
-                                Dr.
-                            </mat-option>
-                        </mat-select>
-
-                    </mat-form-field>
-                    <div class="error-message">
-                        <span *ngIf="userData.controls.title.touched && userData.controls.title.errors?.required">
-                            Please Enter Title
-                        </span>
-                    </div>
-                </div>
-                <div class="field">
-                    <mat-form-field>
-                        <mat-label>Select Role</mat-label>
-                        <mat-select formControlName="role" name="role" required>
-                            <mat-option [value]="'Board Member'">
-                                Board Member
-                            </mat-option>
-                            <mat-option [value]="'Chairman'">
-                                Chairman
-                            </mat-option>
-                            <mat-option [value]="'Verification Officer'">
-                                Verification Officer
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div class="error-message">
-                        <span *ngIf="userData.controls.role.touched && userData.controls.role.errors?.required">
-                            Please Enter Role
-                        </span>
-                    </div>
-                </div>
-                <div class="field" *ngIf="userData.value.role == 'Verification Officer'">
-                    <mat-form-field>
-                        <input matInput type="text" name="user_id" formControlName="user_id"
-                            placeholder="Enter Login ID" required>
-                    </mat-form-field>
-                    <div class="error-message">
-                        <span *ngIf="userData.controls.user_id.touched && userData.controls.user_id.errors?.required">
-                            Please Enter User Id
-                        </span>
-                    </div>
-                </div>
-                <div class="field" *ngIf="userData.value.role == 'Verification Officer'">
-                    <mat-form-field>
-                        <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
-                            placeholder="Enter Password" required>
-                    </mat-form-field>
-                    <div class="error-message">
-                        <span *ngIf="userData.controls.password.touched && userData.controls.password.errors?.required">
-                            Please Password
-                        </span>
-                    </div>
-                </div>
-                <div class="field" *ngIf="userData.value.role == 'Verification Officer'">
-                    <mat-form-field>
-                        <input matInput appBlockCopyPaste type="password" formControlName="confirm_password"
-                            name="confirm_password" placeholder="Enter Confirm Password" required>
-                    </mat-form-field>
-                    <div class="error-message">
-                        <span
-                            *ngIf="userData.controls.confirm_password.touched && userData.controls.confirm_password.errors?.required">
-                            Please Confirm Password
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <div class="right">
-            <button mat-raised-button color="primary">Add fingerprint</button>
-        </div>
-    </mat-dialog-content>
-    <hr>
-    <mat-dialog-actions align="center">
-        <button mat-raised-button style="background-color: green!important;color: whitesmoke;" (click)="check()">Add
-            User</button>
-    </mat-dialog-actions>
-</ng-template>
-<router-outlet></router-outlet>

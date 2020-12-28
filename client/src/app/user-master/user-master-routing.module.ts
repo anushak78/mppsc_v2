@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'add-user',
     component: AddUserComponent
+  },
+  {
+    path: 'add-user/:userId',
+    component: AddUserComponent
   }
 ];
 

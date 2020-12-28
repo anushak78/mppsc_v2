@@ -128,4 +128,12 @@ export class UserMasterComponent implements OnInit {
       this.dialog.closeAll();
     }
   }
+
+  updateUser(id: number) {
+      this.router.navigate([`users/add-users/${id}`]);
+  }
+
+  deleteUser() {
+
+  }
 }
