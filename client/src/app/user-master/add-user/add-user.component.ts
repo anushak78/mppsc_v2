@@ -25,6 +25,7 @@ export class AddUserComponent implements OnInit {
     if (!rel) {
       alert(this.userMasterService.getErrorMessage);
     } else {
+      alert(this.userMasterService.getErrorMessage);
       this.router.navigate([`/users`]);
     }
   }

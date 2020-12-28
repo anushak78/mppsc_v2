@@ -31,11 +31,29 @@ svc_edit_user = Service(
 def get_user_list(request):
     user_list_board = UserMaster.get_users(request.dbsession)
     user_list_vo = UserLoginMaster.get_vo_users(request.dbsession)
+    user_list = []
+    for ele in user_list_board:
+        user_list.append({
+            "id": ele.id,
+            "name": ele.name,
+            "title": ele.title,
+            "role": ele.role,
+            "status": ele.status,
+            "login": ''
+        })
+    for ele in user_list_vo:
+        user_list.append({
+            "id": ele.id,
+            "name": ele.name,
+            "title": ele.title,
+            "role": ele.role,
+            "status": ele.status,
+            "login": ele.login
+        })
     return {
-        "code": 1,
+        "code": 0,
         "message": "success",
-        "board_users": user_list_board,
-        "vo_users": user_list_vo
+        "data": user_list
     }
 
 
@@ -44,11 +62,11 @@ def add_user(request):
     name = request.json_body['name']
     role = request.json_body['role']
     title = request.json_body['title']
-    designation = request.json_body['designation']
+    designation = 'default'
 
     if role == 0 or role == 1:
         user = UserMaster.check_user(request.dbsession, name)
-        if user is None:
+        if user is not None:
             return {
                 "code": 0,
                 "message": "Data exists"
@@ -59,10 +77,16 @@ def add_user(request):
         # TODO: add fingerprint entry
 
     elif role == 2:
-        login = request.json_body['login']
+        login = request.json_body['userId']
         password = request.json_body['password']
+        confirm_password = request.json_body['confirm-password']
+        if password != confirm_password:
+            return {
+                "code": 0,
+                "message": "Password is not same as confirm password"
+            }
         user = UserLoginMaster.check_user(request.dbsession, login)
-        if user is None:
+        if user is not None:
             return {
                 "code": 0,
                 "message": "Data exists"
@@ -73,8 +97,8 @@ def add_user(request):
         request.dbsession.add(user)
 
     return {
-        "code": 1,
-        "message": "success"
+        "code": 0,
+        "message": "Data added successfully"
     }
 
 
@@ -90,20 +114,20 @@ def delete_user(request):
         del_user = UserLoginMaster.delete_user(request.dbsession, id)
     
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
 @svc_edit_user.post(require_csrf=False)
 def edit_user(request):
-    id = request.json_body['id']
+    id = request.json_body['userId']
     name = request.json_body['name']
     role = request.json_body['role']
     title = request.json_body['title']
     designation = request.json_body['designation']
     if role == 0 or role == 1:
         user = UserMaster.check_user(request.dbsession, name)
-        if user is None:
+        if user is not None:
             return {
                 "code": 0,
                 "message": "Data exists"
@@ -117,10 +141,10 @@ def edit_user(request):
         # TODO: add fingerprint entry
 
     elif role == 2:
-        login = request.json_body['login']
+        login = request.json_body['userId']
         password = request.json_body['password']
         user = UserLoginMaster.check_user(request.dbsession, login)
-        if user is None:
+        if user is not None:
             return {
                 "code": 0,
                 "message": "Data exists"
@@ -135,6 +159,6 @@ def edit_user(request):
         request.dbsession.commit()
 
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }

@@ -25,6 +25,10 @@ class InterviewMaster(Base):
         self.from_date = from_date
         self.status = status
 
+    @classmethod
+    def get_interviews(cls, DBSession):
+        return DBSession.query(InterviewMaster).all()
+
 
 class BoardInterviewMap(Base):
     __tablename__ = 'board_interview_map'

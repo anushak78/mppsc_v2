@@ -30,7 +30,7 @@ svc_edit_board = Service(
 def get_board_list(request):
     board_list = BoardMaster.get_boards(request.dbsession)
     return {
-        "code": 1,
+        "code": 0,
         "message": "success",
         "data": board_list
     }
@@ -44,7 +44,7 @@ def add_board(request):
     password = request.json_body['password']
 
     board = BoardMaster.check_board(request.dbsession, login_id)
-    if board is None:
+    if board is not None:
         return {
             "code": 0,
             "message": "Data exists"    
@@ -56,7 +56,7 @@ def add_board(request):
     request.dbsession.add(board)
     
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
@@ -67,7 +67,7 @@ def delete_board(request):
     del_board = BoardMaster.delete_board(request.dbsession, id)
     
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }
 
@@ -81,7 +81,7 @@ def edit_board(request):
     password = request.json_body['password']
 
     board = BoardMaster.check_board(request.dbsession, login_id)
-    if board is None:
+    if board is not None:
         return {
             "code": 0,
             "message": "Data exists"    
@@ -95,6 +95,6 @@ def edit_board(request):
     request.dbsession.commit()
     
     return {
-        "code": 1,
+        "code": 0,
         "message": "success"
     }

@@ -25,16 +25,16 @@ Form Status: {{ f.status }} -->
                     <mat-form-field>
                         <mat-label>Select Title</mat-label>
                         <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
-                            <mat-option [value]="'Mr'">
+                            <mat-option [value]="0">
                                 Mr.
                             </mat-option>
-                            <mat-option [value]="'Mrs'">
+                            <mat-option [value]="1">
                                 Mrs.
                             </mat-option>
-                            <mat-option [value]="'Miss'">
+                            <mat-option [value]="2">
                                 Miss
                             </mat-option>
-                            <mat-option [value]="'Dr'">
+                            <mat-option [value]="3">
                                 Dr.
                             </mat-option>
                         </mat-select>
@@ -51,13 +51,13 @@ Form Status: {{ f.status }} -->
                         <mat-form-field>
                             <mat-label>Select Role</mat-label>
                             <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
-                                <mat-option [value]="'Board Member'">
+                                <mat-option [value]="0">
                                     Board Member
                                 </mat-option>
-                                <mat-option [value]="'Chairman'">
+                                <mat-option [value]="1">
                                     Chairman
                                 </mat-option>
-                                <mat-option [value]="'Verification Officer'">
+                                <mat-option [value]="2">
                                     Verification Officer
                                 </mat-option>
                             </mat-select>
@@ -70,7 +70,7 @@ Form Status: {{ f.status }} -->
                     </div>
                 </div>
                 <div class="grid-3">
-                    <div class="field" *ngIf="userMaster.role == 'Verification Officer'">
+                    <div class="field" *ngIf="userMaster.role == 2">
                         <mat-form-field>
                             <input matInput type="text" name="user_id" [(ngModel)]="userMaster.userId" #user_id="ngModel"
                                 placeholder="Enter Login ID" required>
@@ -81,7 +81,7 @@ Form Status: {{ f.status }} -->
                             </div>
                         </div>
                     </div>
-                    <div class="field" *ngIf="userMaster.role == 'Verification Officer'">
+                    <div class="field" *ngIf="userMaster.role == 2">
                         <mat-form-field>
                             <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.password"
                                 #password="ngModel" name="password" placeholder="Enter Password" required>
@@ -92,7 +92,7 @@ Form Status: {{ f.status }} -->
                             </div>
                         </div>
                     </div>
-                    <div class="field" *ngIf="userMaster.role == 'Verification Officer'">
+                    <div class="field" *ngIf="userMaster.role == 2">
                         <mat-form-field>
                             <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.confirmPassword"
                                 #c_password="ngModel" name="confirm_password" placeholder="Enter Confirm Password"
