@@ -1,1 +1,118 @@
-<p>add-user works!</p>
+<!-- Form Value: {{ f.value | json }}
+<div></div>
+Form Status: {{ f.status }} -->
+<div class="box-container">
+    <div class="grid-2">
+        <h2 matDialogTitle>User Data</h2>
+    </div>
+    <hr>
+    <div>
+        <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit()">
+            <div class="grid-2">
+                <div>
+                    <mat-form-field>
+                        <input matInput type="text" name="name" [(ngModel)]="model.name" #name="ngModel"
+                            placeholder="Enter Name" required>
+                    </mat-form-field>
+                    <div class="error-message">
+                        <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                            <div *ngIf="name.errors.required">Name is required</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Select Title</mat-label>
+                        <mat-select [(ngModel)]="model.title" #title="ngModel" name="title" required>
+                            <mat-option [value]="'Mr'">
+                                Mr.
+                            </mat-option>
+                            <mat-option [value]="'Mrs'">
+                                Mrs.
+                            </mat-option>
+                            <mat-option [value]="'Miss'">
+                                Miss
+                            </mat-option>
+                            <mat-option [value]="'Dr'">
+                                Dr.
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                    <div class="error-message">
+                        <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                            <div *ngIf="title.errors.required">Title is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Select Role</mat-label>
+                            <mat-select [(ngModel)]="model.role" #role="ngModel" name="role" required>
+                                <mat-option [value]="'Board Member'">
+                                    Board Member
+                                </mat-option>
+                                <mat-option [value]="'Chairman'">
+                                    Chairman
+                                </mat-option>
+                                <mat-option [value]="'Verification Officer'">
+                                    Verification Officer
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="error-message">
+                            <div *ngIf="f.submitted && role.invalid" class="invalid-feedback">
+                                <div *ngIf="role.errors.required"> Enter Role</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="field" *ngIf="model.role == 'Verification Officer'">
+                        <mat-form-field>
+                            <input matInput type="text" name="user_id" [(ngModel)]="model.user_id" #user_id="ngModel"
+                                placeholder="Enter Login ID" required>
+                        </mat-form-field>
+                        <div class="error-message">
+                            <div *ngIf="f.submitted && user_id.invalid" class="invalid-feedback">
+                                <div *ngIf="user_id.errors.required"> Enter User Id</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field" *ngIf="model.role == 'Verification Officer'">
+                        <mat-form-field>
+                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="model.password"
+                                #password="ngModel" name="password" placeholder="Enter Password" required>
+                        </mat-form-field>
+                        <div class="error-message">
+                            <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                                <div *ngIf="password.errors.required"> Enter Password</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field" *ngIf="model.role == 'Verification Officer'">
+                        <mat-form-field>
+                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="model.c_password"
+                                #c_password="ngModel" name="confirm_password" placeholder="Enter Confirm Password"
+                                required>
+                        </mat-form-field>
+                        <div class="error-message">
+                            <div *ngIf="f.submitted && c_password.invalid" class="invalid-feedback">
+                                <div *ngIf="c_password.errors.required"> Confirm Password</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button mat-raised-button color="primary">Add fingerprint</button>
+            </div>
+            <div>
+                <button mat-raised-button style="background-color: green!important;color: whitesmoke;" type="submit">Add
+                    User</button>
+            </div>
+        </form>
+    </div>
+</div>

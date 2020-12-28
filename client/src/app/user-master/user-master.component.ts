@@ -60,21 +60,20 @@ export class UserMasterComponent implements OnInit {
 
   ngAfterViewInit() {
     this.table_data.paginator = this.paginator.toArray()[0];
-    this.onChange(0);
   }
 
-  openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
-    let config = {
-      position: {
-        top: '0px',
-        right: '0px'
-      },
-      height: '100%',
-      width: '50vw',
-      panelClass: 'full-screen-modal',
-    };
-    this.dialog.open(templateRef, config)
-  }
+  // openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
+  //   let config = {
+  //     position: {
+  //       top: '0px',
+  //       right: '0px'
+  //     },
+  //     height: '100%',
+  //     width: '50vw',
+  //     panelClass: 'full-screen-modal',
+  //   };
+  //   this.dialog.open(templateRef, config)
+  // }
 
   editDialogWithTemplateRef(templateRef: TemplateRef<any>, user_data) {
     let config = {
@@ -119,14 +118,5 @@ export class UserMasterComponent implements OnInit {
       console.log("data:", this.userData.value);
       this.dialog.closeAll();
     }
-  }
-
-  onChange(event: any) {
-    let va1 = this.userData.controls.role.value;
-    console.log("a1",event);
-    
-   // let selectedDay = event.target.value;
-   // console.log("v1",selectedDay);
-    
   }
 }

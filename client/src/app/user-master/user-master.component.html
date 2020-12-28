@@ -17,10 +17,10 @@ Form Status: {{ userData.status }} -->
             </mat-form-field>
         </div>
         <div class="right">
-            <button mat-raised-button color="primary" (click)="openDialogWithTemplateRef(userModal)">Add User</button>
+            <button mat-raised-button color="primary" (click)="gotoPage('users/addUser')">Add User</button>
             <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
                 style="margin-left: 10px;">Back</button>
-
+            <!-- <button mat-raised-button color="primary" (click)="gotoPage('users/addUser')"  style="margin-left: 10px;">Back</button> -->
         </div>
     </div>
     <mat-table #table [dataSource]="table_data">
@@ -73,7 +73,7 @@ Form Status: {{ userData.status }} -->
                                 Please first name.!
                               </span> -->
                     </mat-form-field>
-                    <div  class="error-message">
+                    <div class="error-message">
                         <span *ngIf="userData.controls.name.touched && userData.controls.name.errors?.required">
                             Please Enter Name
                         </span>
@@ -98,7 +98,7 @@ Form Status: {{ userData.status }} -->
                                 Dr.
                             </mat-option>
                         </mat-select>
-                       
+
                     </mat-form-field>
                     <div class="error-message">
                         <span *ngIf="userData.controls.title.touched && userData.controls.title.errors?.required">
@@ -107,7 +107,7 @@ Form Status: {{ userData.status }} -->
                     </div>
                 </div>
                 <div class="field">
-                    <mat-form-field (change)="onChange($event.target.value)">
+                    <mat-form-field>
                         <mat-label>Select Role</mat-label>
                         <mat-select formControlName="role" name="role" required>
                             <mat-option [value]="'Board Member'">
@@ -155,7 +155,8 @@ Form Status: {{ userData.status }} -->
                             name="confirm_password" placeholder="Enter Confirm Password" required>
                     </mat-form-field>
                     <div class="error-message">
-                        <span *ngIf="userData.controls.confirm_password.touched && userData.controls.confirm_password.errors?.required">
+                        <span
+                            *ngIf="userData.controls.confirm_password.touched && userData.controls.confirm_password.errors?.required">
                             Please Confirm Password
                         </span>
                     </div>
@@ -168,8 +169,8 @@ Form Status: {{ userData.status }} -->
     </mat-dialog-content>
     <hr>
     <mat-dialog-actions align="center">
-        <button mat-raised-button
-            style="background-color: green!important;color: whitesmoke;" (click)="check()">Add
+        <button mat-raised-button style="background-color: green!important;color: whitesmoke;" (click)="check()">Add
             User</button>
     </mat-dialog-actions>
 </ng-template>
+<router-outlet></router-outlet>

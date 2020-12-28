@@ -28,11 +28,14 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {UserMasterRoutingModule} from "./user-master-routing.module";
+import { AddUserComponent } from './add-user/add-user.component';
 
 
 @NgModule({
   declarations: [
-    UserMasterComponent
+    UserMasterComponent,
+    AddUserComponent
+
   ],
   imports: [
     CommonModule,

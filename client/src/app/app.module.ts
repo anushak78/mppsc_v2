@@ -40,7 +40,6 @@ import { InterviewMasterComponent } from './interview-master/interview-master.co
 import { CandidateMasterComponent } from './candidate-master/candidate-master.component';
 import { VoDashboardComponent } from './vo-dashboard/vo-dashboard.component';
 import { BoardDashboardComponent } from './board-dashboard/board-dashboard.component';
-import { AddUserComponent } from './user-master/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { AddUserComponent } from './user-master/add-user/add-user.component';
     CandidateMasterComponent,
     VoDashboardComponent,
     BoardDashboardComponent,
-    AddUserComponent
   ],
   imports: [
     BrowserModule,
