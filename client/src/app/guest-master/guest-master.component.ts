@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { GuestUserMaster } from './model/GuestUserMaster';
+import { GuestUserServiceService } from './guest-user-service.service';
 
 @Component({
   selector: 'app-guest-master',
@@ -14,6 +16,7 @@ export class GuestMasterComponent implements OnInit {
 
   displayedColumns: string[];
   table_data;
+  guestData = new GuestUserMaster();
   guestUserData = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -34,17 +37,19 @@ export class GuestMasterComponent implements OnInit {
   flag_dates = false
   flag_edit = false
   editGuestUserData;
+  users = []
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   constructor(private router: Router,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private guestUserService: GuestUserServiceService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.tabIndex = 0
     this.parentTabIndex = 0
     this.date_list = []
     this.date_list.push({id: 1, to_date: '', from_date: ''})
-    this.displayedColumns = ['user_id', 'name', 'title', 'email', 'status', 'edit']
+    this.displayedColumns = ['id', 'name', 'title', 'email', 'status', 'edit']
     let data = []
     data = [
       {user_id: '123', title: 'abc', name: 'abc', email: 'some data', status: null},
@@ -55,6 +60,12 @@ export class GuestMasterComponent implements OnInit {
       {user_id: '789', title: 'ghi', name: 'abc', email: 'some data', status: null}                                                                                                                                                        
     ]
     this.table_data = new MatTableDataSource(data)
+    let rel;
+    rel = await this.guestUserService.fetchGuestUserList()
+    if (rel) {
+      this.users = this.guestUserService.getGuestUserList
+      this.table_data = new MatTableDataSource(this.users)
+    }
   }
 
   ngAfterViewInit() {
@@ -71,8 +82,36 @@ export class GuestMasterComponent implements OnInit {
     this.table_data.filter = filterValue;
   }
 
-  onNext() {
-    this.tabIndex = 2
+  async onNext() {
+    this.guestData['name'] = this.guestUserData.controls['name'].value
+    this.guestData['title'] = this.guestUserData.controls['title'].value
+    this.guestData['email'] = this.guestUserData.controls['email'].value
+    this.guestData['phone_no'] = this.guestUserData.controls['phone_no'].value
+    this.guestData['status'] = 'A'
+    this.guestData['id'] = null
+    let rel;
+    rel = await this.guestUserService.addGuestUser(this.guestData);
+    if (!rel) {
+      alert(this.guestUserService.getErrorMessage);
+    } else {
+      alert(this.guestUserService.getErrorMessage);
+      this.guestUserData = new FormGroup({
+        name: new FormControl('', [
+          Validators.required,
+        ]),
+        title: new FormControl(null, [
+          Validators.required,
+        ]),
+        email: new FormControl('', [
+          Validators.required,
+        ]),
+        phone_no: new FormControl('', [
+          Validators.required,
+        ])
+      });
+      if (this.guestUserService.getErrorMessage == 'success')
+        this.tabIndex = 1
+    }
   }
 
   addDateItem() {
@@ -91,9 +130,22 @@ export class GuestMasterComponent implements OnInit {
     return this.guestUserData.invalid
   }
 
-  addDates() {
+  async addDates() {
     console.log(this.date_list)
     this.flag_dates = true
+    let rel_dates;
+    rel_dates = await this.guestUserService.addGuestUserDates(this.date_list)
+    if (!rel_dates) {
+      alert(this.guestUserService.getErrorMessage);
+      this.date_list = []
+      this.date_list.push({id: 1, to_date: '', from_date: ''})
+      this.parentTabIndex = 0
+    } else {
+      alert(this.guestUserService.getErrorMessage);
+      this.date_list = []
+      this.date_list.push({id: 1, to_date: '', from_date: ''})
+      this.parentTabIndex = 0
+    }
   }
 
   edit(element) {

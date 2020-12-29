@@ -41,13 +41,19 @@ class GuestUserMaster(Base):
         user_list = []
         for ele in users:
             user_list.append({
-                id: ele.id,
-                title: ele.title,
-                name: ele.name,
-                email: ele.email,
-                phone_no: ele.phone_no,
-                status: ele.status
+                "id": ele.id,
+                "title": ele.title,
+                "name": ele.name,
+                "email": ele.email,
+                "phone_no": ele.phone_no,
+                "status": ele.status
             })
+        return user_list
+
+    @classmethod
+    def get_first(cls, DBSession):
+        first_id = DBSession.query(GuestUserMaster).order_by(GuestUserMaster.id.desc()).first()
+        return first_id.id
 
 
 class GuestUserDateMap(Base):

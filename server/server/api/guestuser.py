@@ -5,6 +5,7 @@ from pyramid.security import (
 )
 from . import cors
 from ..models.guestuser import GuestUserMaster, GuestUserDateMap
+from datetime import datetime
 
 
 log = logging.getLogger(__name__)
@@ -40,8 +41,16 @@ def get_guest_user_list(request):
     user_date_list = GuestUserDateMap.get_user_dates(request.dbsession)
     user_data = []
     for ele in user_list:
-        dates = [data for n in user_date_list if guest_id == ele.id]
-        user_data({
+        dates = []
+        for ele1 in user_date_list:
+            if ele1.guest_id == ele.id:
+                dates.append({
+                    "id": ele1.id,
+                    "guest_id": ele1.guest_id,
+                    "from_date": str(ele1.from_date),
+                    "to_date": str(ele1.to_date)
+                })
+        user_data.append({
             "id": ele.id,
             "title": ele.title,
             "name": ele.name,
@@ -53,7 +62,7 @@ def get_guest_user_list(request):
     return {
         "code": 0,
         "message": "success",
-        "users": user_data
+        "data": user_data
     }
 
 
@@ -82,12 +91,13 @@ def add_guest_user(request):
 
 @svc_guest_add_user_dates.post(require_csrf=False)
 def add_guest_user_dates(request):
-    guest_id = request.json_body['id']
+    guest_id = GuestUserMaster.get_first(request.dbsession)
+    print(guest_id)
     dates = request.json_body['dates']
 
     for ele in dates:
-        to_date = ele['to_date']
-        from_date = ele['from_date']
+        to_date = datetime.strptime(str(ele['to_date']), "%Y-%m-%dT%H:%M:%S.000z")
+        from_date = datetime.strptime(str(ele['from_date']), "%Y-%m-%dT%H:%M:%S.000z")
         entry = GuestUserDateMap(guest_id=guest_id, to_date=to_date, from_date=from_date)
         request.dbsession.add(entry)
 
