@@ -1,118 +1,121 @@
-<!-- Form Value: {{ f.value | json }}
-<div></div>
-Form Status: {{ f.status }} -->
 <div class="box-container">
-    <div class="grid-2">
-        <h2 matDialogTitle>User Data</h2>
-    </div>
-    <hr>
+  <div class="grid-2">
     <div>
-        <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit()">
-            <div class="grid-2">
-                <div>
-                    <mat-form-field>
-                        <input matInput type="text" name="name" [(ngModel)]="userMaster.name" #name="ngModel"
-                            placeholder="Enter Name" required>
-                    </mat-form-field>
-                    <div class="error-message">
-                        <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
-                            <div *ngIf="name.errors.required">Name is required</div>
-                        </div>
-                    </div>
-
-                </div>
-                <div>
-                    <mat-form-field>
-                        <mat-label>Select Title</mat-label>
-                        <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
-                            <mat-option [value]="0">
-                                Mr.
-                            </mat-option>
-                            <mat-option [value]="1">
-                                Mrs.
-                            </mat-option>
-                            <mat-option [value]="2">
-                                Miss
-                            </mat-option>
-                            <mat-option [value]="3">
-                                Dr.
-                            </mat-option>
-                        </mat-select>
-
-                    </mat-form-field>
-                    <div class="error-message">
-                        <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
-                            <div *ngIf="title.errors.required">Title is required</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-2">
-                    <div>
-                        <mat-form-field>
-                            <mat-label>Select Role</mat-label>
-                            <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
-                                <mat-option [value]="0">
-                                    Board Member
-                                </mat-option>
-                                <mat-option [value]="1">
-                                    Chairman
-                                </mat-option>
-                                <mat-option [value]="2">
-                                    Verification Officer
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <div class="error-message">
-                            <div *ngIf="f.submitted && role.invalid" class="invalid-feedback">
-                                <div *ngIf="role.errors.required"> Enter Role</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-3">
-                    <div class="field" *ngIf="userMaster.role == 2">
-                        <mat-form-field>
-                            <input matInput type="text" name="user_id" [(ngModel)]="userMaster.userId" #user_id="ngModel"
-                                placeholder="Enter Login ID" required>
-                        </mat-form-field>
-                        <div class="error-message">
-                            <div *ngIf="f.submitted && user_id.invalid" class="invalid-feedback">
-                                <div *ngIf="user_id.errors.required"> Enter User Id</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field" *ngIf="userMaster.role == 2">
-                        <mat-form-field>
-                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.password"
-                                #password="ngModel" name="password" placeholder="Enter Password" required>
-                        </mat-form-field>
-                        <div class="error-message">
-                            <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
-                                <div *ngIf="password.errors.required"> Enter Password</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field" *ngIf="userMaster.role == 2">
-                        <mat-form-field>
-                            <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.confirmPassword"
-                                #c_password="ngModel" name="confirm_password" placeholder="Enter Confirm Password"
-                                required>
-                        </mat-form-field>
-                        <div class="error-message">
-                            <div *ngIf="f.submitted && c_password.invalid" class="invalid-feedback">
-                                <div *ngIf="c_password.errors.required"> Confirm Password</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-<!--            <div class="right">-->
-<!--                <button mat-raised-button color="primary">Add fingerprint</button>-->
-<!--            </div>-->
-            <div>
-                <button [disabled]="!f.valid"  mat-raised-button style="background-color: green!important;color: whitesmoke;" type="submit">Add
-                    User</button>
-            </div>
-        </form>
+      <h2 class="mat-h2">Add User</h2>
     </div>
+    <div class="right">
+      <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
+              style="margin-left: 10px;">Back
+      </button>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit()">
+      <div style="text-align: center">
+        <div>
+          <mat-form-field>
+            <input matInput type="text" name="name" [(ngModel)]="userMaster.name" #name="ngModel"
+                   placeholder="Enter Name" required>
+          </mat-form-field>
+          <div class="error-message">
+            <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors.required">Name is required</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Select Title</mat-label>
+            <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
+              <mat-option [value]="0">
+                Mr.
+              </mat-option>
+              <mat-option [value]="1">
+                Mrs.
+              </mat-option>
+              <mat-option [value]="2">
+                Miss
+              </mat-option>
+              <mat-option [value]="3">
+                Dr.
+              </mat-option>
+            </mat-select>
+
+          </mat-form-field>
+          <div class="error-message">
+            <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+              <div *ngIf="title.errors.required">Title is required</div>
+            </div>
+          </div>
+        </div>
+          <div>
+            <mat-form-field>
+              <mat-label>Select Role</mat-label>
+              <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
+                <mat-option [value]="0">
+                  Board Member
+                </mat-option>
+                <mat-option [value]="1">
+                  Chairman
+                </mat-option>
+                <mat-option [value]="2">
+                  Verification Officer
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="error-message">
+              <div *ngIf="f.submitted && role.invalid" class="invalid-feedback">
+                <div *ngIf="role.errors.required"> Enter Role</div>
+              </div>
+            </div>
+        </div>
+        <div class="grid-3">
+          <div class="field" *ngIf="userMaster.role == 2">
+            <mat-form-field>
+              <input matInput type="text" name="user_id" [(ngModel)]="userMaster.userId" #user_id="ngModel"
+                     placeholder="Enter Login ID" required>
+            </mat-form-field>
+            <div class="error-message">
+              <div *ngIf="f.submitted && user_id.invalid" class="invalid-feedback">
+                <div *ngIf="user_id.errors.required"> Enter User Id</div>
+              </div>
+            </div>
+          </div>
+          <div class="field" *ngIf="userMaster.role == 2">
+            <mat-form-field>
+              <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.password"
+                     #password="ngModel" name="password" placeholder="Enter Password" required>
+            </mat-form-field>
+            <div class="error-message">
+              <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                <div *ngIf="password.errors.required"> Enter Password</div>
+              </div>
+            </div>
+          </div>
+          <div class="field" *ngIf="userMaster.role == 2">
+            <mat-form-field>
+              <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.confirmPassword"
+                     #c_password="ngModel" name="confirm_password" placeholder="Enter Confirm Password"
+                     required>
+            </mat-form-field>
+            <div class="error-message">
+              <div *ngIf="f.submitted && c_password.invalid" class="invalid-feedback">
+                <div *ngIf="c_password.errors.required"> Confirm Password</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--            <div class="right">-->
+      <!--                <button mat-raised-button color="primary">Add fingerprint</button>-->
+      <!--            </div>-->
+      <div style="text-align: center;">
+        <button [disabled]="!f.valid" mat-raised-button style="background-color: green!important;color: whitesmoke;"
+                type="submit">Add
+          User
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

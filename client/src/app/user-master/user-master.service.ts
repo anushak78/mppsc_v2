@@ -9,9 +9,11 @@ import {UserMaster} from './model/UserMaster';
 export class UserMasterService {
   private httpErrorMessage = '';
   users: UserMaster[] = [];
+
   get getErrorMessage(): string {
     return this.httpErrorMessage;
   }
+
   get getUserList(): UserMaster[] {
     return this.users;
   }
@@ -40,6 +42,18 @@ export class UserMasterService {
         this.httpErrorMessage = response['message'];
         return true;
       }).catch((error) => this);
+  }
+
+  async deleteUser(userId: number): Promise<boolean> {
+    return await this.http.post(
+      apiUrl.getApiDeleteUserMastercollectionEndPoint, {
+        userId: userId
+      }
+    ).toPromise()
+      .then((response) => {
+        this.httpErrorMessage = ' User deleted';
+        return true;
+      }).catch(error => this.errorHandler(error));
   }
 
   errorHandler(error: HttpErrorResponse): boolean {
