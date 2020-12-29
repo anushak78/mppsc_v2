@@ -1,0 +1,68 @@
+<div class="box-container">
+    <div class="grid-2">
+        <h2 matDialogTitle>Board Data</h2>
+    </div>
+    <hr>
+    <div class="grid-2">
+        <form [formGroup]="boardData">
+            <div class="grid-2">
+                <div class="field">
+                    <mat-form-field>
+                        <input matInput type="text" name="subject_name" formControlName="subject_name"
+                            placeholder="Enter Subject Name" required>
+                    </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="boardData.controls.subject_name.touched && boardData.controls.subject_name.errors?.required">
+                           Name is required
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <mat-form-field>
+                        <input matInput type="number" name="no_of_members" formControlName="no_of_members"
+                            placeholder="Enter Number of Members" required>
+                    </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="boardData.controls.no_of_members.touched && boardData.controls.no_of_members.errors?.required">
+                           Enter No of Members
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <mat-form-field>
+                        <input matInput type="text" name="board_id" formControlName="board_id"
+                            placeholder="Enter Login ID" required>
+                    </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="boardData.controls.board_id.touched && boardData.controls.board_id.errors?.required">
+                           User Id  is required
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <mat-form-field>
+                        <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
+                            placeholder="Enter Password" required>
+                    </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="boardData.controls.password.touched && boardData.controls.password.errors?.required">
+                           Password is required
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <mat-form-field>
+                        <input matInput appBlockCopyPaste type="password" formControlName="confirm_password"
+                            name="confirm_password" placeholder="Enter Confirm Password" required>
+                    </mat-form-field>
+                    <div class="error-message">
+                        <span *ngIf="boardData.controls.confirm_password.touched && boardData.controls.confirm_password.errors?.required">
+                           Confirm Password is required
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <button mat-raised-button style="background-color: green!important;color: whitesmoke;" (click)="onSubmit()">Add Board</button>
+        </form>
+    </div>
+</div>
