@@ -43,7 +43,6 @@ import {MatButtonModule} from "@angular/material/button";
     LoginComponent,
     AdminDashboardComponent,
     LayoutComponent,
-    BoardMasterComponent,
     GuestMasterComponent,
     InterviewMasterComponent,
     CandidateMasterComponent,

@@ -35,7 +35,9 @@ const routes: Routes = [
       },
       {
         path: 'board-master',
-        component: BoardMasterComponent
+        loadChildren: () => import('./board-master/board-master.module').then(
+          m => m.BoardMasterModule
+        )
       },
       {
         path: 'guest-master',

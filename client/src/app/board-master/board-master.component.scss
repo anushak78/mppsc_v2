@@ -119,3 +119,29 @@
   .active-btn {
     border-color: #3f51b5;
   }
+
+  .grid-header {
+    border-bottom: 1px solid #cecece;
+  }
+  
+  .grid-header .sub-grid {
+    cursor: default;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 60px;
+    border-bottom: 1px solid #cecece;
+  }
+  
+  
+  .sub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+  }
+  
+  .hover :hover {
+    background: #cecece;
+  }
+  

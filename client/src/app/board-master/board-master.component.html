@@ -1,9 +1,8 @@
-<div class="right">
-    <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button>
-</div>
 <div class="box-container">
     <div class="grid-3">
-        <div><h2 class="mat-h2">Board Master</h2></div>
+        <div>
+            <h2 class="mat-h2">Board Master</h2>
+        </div>
         <div>
             <mat-form-field>
                 <mat-label>Search</mat-label>
@@ -12,85 +11,46 @@
             </mat-form-field>
         </div>
         <div class="right">
-            <button mat-raised-button color="primary" (click)="openDialogWithTemplateRef(boardModal)">Add Board</button>
+            <button mat-raised-button color="primary" (click)="gotoPage('board-master/add-board')">Add Board</button>
+            <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
+                style="margin-left: 10px;">Back
+            </button>
+
         </div>
     </div>
-    <mat-table #table [dataSource]="table_data">
-
-        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
-            <ng-container *ngIf="disCol != 'edit'">
-                <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
-            </ng-container>
-            <ng-container *ngIf="disCol == 'edit'">
-                <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            </ng-container>
-            <mat-cell *matCellDef="let element " style="cursor: default;">
-                <span *ngIf="disCol == 'edit'">
-                    <mat-icon>edit</mat-icon>
-                    <mat-icon>delete</mat-icon>
-                </span>
-                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
-                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
-            </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-
-    <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
-
-</div>
-
-<ng-template #boardModal>
-    <div class="grid-2">
-      <h2 matDialogTitle>Board Data</h2>
-      <a class="right">
-        <mat-icon matDialogClose style="font-size: medium!important;">close</mat-icon>
-      </a>
-    </div>
-    <hr>
-    <mat-dialog-content>
-      <div class="grid-2">
-        <form [formGroup]="boardData">
-            <div class="grid-2">
-                <div class="field">
-                    <mat-form-field>
-                        <input matInput type="text" name="subject_name" formControlName="subject_name" placeholder="Enter Subject Name"
-                            required>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <mat-form-field>
-                        <input matInput type="number" name="no_of_members" formControlName="no_of_members" placeholder="Enter Number of Members"
-                            required>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <mat-form-field>
-                        <input matInput type="text" name="user_id" formControlName="user_id" placeholder="Enter Login ID"
-                            required>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <mat-form-field>
-                      <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
-                        placeholder="Enter Password" required>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <mat-form-field>
-                      <input matInput appBlockCopyPaste type="password" formControlName="confirm_password" name="confirm_password"
-                        placeholder="Enter Confirm Password" required>
-                    </mat-form-field>
-                </div>
+    <ng-container *ngIf="board.length > 0">
+        <div class="grid-header">
+            <div class="sub-grid bold-head">
+                <div>Board Id</div>
+                <div>Login</div>
+                <div>Password</div>
+                <div>Status</div>
             </div>
-            
-        </form>
-      </div>
-    </mat-dialog-content>
-    <hr>
-    <mat-dialog-actions align="center">
-      <button mat-raised-button style="background-color: green!important;color: whitesmoke;">Add Board</button>
-    </mat-dialog-actions>
-  </ng-template>
+        </div>
+        <div class="grid" *ngFor="let b of board;">
+            <div class="sub-grid" matTooltip="Details">
+                <div>{{b.board_id}}</div>
+                <div>{{b.Login}}</div>
+                <div>{{b.password}}</div>
+                <div>{{b.Login}}</div>
+                <div>{{b.status}}</div>
+
+            </div>
+            <div class="icon-column">
+                <mat-icon (click)="updateBoard(b.board_id)" matTooltip="Edit">
+                    edit
+                </mat-icon>
+            </div>
+            <div class="icon-column">
+                <mat-icon matTooltip="Delete">
+                    delete
+                </mat-icon>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="board.length == 0">
+        <div class="no-data">
+            Currently, there are no users defined
+        </div>
+    </ng-container>
+</div>
