@@ -19,13 +19,11 @@ export class AddUserComponent implements OnInit {
   }
 
   async onSubmit() {
-    alert(JSON.stringify(this.userMaster));
     let rel;
     rel = await this.userMasterService.addUser(this.userMaster);
     if (!rel) {
       alert(this.userMasterService.getErrorMessage);
     } else {
-      alert(this.userMasterService.getErrorMessage);
       this.router.navigate([`/users`]);
     }
   }

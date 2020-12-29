@@ -25,14 +25,14 @@ Form Status: {{ userData.status }} -->
     </div>
   </div>
   <ng-container *ngIf="users.length > 0">
-    <div class="grid-venue-header">
-      <div class="sub-grid-venue list-head">
+    <div class="grid-header">
+      <div class="sub-grid bold-head">
         <div>Name</div>
         <div>Role</div>
       </div>
     </div>
-    <div class="grid-venue" *ngFor="let v of users;">
-      <div class="sub-grid-venue"
+    <div class="grid" *ngFor="let v of users;">
+      <div class="sub-grid"
            matTooltip="Details">
         <div>{{v.name}}</div>
         <div>{{v.role}}</div>
