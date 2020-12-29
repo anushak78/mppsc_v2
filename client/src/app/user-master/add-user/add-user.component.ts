@@ -18,6 +18,10 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  gotoPage(pageName: string) {
+    this.router.navigate([pageName]);
+  }
+
   async onSubmit() {
     let rel;
     rel = await this.userMasterService.addUser(this.userMaster);

@@ -1,9 +1,3 @@
-<!-- Form Value: {{ userData.value | json }}
-<div></div>
-Form Status: {{ userData.status }} -->
-<div class="right">
-  <!-- <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')">Back</button> -->
-</div>
 <div class="box-container">
   <div class="grid-3">
     <div>
@@ -21,7 +15,6 @@ Form Status: {{ userData.status }} -->
       <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
               style="margin-left: 10px;">Back
       </button>
-      <!-- <button mat-raised-button color="primary" (click)="gotoPage('users/addUser')"  style="margin-left: 10px;">Back</button> -->
     </div>
   </div>
   <ng-container *ngIf="users.length > 0">
@@ -43,7 +36,7 @@ Form Status: {{ userData.status }} -->
         </mat-icon>
       </div>
       <div class="icon-column">
-        <mat-icon matTooltip="Delete">
+        <mat-icon matTooltip="Delete" (click)="openDeleteUser(v)">
           delete
         </mat-icon>
       </div>
@@ -55,3 +48,5 @@ Form Status: {{ userData.status }} -->
     </div>
   </ng-container>
 </div>
+<app-message-dialog #messageDlg></app-message-dialog>
+<app-confirm-dialog #confirmDlg></app-confirm-dialog>
