@@ -4,11 +4,11 @@
       <h2 class="mat-h2">User List</h2>
     </div>
     <div>
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input type="text" matInput (keyup)="applyFilter($event.target.value)">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+<!--      <mat-form-field>-->
+<!--        <mat-label>Search</mat-label>-->
+<!--        <input type="text" matInput (keyup)="applyFilter($event.target.value)">-->
+<!--        <mat-icon matSuffix>search</mat-icon>-->
+<!--      </mat-form-field>-->
     </div>
     <div class="right">
       <button mat-raised-button color="primary" (click)="gotoPage('users/add-user')">Add User</button>
@@ -18,10 +18,11 @@
     </div>
   </div>
   <ng-container *ngIf="users.length > 0">
-    <div class="grid-header">
+    <div class="grid-header grid">
       <div class="sub-grid bold-head">
         <div>Name</div>
         <div>Role</div>
+        <div>Status</div>
       </div>
     </div>
     <div class="grid" *ngFor="let v of users;">
@@ -29,6 +30,7 @@
            matTooltip="Details">
         <div>{{v.name}}</div>
         <div>{{v.role}}</div>
+        <div>{{v.status}}</div>
       </div>
       <div class="icon-column">
         <mat-icon (click)="updateUser(v.id)" matTooltip="Edit">

@@ -15,17 +15,6 @@
       <div style="text-align: center">
         <div>
           <mat-form-field>
-            <input matInput type="text" name="name" [(ngModel)]="userMaster.name" #name="ngModel"
-                   placeholder="Enter Name" required>
-          </mat-form-field>
-          <div class="error-message">
-            <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
-              <div *ngIf="name.errors.required">Name is required</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <mat-form-field>
             <mat-label>Select Title</mat-label>
             <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
               <mat-option [value]="0">
@@ -49,17 +38,40 @@
             </div>
           </div>
         </div>
+        <div>
+          <mat-form-field>
+            <input matInput type="text" name="name" [(ngModel)]="userMaster.name" #name="ngModel"
+                   placeholder="Enter Name" required>
+          </mat-form-field>
+          <div class="error-message">
+            <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors.required">Name is required</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput type="text" name="designation" [(ngModel)]="userMaster.designation" #designation="ngModel"
+                   placeholder="Enter Designation" required>
+          </mat-form-field>
+          <div class="error-message">
+            <div *ngIf="f.submitted && designation.invalid" class="invalid-feedback">
+              <div *ngIf="designation.errors.required">Designation is required</div>
+            </div>
+          </div>
+        </div>
+
           <div>
             <mat-form-field>
               <mat-label>Select Role</mat-label>
               <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
-                <mat-option [value]="0">
+                <mat-option [value]="1">
                   Board Member
                 </mat-option>
-                <mat-option [value]="1">
+                <mat-option [value]="2">
                   Chairman
                 </mat-option>
-                <mat-option [value]="2">
+                <mat-option [value]="3">
                   Verification Officer
                 </mat-option>
               </mat-select>
@@ -70,8 +82,8 @@
               </div>
             </div>
         </div>
-        <div class="grid-3">
-          <div class="field" *ngIf="userMaster.role == 2">
+        <div class="grid-3"  *ngIf="userMaster.role == 2">
+          <div class="field">
             <mat-form-field>
               <input matInput type="text" name="user_id" [(ngModel)]="userMaster.userId" #user_id="ngModel"
                      placeholder="Enter Login ID" required>
@@ -82,7 +94,7 @@
               </div>
             </div>
           </div>
-          <div class="field" *ngIf="userMaster.role == 2">
+          <div class="field">
             <mat-form-field>
               <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.password"
                      #password="ngModel" name="password" placeholder="Enter Password" required>
@@ -93,7 +105,7 @@
               </div>
             </div>
           </div>
-          <div class="field" *ngIf="userMaster.role == 2">
+          <div class="field">
             <mat-form-field>
               <input matInput appBlockCopyPaste type="password" [(ngModel)]="userMaster.confirmPassword"
                      #c_password="ngModel" name="confirm_password" placeholder="Enter Confirm Password"
@@ -106,7 +118,20 @@
             </div>
           </div>
         </div>
+        <div class="grid-1">
+          <div>
+            <mat-radio-group name="status" [(ngModel)]="userMaster.status">
+              <mat-radio-button class="margin-left" [value]="1">
+                Active
+              </mat-radio-button>
+              <mat-radio-button class="margin-left" [value]="0">
+                Inactive
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
       </div>
+
       <!--            <div class="right">-->
       <!--                <button mat-raised-button color="primary">Add fingerprint</button>-->
       <!--            </div>-->

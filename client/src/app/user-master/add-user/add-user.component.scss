@@ -29,3 +29,12 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
 }
+
+.grid-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 5px;
+  div {
+    padding: 10px;
+  }
+}
