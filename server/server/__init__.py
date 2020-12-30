@@ -1,6 +1,7 @@
 from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
 from pyramid.csrf import CookieCSRFStoragePolicy
+import os
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -12,7 +13,7 @@ def main(global_config, **settings):
         config.include('pyramid_tm')
         config.include('pyramid_jinja2')
         config.include('.routes')
-        config.add_route('home', '/')
+        config.add_route('home', '/home')
 
         # Store the CSRF token in cookie as the Angular HttpClient reads
         # from the cookie to set the appropriate headers. Configure the

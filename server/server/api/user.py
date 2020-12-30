@@ -14,6 +14,10 @@ svc_user_list = Service(
     name="api.user_list", permission=NO_PERMISSION_REQUIRED,
     path="/ui/user_list", cors_policy=cors.POLICY)
 
+svc_user_details = Service(
+    name="api.user_details", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/user_details/{id}/{role}", cors_policy=cors.POLICY)
+
 svc_add_user = Service(
     name="api.add_user", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_user", cors_policy=cors.POLICY)
@@ -57,12 +61,30 @@ def get_user_list(request):
     }
 
 
+@svc_user_details.get()
+def get_user_details(request):
+    id = request.matchdict['id']
+    role = request.matchdict['role']
+    user = None
+    if role == 0 or role == 1:
+        user = UserMaster.get_user(request.dbsession, id)
+    elif role == 2:
+        user = UserLoginMaster.get_user(request.dbsession, id)
+    return {
+        "code": 0,
+        "message": "success",
+        "data": user 
+    }
+
+
+
 @svc_add_user.post(require_csrf=False)
 def add_user(request):
     name = request.json_body['name']
     role = request.json_body['role']
     title = request.json_body['title']
-    designation = 'default'
+    designation = request.json_body['designation']
+    status = request.json_body['status']
 
     if role == 0 or role == 1:
         user = UserMaster.check_user(request.dbsession, name)
@@ -72,7 +94,7 @@ def add_user(request):
                 "message": "Data exists"
             }
         user = UserMaster(name=name, role=role, 
-            title=title, designation=designation, status='A')
+            title=title, designation=designation, status=status)
         request.dbsession.add(user)
         # TODO: add fingerprint entry
 
@@ -92,7 +114,7 @@ def add_user(request):
                 "message": "Data exists"
             }
         user = UserLoginMaster(name=name, role=role, 
-            title=title, designation=designation, status='A', login=login)
+            title=title, designation=designation, status=status, login=login)
         user.set_password(password)
         request.dbsession.add(user)
 
@@ -125,6 +147,7 @@ def edit_user(request):
     role = request.json_body['role']
     title = request.json_body['title']
     designation = request.json_body['designation']
+    status = request.json_body['status']
     if role == 0 or role == 1:
         user = UserMaster.check_user(request.dbsession, name)
         if user is not None:
@@ -137,6 +160,7 @@ def edit_user(request):
         user.role = role
         user.title = title
         user.designation = designation
+        user.status = status
         request.dbsession.commit()
         # TODO: add fingerprint entry
 
@@ -154,6 +178,7 @@ def edit_user(request):
         user.role = role
         user.title = title
         user.designation = designation
+        user.status = status
         user.login = login
         user.set_password(password)
         request.dbsession.commit()

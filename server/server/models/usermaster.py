@@ -16,7 +16,7 @@ class UserMaster(Base):
     role = Column(Integer)
     title = Column(Integer)
     designation = Column(Text)
-    status = Column(Text)
+    status = Column(Integer)
 
     def __init__(self, name, role, title, designation, status):
         self.name = name
@@ -63,7 +63,7 @@ class UserLoginMaster(Base):
     role = Column(Integer)
     title = Column(Integer)
     designation = Column(Text)
-    status = Column(Text)
+    status = Column(Integer)
 
     def __init__(self, login, name, role, title, designation, status):
         self.login = login
