@@ -24,7 +24,7 @@ svc_add_user = Service(
 
 svc_delete_user = Service(
     name="api.delete_user", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/delete_user", cors_policy=cors.POLICY)
+    path="/ui/delete_user/{id}/{role}", cors_policy=cors.POLICY)
 
 svc_edit_user = Service(
     name="api.edit_user", permission=NO_PERMISSION_REQUIRED,
@@ -77,7 +77,6 @@ def get_user_details(request):
     }
 
 
-
 @svc_add_user.post(require_csrf=False)
 def add_user(request):
     name = request.json_body['name']
@@ -124,16 +123,22 @@ def add_user(request):
     }
 
 
-@svc_delete_user.post(require_csrf=False)
+@svc_delete_user.get()
 def delete_user(request):
-    id = request.json_body['id']
-    role = request.json_body['role']
+    id = request.matchdict['id']
+    role = request.matchdict['role']
 
     if role == 0 or role == 1:
-        del_user = UserMaster.delete_user(request.dbsession, id)
+        #del_user = UserMaster.delete_user(request.dbsession, id)
+        user = UserMaster.get_user(request.dbsession, id)
+        user.status = 0
+        request.dbsession.commit()
     
     elif role == 2:
-        del_user = UserLoginMaster.delete_user(request.dbsession, id)
+        #del_user = UserLoginMaster.delete_user(request.dbsession, id)
+        user = UserLoginMaster.get_user(request.dbsession, id)
+        user.status = 0
+        request.dbsession.commit()
     
     return {
         "code": 0,
@@ -173,7 +178,7 @@ def edit_user(request):
                 "code": 0,
                 "message": "Data exists"
             }
-        user = UserMaster.get_user(request.dbsession, id)
+        user = UserLoginMaster.get_user(request.dbsession, id)
         user.name = name
         user.role = role
         user.title = title
