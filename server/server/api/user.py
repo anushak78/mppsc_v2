@@ -51,14 +51,22 @@ def get_user_list(request):
     }
 
 
-@svc_user_details.get()
+@svc_user_details.post(require_csrf=False)
 def get_user_details(request):
     id = request.matchdict['id']
     user = UserMaster.get_user(request.dbsession, id)
+    user_details = {
+        "id": user.id,
+        "name": user.name,
+        "role": user.role,
+        "title": user.title,
+        "designation": user.designation,
+        "status": user.status
+    }
     return {
         "code": 0,
         "message": "success",
-        "data": user 
+        "data": user_details 
     }
 
 
@@ -108,7 +116,7 @@ def add_user(request):
     }
 
 
-@svc_delete_user.get()
+@svc_delete_user.post(require_csrf=False)
 def delete_user(request):
     id = request.matchdict['id']
 

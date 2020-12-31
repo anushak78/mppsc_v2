@@ -9,6 +9,7 @@ import {UserMaster} from './model/UserMaster';
 export class UserMasterService {
   private httpErrorMessage = '';
   users: UserMaster[] = [];
+  userDetails: UserMaster;
 
   get getErrorMessage(): string {
     return this.httpErrorMessage;
@@ -16,6 +17,9 @@ export class UserMasterService {
 
   get getUserList(): UserMaster[] {
     return this.users;
+  }
+  get getUserDetailsData(): UserMaster {
+    return this.userDetails;
   }
 
   constructor(private http: HttpClient) {
@@ -27,7 +31,7 @@ export class UserMasterService {
       .then((response) => {
         let result = response['data'];
         this.users = [];
-        for (let u of result) {
+        for (const u of result) {
           this.users.push(UserMaster.fromJson(u));
         }
         console.log(this.users);
@@ -44,11 +48,18 @@ export class UserMasterService {
       }).catch((error) => this);
   }
 
+  async getUserDetails(userId: number): Promise<boolean> {
+    return await this.http.post(
+      apiUrl.getApiDetailsUserMastercollectionEndPoint(userId), {}
+    ).toPromise()
+      .then((response) => {
+        this.userDetails = UserMaster.fromJson(response['data']);
+        return true;
+      }).catch(error => this.errorHandler(error));
+  }
   async deleteUser(userId: number): Promise<boolean> {
     return await this.http.post(
-      apiUrl.getApiDeleteUserMastercollectionEndPoint, {
-        userId: userId
-      }
+      apiUrl.getApiDeleteUserMastercollectionEndPoint(userId), {}
     ).toPromise()
       .then((response) => {
         this.httpErrorMessage = ' User deleted';
