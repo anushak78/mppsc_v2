@@ -131,7 +131,7 @@ def delete_user(request):
 
 @svc_edit_user.post(require_csrf=False)
 def edit_user(request):
-    id = request.json_body['userId']
+    id = request.json_body['id']
     name = request.json_body['name']
     role = request.json_body['role']
     title = request.json_body['title']
