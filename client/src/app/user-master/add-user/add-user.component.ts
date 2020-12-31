@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserMaster} from '../model/UserMaster';
 import {UserMasterService} from '../user-master.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
@@ -10,12 +10,27 @@ import {Router} from '@angular/router';
 })
 export class AddUserComponent implements OnInit {
   userMaster = new UserMaster();
+  activity: string;
 
   constructor(private userMasterService: UserMasterService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.params.userId !== undefined) {
+      this.activity = 'Edit';
+      this.loadUserDetails();
+    } else {
+      this.activity = 'Add';
+    }
+  }
+
+  async loadUserDetails() {
+    const rel = this.userMasterService.getUserDetails(this.route.snapshot.params.userId);
+    if (rel) {
+      this.userMaster = this.userMasterService.getUserDetailsData;
+    }
   }
 
   gotoPage(pageName: string) {

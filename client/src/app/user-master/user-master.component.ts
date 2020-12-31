@@ -13,7 +13,6 @@ import {MessageDialogComponent} from '../dialogs/message/message.component';
 })
 export class UserMasterComponent implements OnInit {
 
-  displayedColumns: string[];
   deleteUserId: number;
   users: UserMaster[] = [];
   @ViewChild('confirmDlg', {static: false})
