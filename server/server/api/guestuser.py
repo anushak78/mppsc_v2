@@ -70,7 +70,7 @@ def get_guest_user_list(request):
     }
 
 
-@svc_guest_user_details.get()
+@svc_guest_user_details.post(require_csrf=False)
 def get_guest_user_details(request):
     id = request.matchdict['id']
     user = GuestUserMaster.get_user(request.dbsession, id)
@@ -142,7 +142,7 @@ def add_guest_user_dates(request):
     }
 
 
-@svc_guest_delete_user.get()
+@svc_guest_delete_user.post(require_csrf=False)
 def delete_guest_user(request):
     id = request.matchdict['id']
     delete_dates_date = request.dbsession(GuestUserDateMap).filter_by(guest_id=id).delete()

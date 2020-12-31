@@ -30,6 +30,17 @@ svc_edit_board = Service(
     path="/ui/edit_board", cors_policy=cors.POLICY)
 
 
+@svc_board_details.post(require_csrf=False)
+def get_board_list(request):
+    id = request.matchdict['id']
+    board = BoardMaster.get_board(request.dbsession, id)
+    return {
+        "code": 0,
+        "message": "success",
+        "data": board
+    }
+
+
 @svc_board_list.get()
 def get_board_list(request):
     board_list = BoardMaster.get_boards(request.dbsession)
@@ -73,7 +84,7 @@ def add_board(request):
     }
 
 
-@svc_delete_board.get()
+@svc_delete_board.post(require_csrf=False)
 def delete_board(request):
     id = request.matchdict['id']
     del_board = BoardMaster.delete_board(request.dbsession, id)

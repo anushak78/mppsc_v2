@@ -29,6 +29,15 @@ class InterviewMaster(Base):
     def get_interview(cls, DBSession, id):
         return DBSession.query(InterviewMaster).filter_by(id=id).first()
 
+    @classmethod
+    def check_interview(cls, DBSession, name):
+        return DBSession.query(InterviewMaster).filter_by(name=name).first()
+
+    @classmethod
+    def get_first(cls, DBSession):
+        first_id = DBSession.query(InterviewMaster).order_by(InterviewMaster.id.desc()).first()
+        return first_id.id
+
 
 class InterviewDatesMaster(Base):
     __tablename__ = 'interview_dates_master'
@@ -79,7 +88,7 @@ class InterviewMarksMaster(Base):
                 "id": ele.id,
                 "marks_type": ele.marks_type,
                 "min_marks": ele.min_marks,
-                "max_marks": ele.max_marks
+                "max_marks": ele.max_marks,
                 "interview_id": ele.interview_id
             })
         return mark_list
