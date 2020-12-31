@@ -111,7 +111,6 @@ def add_user(request):
 @svc_delete_user.get()
 def delete_user(request):
     id = request.matchdict['id']
-    role = request.matchdict['role']
 
     #del_user = UserMaster.delete_user(request.dbsession, id)
     user = UserMaster.get_user(request.dbsession, id)
