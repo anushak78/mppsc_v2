@@ -17,7 +17,7 @@ class GuestUserMaster(Base):
     name = Column(Text)
     email = Column(Text)
     phone_no = Column(Text)
-    status = Column(Text)
+    status = Column(Integer)
 
     def __init__(self, title, name, email, phone_no, status):
         self.title = title
@@ -71,3 +71,7 @@ class GuestUserDateMap(Base):
     @classmethod
     def get_user_dates(cls, DBSession):
         return DBSession.query(GuestUserDateMap).all()
+
+    @classmethod
+    def get_user_date_details(cls, DBSession, guest_id):
+        return DBSession.query(GuestUserDateMap).filter_by(guest_id=guest_id).all()

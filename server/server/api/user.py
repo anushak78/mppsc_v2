@@ -78,7 +78,7 @@ def add_user(request):
                 "message": "Data exists"
             }
         user = UserMaster(name=name, role=role, 
-            title=title, designation=designation, status=status, login=None, password=None)
+            title=title, designation=designation, status=status, login=None)
         request.dbsession.add(user)
         # TODO: add fingerprint entry
 

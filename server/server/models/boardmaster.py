@@ -15,7 +15,7 @@ class BoardMaster(Base):
     no_of_members = Column(Integer)
     login_id = Column(Text)
     password = Column(Text)
-    status = Column(Text)
+    status = Column(Integer)
 
     def __init__(self, subject_name, no_of_members, login_id, status):
         self.login_id = login_id

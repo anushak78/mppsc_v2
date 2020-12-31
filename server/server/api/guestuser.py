@@ -14,6 +14,10 @@ svc_guest_user_list = Service(
     name="api.guest_user_list", permission=NO_PERMISSION_REQUIRED,
     path="/ui/guest_user_list", cors_policy=cors.POLICY)
 
+svc_guest_user_details = Service(
+    name="api.guest_user_details", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/guest_user_details/{id}", cors_policy=cors.POLICY)
+
 svc_guest_add_user = Service(
     name="api.add_guest_user", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_guest_user", cors_policy=cors.POLICY)
@@ -24,7 +28,7 @@ svc_guest_edit_user = Service(
 
 svc_guest_delete_user = Service(
     name="api.add_delete_user", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/add_delete_user", cors_policy=cors.POLICY)
+    path="/ui/add_delete_user/{id}", cors_policy=cors.POLICY)
 
 svc_guest_add_user_dates = Service(
     name="api.add_guest_user_dates", permission=NO_PERMISSION_REQUIRED,
@@ -66,12 +70,43 @@ def get_guest_user_list(request):
     }
 
 
+@svc_guest_user_details.get()
+def get_guest_user_details(request):
+    id = request.matchdict['id']
+    user = GuestUserMaster.get_user(request.dbsession, id)
+    dates = GuestUserDateMap.get_user_date_details(request.dbsession, id)
+    date_list = []
+    for ele in dates:
+        date_list.append({
+            "id": ele1.id,
+            "guest_id": ele1.guest_id,
+            "from_date": str(ele1.from_date),
+            "to_date": str(ele1.to_date)
+        })
+    user_details = {
+        "id": user.id,
+        "title": user.title,
+        "name": user.name,
+        "email": user.email,
+        "phone_no": user.phone_no,
+        "status": user.status,
+        "dates": date_list
+    }
+    return {
+        "code": 0,
+        "message": 'success',
+        "data": user_details
+
+    }
+
+
 @svc_guest_add_user.post(require_csrf=False)
 def add_guest_user(request):
     name = request.json_body['name']
     email = request.json_body['email']
     title = request.json_body['title']
     phone_no = request.json_body['phone_no']
+    status = request.json_body['status']
 
     users = GuestUserMaster.check_user(request.dbsession, email, phone_no)
     if len(users) > 0:
@@ -81,7 +116,7 @@ def add_guest_user(request):
         }
 
     user = GuestUserMaster(name=name, email=email, 
-        title=title, phone_no=phone_no, status='A')
+        title=title, phone_no=phone_no, status=status)
     request.dbsession.add(user)
     
     return {
@@ -107,9 +142,9 @@ def add_guest_user_dates(request):
     }
 
 
-@svc_guest_delete_user.post(require_csrf=False)
+@svc_guest_delete_user.get()
 def delete_guest_user(request):
-    id = request.json_body['id']
+    id = request.matchdict['id']
     delete_dates_date = request.dbsession(GuestUserDateMap).filter_by(guest_id=id).delete()
     delete_data = request.dbsession(GuestUserMaster).filter_by(id=id).delete()
 
@@ -126,6 +161,7 @@ def edit_guest_user(request):
     email = request.json_body['email']
     title = request.json_body['title']
     phone_no = request.json_body['phone_no']
+    status = request.json_body['status']
 
     users = GuestUserMaster.check_user(request.dbsession, email, phone_no)
     if len(users) > 0:
@@ -139,6 +175,7 @@ def edit_guest_user(request):
     user.email = email
     user.title = title
     user.phone_no = phone_no
+    user.status = status
     request.dbsession.commit()
     
     return {

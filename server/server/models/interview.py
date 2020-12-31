@@ -14,20 +14,52 @@ class InterviewMaster(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Text)
     notification_no = Column(Text)
-    to_date = Column(DateTime)
-    from_date = Column(DateTime)
-    status = Column(Text)
+    status = Column(Integer)
 
-    def __init__(self, name, notification_no, to_date, from_date, status):
+    def __init__(self, name, notification_no, status):
         self.notification_no = notification_no
         self.name = name
-        self.to_date = to_date
-        self.from_date = from_date
         self.status = status
 
     @classmethod
     def get_interviews(cls, DBSession):
         return DBSession.query(InterviewMaster).all()
+
+
+class InterviewDatesMaster(Base):
+    __tablename__ = 'interview_dates_master'
+    id = Column(Integer, primary_key=True)
+    to_date = Column(DateTime)
+    from_date = Column(DateTime)
+    interview_id = Column(Integer, ForeignKey('interview_master.id'))
+
+    def __init__(self, interview_id, to_date, from_date):
+        self.interview_id = interview_id
+        self.to_date = to_date
+        self.from_date = from_date
+
+    @classmethod
+    def get_interview_dates(cls, DBSession):
+        return DBSession.query(InterviewDatesMaster).all()
+
+
+class InterviewMarksMaster(Base):
+    __tablename__ = 'interview_master_dates'
+    id = Column(Integer, primary_key=True)
+    marks_type = Column(Integer)
+    min_marks = Column(Integer)
+    max_marks = Column(Integer)
+    interview_id = Column(Integer, ForeignKey('interview_master.id'))
+
+    def __init__(self, interview_id, marks_type, min_marks, max_marks):
+        self.interview_id = interview_id
+        self.marks_type = marks_type
+        self.min_marks = min_marks
+        self.max_marks = max_marks
+
+    @classmethod
+    def get_interview_marks(cls, DBSession):
+        return DBSession.query(InterviewMarksMaster).all()
 
 
 class BoardInterviewMap(Base):
