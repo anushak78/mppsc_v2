@@ -25,7 +25,6 @@ from .interview import (
 from .usermaster import (
     UserMaster,
     UserFingerPrintMap,
-    UserLoginMaster
 )
 from .verificationstatus import (
     VerificationStatus,

@@ -5,7 +5,6 @@ from pyramid.security import (
 )
 from . import cors
 from ..models.usermaster import UserMaster
-from ..models.usermaster import UserLoginMaster
 
 
 log = logging.getLogger(__name__)
@@ -16,7 +15,7 @@ svc_user_list = Service(
 
 svc_user_details = Service(
     name="api.user_details", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/user_details/{id}/{role}", cors_policy=cors.POLICY)
+    path="/ui/user_details/{id}", cors_policy=cors.POLICY)
 
 svc_add_user = Service(
     name="api.add_user", permission=NO_PERMISSION_REQUIRED,
@@ -24,7 +23,7 @@ svc_add_user = Service(
 
 svc_delete_user = Service(
     name="api.delete_user", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/delete_user/{id}/{role}", cors_policy=cors.POLICY)
+    path="/ui/delete_user/{id}", cors_policy=cors.POLICY)
 
 svc_edit_user = Service(
     name="api.edit_user", permission=NO_PERMISSION_REQUIRED,
@@ -33,26 +32,17 @@ svc_edit_user = Service(
 
 @svc_user_list.get()
 def get_user_list(request):
-    user_list_board = UserMaster.get_users(request.dbsession)
-    user_list_vo = UserLoginMaster.get_vo_users(request.dbsession)
+    users = UserMaster.get_users(request.dbsession)
     user_list = []
-    for ele in user_list_board:
+    for ele in users:
         user_list.append({
             "id": ele.id,
             "name": ele.name,
             "title": ele.title,
             "role": ele.role,
             "status": ele.status,
-            "login": ''
-        })
-    for ele in user_list_vo:
-        user_list.append({
-            "id": ele.id,
-            "name": ele.name,
-            "title": ele.title,
-            "role": ele.role,
-            "status": ele.status,
-            "login": ele.login
+            "login": ele.login,
+            "designation": ele.designation
         })
     return {
         "code": 0,
@@ -64,12 +54,7 @@ def get_user_list(request):
 @svc_user_details.get()
 def get_user_details(request):
     id = request.matchdict['id']
-    role = request.matchdict['role']
-    user = None
-    if role == 0 or role == 1:
-        user = UserMaster.get_user(request.dbsession, id)
-    elif role == 2:
-        user = UserLoginMaster.get_user(request.dbsession, id)
+    user = UserMaster.get_user(request.dbsession, id)
     return {
         "code": 0,
         "message": "success",
@@ -85,7 +70,7 @@ def add_user(request):
     designation = request.json_body['designation']
     status = request.json_body['status']
 
-    if role == 0 or role == 1:
+    if role == 1 or role == 2:
         user = UserMaster.check_user(request.dbsession, name)
         if user is not None:
             return {
@@ -93,11 +78,11 @@ def add_user(request):
                 "message": "Data exists"
             }
         user = UserMaster(name=name, role=role, 
-            title=title, designation=designation, status=status)
+            title=title, designation=designation, status=status, login=None, password=None)
         request.dbsession.add(user)
         # TODO: add fingerprint entry
 
-    elif role == 2:
+    elif role == 3:
         login = request.json_body['userId']
         password = request.json_body['password']
         confirm_password = request.json_body['confirm-password']
@@ -106,13 +91,13 @@ def add_user(request):
                 "code": 0,
                 "message": "Password is not same as confirm password"
             }
-        user = UserLoginMaster.check_user(request.dbsession, login)
+        user = UserMaster.check_user_vo(request.dbsession, login)
         if user is not None:
             return {
                 "code": 0,
                 "message": "Data exists"
             }
-        user = UserLoginMaster(name=name, role=role, 
+        user = UserMaster(name=name, role=role, 
             title=title, designation=designation, status=status, login=login)
         user.set_password(password)
         request.dbsession.add(user)
@@ -128,18 +113,10 @@ def delete_user(request):
     id = request.matchdict['id']
     role = request.matchdict['role']
 
-    if role == 0 or role == 1:
-        #del_user = UserMaster.delete_user(request.dbsession, id)
-        user = UserMaster.get_user(request.dbsession, id)
-        user.status = 0
-        request.dbsession.commit()
-    
-    elif role == 2:
-        #del_user = UserLoginMaster.delete_user(request.dbsession, id)
-        user = UserLoginMaster.get_user(request.dbsession, id)
-        user.status = 0
-        request.dbsession.commit()
-    
+    #del_user = UserMaster.delete_user(request.dbsession, id)
+    user = UserMaster.get_user(request.dbsession, id)
+    user.status = 0
+    request.dbsession.commit()
     return {
         "code": 0,
         "message": "success"
@@ -153,7 +130,7 @@ def edit_user(request):
     title = request.json_body['title']
     designation = request.json_body['designation']
     status = request.json_body['status']
-    if role == 0 or role == 1:
+    if role == 1 or role == 2:
         user = UserMaster.check_user(request.dbsession, name)
         if user is not None:
             return {
@@ -169,16 +146,16 @@ def edit_user(request):
         request.dbsession.commit()
         # TODO: add fingerprint entry
 
-    elif role == 2:
+    elif role == 3:
         login = request.json_body['userId']
         password = request.json_body['password']
-        user = UserLoginMaster.check_user(request.dbsession, login)
+        user = UserMaster.check_user_vo(request.dbsession, login)
         if user is not None:
             return {
                 "code": 0,
                 "message": "Data exists"
             }
-        user = UserLoginMaster.get_user(request.dbsession, id)
+        user = UserMaster.get_user(request.dbsession, id)
         user.name = name
         user.role = role
         user.title = title

@@ -15,7 +15,7 @@ def setup_models(dbsession):
 
     """
     #model = models.mymodel.MyModel(name='one', value=1)
-    user = models.usermaster.UserLoginMaster(name='Admin', login='Admin', role=0, title=0, designation='Admin', status='A')
+    user = models.usermaster.UserMaster(name='Admin', login='Admin', role=0, title=0, designation='Admin', status=1)
     user.set_password('a')
     dbsession.add(user)
 
