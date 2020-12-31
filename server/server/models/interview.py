@@ -25,6 +25,10 @@ class InterviewMaster(Base):
     def get_interviews(cls, DBSession):
         return DBSession.query(InterviewMaster).all()
 
+    @classmethod
+    def get_interview(cls, DBSession, id):
+        return DBSession.query(InterviewMaster).filter_by(id=id).first()
+
 
 class InterviewDatesMaster(Base):
     __tablename__ = 'interview_dates_master'
@@ -39,8 +43,17 @@ class InterviewDatesMaster(Base):
         self.from_date = from_date
 
     @classmethod
-    def get_interview_dates(cls, DBSession):
-        return DBSession.query(InterviewDatesMaster).all()
+    def get_interview_dates(cls, DBSession, id):
+        dates = DBSession.query(InterviewDatesMaster).filter_by(interview_id=id).all()
+        date_list = []
+        for ele in dates:
+            date_list({
+                "id": ele.id,
+                "to_date": str(ele.to_date),
+                "from_date": str(ele.from_date),
+                "interview_id": ele.interview_id
+            })
+        return date_list
 
 
 class InterviewMarksMaster(Base):
@@ -58,8 +71,18 @@ class InterviewMarksMaster(Base):
         self.max_marks = max_marks
 
     @classmethod
-    def get_interview_marks(cls, DBSession):
-        return DBSession.query(InterviewMarksMaster).all()
+    def get_interview_marks(cls, DBSession, id):
+        marks = DBSession.query(InterviewMarksMaster).filter_by(interview_id=id).all()
+        mark_list = []
+        for ele in marks:
+            date_list({
+                "id": ele.id,
+                "marks_type": ele.marks_type,
+                "min_marks": ele.min_marks,
+                "max_marks": ele.max_marks
+                "interview_id": ele.interview_id
+            })
+        return mark_list
 
 
 class BoardInterviewMap(Base):
@@ -73,6 +96,19 @@ class BoardInterviewMap(Base):
         self.interview_id = interview_id
         self.board_id = board_id
         self.status = status
+
+    @classmethod
+    def get_interview_board(cls, DBSession, id):
+        boards = DBSession.query(BoardInterviewMap).filter_by(interview_id=id).all()
+        board_list = []
+        for ele in boards:
+            board_list({
+                "id": ele.id,
+                "board_id": ele.board_id,
+                "date": str(ele.date),
+                "interview_id": ele.interview_id
+            })
+        return board_list
 
 
 class BoardUserMap(Base):
