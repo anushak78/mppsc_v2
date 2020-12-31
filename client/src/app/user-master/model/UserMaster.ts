@@ -15,16 +15,16 @@ export class UserMaster {
     const u: UserMaster = new UserMaster();
     u.id = data['id'];
     u.name = data['name'];
-    u.title = Titles[data['title']];
-    u.role = Roles[data['role']];
-    u.status = Status[data['status']];
+    u.title = data['title'];
+    u.role = data['role'];
+    u.status = data['status'];
     u.designation = data['designation'];
     return u;
   }
 
   toJSON(): Map<string, any> {
     const data: Map<string, any> = new Map<string, any>();
-    data['id'] = this.userId;
+    data['id'] = this.id;
     data['name'] = this.name;
     data['title'] = this.title;
     data['role'] = this.role;

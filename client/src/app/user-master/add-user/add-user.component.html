@@ -17,16 +17,16 @@
           <mat-form-field>
             <mat-label>Select Title</mat-label>
             <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
-              <mat-option [value]="0">
+              <mat-option [value]="1">
                 Mr.
               </mat-option>
-              <mat-option [value]="1">
+              <mat-option [value]="2">
                 Mrs.
               </mat-option>
-              <mat-option [value]="2">
+              <mat-option [value]="3">
                 Miss
               </mat-option>
-              <mat-option [value]="3">
+              <mat-option [value]="4">
                 Dr.
               </mat-option>
             </mat-select>
@@ -144,3 +144,5 @@
     </form>
   </div>
 </div>
+
+<app-message-dialog #messageDlg></app-message-dialog>

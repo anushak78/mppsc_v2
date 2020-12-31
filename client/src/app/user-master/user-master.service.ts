@@ -45,7 +45,15 @@ export class UserMasterService {
       .then((response) => {
         this.httpErrorMessage = response['message'];
         return true;
-      }).catch((error) => this);
+      }).catch((error) => this.errorHandler(error));
+  }
+  async updateUser(user: UserMaster) {
+    return await this.http.post(
+      apiUrl.getApiUpdateUserMastercollectionEndPoint, user.toJSON()).toPromise()
+      .then((response) => {
+        this.httpErrorMessage = response['message'];
+        return true;
+      }).catch((error) => this.errorHandler(error));
   }
 
   async getUserDetails(userId: number): Promise<boolean> {
@@ -54,6 +62,7 @@ export class UserMasterService {
     ).toPromise()
       .then((response) => {
         this.userDetails = UserMaster.fromJson(response['data']);
+        console.log(this.userDetails);
         return true;
       }).catch(error => this.errorHandler(error));
   }

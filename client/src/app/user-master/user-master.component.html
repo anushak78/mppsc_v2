@@ -29,8 +29,8 @@
       <div class="sub-grid"
            matTooltip="Details">
         <div>{{v.name}}</div>
-        <div>{{v.role}}</div>
-        <div>{{v.status}}</div>
+        <div>{{roles[v.role]}}</div>
+        <div>{{status[v.status]}}</div>
       </div>
       <div class="icon-column">
         <mat-icon (click)="updateUser(v.id)" matTooltip="Edit">

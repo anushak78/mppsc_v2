@@ -8,6 +8,7 @@ export const getApiDeleteUserMastercollectionEndPoint = (userId: number) => {
 export const getApiDetailsUserMastercollectionEndPoint = (userId: number) => {
   return `http://0.0.0.0:6543/ui/user_details/${userId}`;
 };
+export const getApiUpdateUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_user';
 export const getApiGuestUserMastercollectionEndPoint =  'http://0.0.0.0:6543/ui/guest_user_list';
 export const getApiAddGuestUserMastercollectionEndPoint =  'http://0.0.0.0:6543/ui/add_guest_user';
 export const getApiAddGuestUserMasterDatescollectionEndPoint =  'http://0.0.0.0:6543/ui/add_guest_user_dates';
