@@ -4,7 +4,7 @@ export class GuestUserMaster {
   title: Number;
   email: Number;
   phone_no: string;
-  status: string;
+  status: number;
 
   static fromJson(data: Map<string, any>): GuestUserMaster {
     const u: GuestUserMaster = new GuestUserMaster();
@@ -20,6 +20,7 @@ export class GuestUserMaster {
   toJSON(): Map<string, any> {
     const data: Map<string, any> = new Map<string, any>();
     data['name'] = this.name;
+    data['status'] = this.status;
     data['title'] = this.title;
     data['email'] = this.email;
     data['phone_no'] = this.phone_no;

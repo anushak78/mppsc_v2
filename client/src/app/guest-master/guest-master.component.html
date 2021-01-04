@@ -80,6 +80,19 @@
                                             </div>
                                             <div class="field">
                                                 <mat-form-field>
+                                                    <mat-label>Select Status</mat-label>
+                                                    <mat-select formControlName="status" name="status">
+                                                        <mat-option [value]="1">
+                                                            Active
+                                                        </mat-option>
+                                                        <mat-option [value]="0">
+                                                            Inactive.
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
                                                     <input matInput type="email" name="email" formControlName="email"
                                                         placeholder="Enter Email" required>
                                                 </mat-form-field>
@@ -187,6 +200,19 @@
                                                         </mat-option>
                                                         <mat-option [value]="3">
                                                             Dr.
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="field">
+                                                <mat-form-field>
+                                                    <mat-label>Select Status</mat-label>
+                                                    <mat-select formControlName="status" name="status">
+                                                        <mat-option [value]="1">
+                                                            Active
+                                                        </mat-option>
+                                                        <mat-option [value]="0">
+                                                            Inactive
                                                         </mat-option>
                                                     </mat-select>
                                                 </mat-form-field>

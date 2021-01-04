@@ -29,6 +29,9 @@ export class GuestMasterComponent implements OnInit {
     ]),
     phone_no: new FormControl('', [
       Validators.required,
+    ]),
+    status: new FormControl(null, [
+      Validators.required,
     ])
   });
   tabIndex = 0
@@ -87,7 +90,7 @@ export class GuestMasterComponent implements OnInit {
     this.guestData['title'] = this.guestUserData.controls['title'].value
     this.guestData['email'] = this.guestUserData.controls['email'].value
     this.guestData['phone_no'] = this.guestUserData.controls['phone_no'].value
-    this.guestData['status'] = 'A'
+    this.guestData['status'] = this.guestUserData.controls['status'].value
     this.guestData['id'] = null
     let rel;
     rel = await this.guestUserService.addGuestUser(this.guestData);
@@ -106,6 +109,9 @@ export class GuestMasterComponent implements OnInit {
           Validators.required,
         ]),
         phone_no: new FormControl('', [
+          Validators.required,
+        ]),
+        status: new FormControl(null, [
           Validators.required,
         ])
       });
