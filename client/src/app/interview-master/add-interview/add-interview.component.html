@@ -1,0 +1,220 @@
+<!-- <pre>Form Values: {{interview.value | json}}</pre>
+<pre>Form Values: {{interview.controls.dates.status}}</pre> -->
+<div class="box-container">
+    <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
+        <div [formGroup]="interview">
+            <mat-tab label="Step 1">
+                <form [formGroup]="interview.controls.Details">
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="name" placeholder="Interview Id"
+                                    formControlName="interview_id" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="name" placeholder="Enter Name"
+                                    formControlName="interview_name" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="notification_no" placeholder="Enter Notification No."
+                                    formControlName="notification" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-radio-group aria-label="Select an option" formControlName="status">
+                                <mat-label>Interview Status: </mat-label>
+                                <mat-radio-button value="yes">Yes</mat-radio-button>
+                                <mat-radio-button value="no">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" [disabled]="!interview.controls.Details.valid"
+                            (click)="nextStep()">Next</button>
+                    </div>
+                </form>
+            </mat-tab>
+            <mat-tab label="Step 2">
+                <div [formGroup]="interview.controls.dates">
+                    <div class="grid-2">
+                        <div>
+                            <mat-form-field>
+                                <mat-label>From date</mat-label>
+                                <!-- #docregion toggle -->
+                                <input matInput [matDatepicker]="picker" formControlName="fromDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <!-- #enddocregion toggle -->
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <mat-label>To date</mat-label>
+                                <!-- #docregion toggle -->
+                                <input matInput [matDatepicker]="topicker" formControlName="toDate">
+                                <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
+                                <mat-datepicker #topicker></mat-datepicker>
+                                <!-- #enddocregion toggle -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                        <button mat-raised-button color="primary" [disabled]="!interview.controls.dates.valid"
+                            class="ml-10" (click)="nextStep()">Next</button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Step 3">
+                <div [formGroup]="interview.controls.marks">
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_max" placeholder="Unreserved Max Marks"
+                                    formControlName="unreserved_max" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_min" placeholder="Unreserved Min Marks"
+                                    formControlName="unreserved_min" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_max" placeholder="EWS Max Marks"
+                                    formControlName="EWS_max" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_min" placeholder="EWS Min Marks"
+                                    formControlName="EWS_min" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_max" placeholder="OBC NCL Max Marks"
+                                    formControlName="OBC_NCL_max" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_min" placeholder="OBC NCL Min Marks"
+                                    formControlName="OBC_NCL_min" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_max" placeholder="SC Max Marks"
+                                    formControlName="SC_max" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_min" placeholder="SC Min Marks"
+                                    formControlName="SC_min" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_max" placeholder="ST Max Marks"
+                                    formControlName="ST_max" required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="ur_min" placeholder="ST Min Marks"
+                                    formControlName="ST_min" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="right">
+                    <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                    <button mat-raised-button color="primary" [disabled]="!interview.controls.marks.valid" class="ml-10"
+                        (click)="nextStep()">Next</button>
+                </div>
+            </mat-tab>
+            <mat-tab label="Step 4">
+                <div class="grid-3" [formGroup]="interview.controls.verification">
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Verification Officer Name</mat-label>
+                            <mat-select formControlName="verfication_officer">
+                                <mat-option *ngFor="let office of Officer" [value]="office.name">
+                                    {{office.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="example-margin">
+                        <mat-checkbox formControlName="interviewDatesOfficer">Date</mat-checkbox>
+                    </div>
+                </div>
+                <div class="right">
+                    <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                    <button mat-raised-button color="primary" [disabled]="!interview.controls.verification.valid"
+                        class="ml-10" (click)="nextStep()">Next</button>
+                </div>
+            </mat-tab>
+            <mat-tab label="Step 5">
+                <div class="grid-3" [formGroup]="interview.controls.board">
+                    <div class="field">
+                        <mat-form-field>
+                            <mat-label>Select Board/Chairmen</mat-label>
+                            <mat-select name="board" formControlName="boardName">
+                                <mat-option *ngFor="let Board of board" [value]="Board.name">
+                                    {{Board.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="example-margin">
+                        <mat-checkbox formControlName="interviewDatesBoard">Date</mat-checkbox>
+                    </div>
+                </div>
+                <div class="right">
+                    <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                    <button mat-raised-button color="primary" [disabled]="!interview.controls.board.valid"
+                        class="ml-10" (click)="nextStep()">Next</button>
+                </div>
+            </mat-tab>
+            <mat-tab label="Step 6">
+                <div class="grid-3" [formGroup]="interview.controls.chairman">
+                    <div class="field">
+                        <mat-form-field>
+                            <mat-label>Select Board/Chairmen</mat-label>
+                            <mat-select name="board" formControlName="boardChairman">
+                                <mat-option *ngFor="let Chairman of chairman" [value]="Chairman.name">
+                                    {{Chairman.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="example-margin">
+                        <mat-checkbox formControlName="member">Date</mat-checkbox>
+                    </div>
+                </div>
+                <div class="right">
+                    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+                </div>
+            </mat-tab>
+        </div>
+    </mat-tab-group>
+</div>

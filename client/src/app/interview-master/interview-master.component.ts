@@ -1,8 +1,10 @@
-import {Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { InterviewMasterService } from './interview-master.service';
+import { InterviewMaster } from './model/interview-master.model';
 
 @Component({
   selector: 'app-interview-master',
@@ -12,28 +14,25 @@ import { Router } from '@angular/router';
 export class InterviewMasterComponent implements OnInit {
 
   displayedColumns: string[];
+  interview: InterviewMaster[] = []
   table_data;
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+
   constructor(private router: Router,
-    private dialog: MatDialog) {
+    private InterviewMasterService: InterviewMasterService) {
   }
 
-  ngOnInit() {
-    this.displayedColumns = ['id', 'name', 'notification_no', 'status', 'edit']
-    let data = []
-    data = [
-      {id: '123', name: 'abc', notification_no: 'some data', status: null},
-      {id: '456', name: 'def', notification_no: 'some data', status: null},
-      {id: '789', name: 'ghi', notification_no: 'some data', status: null},
-      {id: '123', name: 'abc', notification_no: 'some data', status: null},
-      {id: '456', name: 'def', notification_no: 'some data', status: null},
-      {id: '789', name: 'ghi', notification_no: 'some data', status: null}                                                                                                                                                        
-    ]
-    this.table_data = new MatTableDataSource(data)
+  async ngOnInit() {
+    this.loadData();
   }
 
-  ngAfterViewInit() {
-    this.table_data.paginator = this.paginator.toArray()[0];
+  async loadData() {
+    const rel = await this.InterviewMasterService.fetchInterviewList();
+    if (rel) {
+      this.interview = this.InterviewMasterService.getInterviewList;
+    } else {
+      alert(this.InterviewMasterService.getErrorMessage);
+    }
   }
 
   gotoPage(pageName: string) {
