@@ -12,6 +12,11 @@ from ..models.interview import (
     BoardUserMap
 )
 
+from ..models.guestuser import (
+    GuestUserMaster,
+    GuestUserDateMap
+)
+
 log = logging.getLogger(__name__)
 
 svc_interview_list = Service(
@@ -40,6 +45,10 @@ svc_add_interview_boards = Service(
     name="api.add_interview_boards", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_interview_boards", cors_policy=cors.POLICY)
 
+svc_add_user_boards = Service(
+    name="api.add_user_boards", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/add_user_boards", cors_policy=cors.POLICY)
+
 
 @svc_interview_list.get()
 def get_interview_list(request):
@@ -66,6 +75,7 @@ def get_interview_details(request):
     dates = InterviewDatesMaster.get_interview_dates(request.dbsession, id)
     marks = InterviewMarksMaster.get_interview_marks(request.dbsession, id)
     boards = BoardInterviewMap.get_interview_board(request.dbsession, id)
+    board_user_map = BoardUserMap.get_user_board_map(request.dbsession, id)
     interview_details = {
         "id": ele.id,
         "name": ele.name,
@@ -73,7 +83,8 @@ def get_interview_details(request):
         "status": ele.status,
         "dates": dates,
         "marks": marks,
-        "boards": boards
+        "boards": boards,
+        "board_user_map": board_user_map
     }
     return {
         "code": 0,
@@ -156,6 +167,27 @@ def add_interview_boards(request):
         "message": "success",
         "data": board_map_list
     }
+
+
+@svc_add_user_boards.post(require_csrf=False)
+def add_user_boards(request):
+    obj = request.json_body['obj']
+    for ele in obj:
+        boardmap_id = ele['boardmap_id']
+        user_id = ele['user_id']
+        user_role = ele['role']
+        user_board_map = BoardUserMap(
+            boardmap_id=boardmap_id, user_id=user_id, user_role=user_role)
+        request.dbsession.add(user_board_map)
+
+    return {
+        "code": 0,
+        "message": "success"
+    }
+
+
+def get_guest_user_list(request, date):
+    return GuestUserDateMap.filter_dates(request.dbsession, date)
 
 
 def get_board_interview_map_ids(request, id):
