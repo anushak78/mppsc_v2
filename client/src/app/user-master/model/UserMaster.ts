@@ -1,5 +1,3 @@
-import {Roles, Status, Titles} from '../../constant';
-
 export class UserMaster {
   id: number;
   name: string;

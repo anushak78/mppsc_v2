@@ -23,13 +23,12 @@ export class GuestUserServiceService {
     return await this.http.get(
       apiUrl.getApiGuestUserMastercollectionEndPoint).toPromise()
       .then((response) => {
-        let result = response['data'];
-        console.log(result)
+        const result = response['data'];
+        console.log(result);
         this.users = [];
-        for (let u of result) {
+        for (const u of result) {
           this.users.push(GuestUserMaster.fromJson(u));
         }
-        console.log(this.users);
         return true;
       }).catch(error => this.errorHandler(error));
   }
@@ -38,7 +37,7 @@ export class GuestUserServiceService {
     return await this.http.post(
       apiUrl.getApiAddGuestUserMastercollectionEndPoint, user.toJSON()).toPromise()
       .then((response) => {
-        console.log(response)
+        console.log(response);
         this.httpErrorMessage = response['message'];
         return true;
       }).catch((error) => this);

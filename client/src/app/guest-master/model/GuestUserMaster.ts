@@ -1,10 +1,10 @@
 export class GuestUserMaster {
   id: number;
   name: string;
-  title: Number;
-  email: Number;
-  phone_no: string;
-  status: number;
+  title: number;
+  email: string;
+  phone: string;
+  status = 1;
 
   static fromJson(data: Map<string, any>): GuestUserMaster {
     const u: GuestUserMaster = new GuestUserMaster();
@@ -12,7 +12,7 @@ export class GuestUserMaster {
     u.name = data['name'];
     u.title = data['title'];
     u.email = data['email'];
-    u.phone_no = data['phone_no'];
+    u.phone = data['phone_no'];
     u.status = data['status'];
     return u;
   }
@@ -23,7 +23,7 @@ export class GuestUserMaster {
     data['status'] = this.status;
     data['title'] = this.title;
     data['email'] = this.email;
-    data['phone_no'] = this.phone_no;
+    data['phone_no'] = this.phone;
     return data;
   }
 }

@@ -9,7 +9,6 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
 import {LayoutComponent} from './layout/layout.component';
-import {GuestMasterComponent} from './guest-master/guest-master.component';
 import {CandidateMasterComponent} from './candidate-master/candidate-master.component';
 import {VoDashboardComponent} from './vo-dashboard/vo-dashboard.component';
 import {BoardDashboardComponent} from './board-dashboard/board-dashboard.component';
@@ -26,14 +25,15 @@ import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatTableModule} from "@angular/material/table";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatTabsModule} from "@angular/material/tabs";
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatButtonModule} from "@angular/material/button";
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatButtonModule} from '@angular/material/button';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -41,14 +41,12 @@ import {MatButtonModule} from "@angular/material/button";
     LoginComponent,
     AdminDashboardComponent,
     LayoutComponent,
-    GuestMasterComponent,
     CandidateMasterComponent,
     VoDashboardComponent,
     BoardDashboardComponent,
     MessageDialog,
     ConfirmDialog,
-    LoaderComponent,
-    
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +74,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatSidenavModule,
     MatButtonModule,
     MatNativeDateModule,
+    MatRadioModule
   ],
   providers: [
     LoaderService
