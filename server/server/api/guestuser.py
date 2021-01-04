@@ -78,10 +78,10 @@ def get_guest_user_details(request):
     date_list = []
     for ele in dates:
         date_list.append({
-            "id": ele1.id,
-            "guest_id": ele1.guest_id,
-            "from_date": str(ele1.from_date),
-            "to_date": str(ele1.to_date)
+            "id": ele.id,
+            "guest_id": ele.guest_id,
+            "from_date": str(ele.from_date),
+            "to_date": str(ele.to_date)
         })
     user_details = {
         "id": user.id,

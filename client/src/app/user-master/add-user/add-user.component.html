@@ -13,7 +13,7 @@
   <div>
     <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit()">
       <div style="text-align: center">
-        <div>
+        <div class="field">
           <mat-form-field>
             <mat-label>Select Title</mat-label>
             <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div class="field">
           <mat-form-field>
             <input matInput type="text" name="name" [(ngModel)]="userMaster.name" #name="ngModel"
                    placeholder="Enter Name" required>
@@ -49,7 +49,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div class="field">
           <mat-form-field>
             <input matInput type="text" name="designation" [(ngModel)]="userMaster.designation" #designation="ngModel"
                    placeholder="Enter Designation" required>
@@ -61,7 +61,7 @@
           </div>
         </div>
 
-        <div>
+        <div class="field">
           <mat-form-field>
             <mat-label>Select Role</mat-label>
             <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
