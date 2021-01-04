@@ -7,6 +7,7 @@ from sqlalchemy import (
 )
 
 from .meta import Base
+from .boardmaster import BoardMaster
 
 
 class InterviewMaster(Base):
@@ -108,14 +109,34 @@ class BoardInterviewMap(Base):
 
     @classmethod
     def get_interview_board(cls, DBSession, id):
-        boards = DBSession.query(BoardInterviewMap).filter_by(interview_id=id).all()
+        boards = DBSession.query(BoardInterviewMap).join(BoardMaster).filter(
+            BoardInterviewMap.interview_id == id).all()
         board_list = []
-        for ele in boards:
+        for ele, board in boards:
             board_list({
                 "id": ele.id,
                 "board_id": ele.board_id,
                 "date": str(ele.date),
-                "interview_id": ele.interview_id
+                "interview_id": ele.interview_id,
+                "subject_name": board.subject_name,
+                "login_id": board.login_id,
+                "status": board.status
+            })
+        return board_list
+
+    @classmethod
+    def get_user_board_map(cls, DBSession, id):
+        boards = DBSession.query(BoardUserMap).join(BoardInterviewMap).filter(
+            BoardInterviewMap.interview_id == id, 
+            BoardUserMap.boardmap_id == BoardInterviewMap.board_id).all()
+        for ele, board in boards:
+            board_list({
+                "id": ele.id,
+                "boardmap_id": ele.boardmap_id,
+                "user_id": ele.user_id,
+                "user_role": ele.user_role,
+                "board_id": board.board_id,
+                "date": board.date
             })
         return board_list
 

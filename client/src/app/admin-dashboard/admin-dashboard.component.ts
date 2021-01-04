@@ -18,7 +18,7 @@ export class AdminDashboardComponent implements OnInit {
       'Board Master',
       'Interview Master',
       'Candidate Master'
-    ]
+    ];
   }
 
   goto(pageName: string) {

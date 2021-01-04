@@ -40,8 +40,10 @@ const routes: Routes = [
         )
       },
       {
-        path: 'guest-master',
-        component: GuestMasterComponent
+        path: 'guest-users',
+        loadChildren: () => import('./guest-master/guest-master.module').then(
+          m => m.GuestMasterModule
+        )
       },
       {
         path: 'interview-master',

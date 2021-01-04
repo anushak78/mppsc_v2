@@ -1,0 +1,143 @@
+<div class="box-container">
+  <div class="grid-2">
+    <div>
+      <h2 class="mat-h2">Add Guest User</h2>
+    </div>
+    <div class="right">
+      <button mat-raised-button color="primary" (click)="gotoPage('users')"
+              style="margin-left: 10px;">Back
+      </button>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <ng-container>
+      <mat-tab-group [(selectedIndex)]="tabIndex">
+        <mat-tab label="Step 1">
+          <div>
+            <form #f="ngForm" (ngSubmit)="f.form.valid">
+              <div class="box-container">
+                <div class="center">
+                  <div class="field">
+                    <mat-form-field>
+                      <mat-label>Select Title</mat-label>
+                      <mat-select [(ngModel)]="guestData.title" name="title">
+                        <mat-option [value]="1">
+                          Mr.
+                        </mat-option>
+                        <mat-option [value]="2">
+                          Mrs.
+                        </mat-option>
+                        <mat-option [value]="3">
+                          Miss
+                        </mat-option>
+                        <mat-option [value]="4">
+                          Dr.
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field>
+                      <input matInput type="text" [(ngModel)]="guestData.name"
+                             name="name"
+                             placeholder="Enter Name" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field>
+                      <input matInput type="email" name="email"
+                             [(ngModel)]="guestData.email"
+                             placeholder="Enter Email" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field>
+                      <input matInput type="text"
+                             name="phone_no" maxlength="10"
+                             [(ngModel)]="guestData.phone"
+                             placeholder="Enter Phone No."
+                             required>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-radio-group [(ngModel)]="guestData.status" name="status">
+                      <mat-radio-button class="margin-left" [value]="1">
+                        Active
+                      </mat-radio-button>
+                      <mat-radio-button class="margin-left" [value]="0">
+                        Inactive
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="right">
+              <button mat-raised-button color="primary" (click)="onNext()"
+                      [disabled]="!f.valid">Next
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Step 2">
+          <div class="box-container">
+            <div *ngFor="let item of date_list; let i=index">
+              <div class="grid-3">
+                <div class="field">
+                  <mat-form-field>
+                    <mat-label>From date</mat-label>
+                    <!-- #docregion toggle -->
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="item['from_date']"
+                           [disabled]="flag_dates">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <!-- #enddocregion toggle -->
+                  </mat-form-field>
+                </div>
+                <div class="field">
+                  <mat-form-field>
+                    <mat-label>To date</mat-label>
+                    <!-- #docregion toggle -->
+                    <input matInput [matDatepicker]="topicker" [(ngModel)]="item['to_date']"
+                           [disabled]="flag_dates">
+                    <mat-datepicker-toggle matSuffix [for]="topicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #topicker></mat-datepicker>
+                    <!-- #enddocregion toggle -->
+                  </mat-form-field>
+                </div>
+                <div *ngIf="i == date_list.length-1">
+                  <button mat-mini-fab color="default" (click)="addDateItem()"
+                          [disabled]="flag_dates">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="i != date_list.length-1">
+                  <button mat-mini-fab color="default" (click)="deleteDateItem(i)"
+                          [disabled]="flag_dates">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <button mat-raised-button color="primary" (click)="addDates()"
+                      [disabled]="flag_dates">Done
+              </button>
+            </div>
+            <div *ngIf="flag_dates">
+              <div *ngFor="let item of date_list; let i=index">
+                <mat-checkbox></mat-checkbox>
+                {{item['from_date']}} to {{item['to_date']}}
+              </div>
+              <div class="right">
+                <button mat-raised-button color="primary" (click)="sendEmail()">Send Email</button>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+  </div>
+</div>

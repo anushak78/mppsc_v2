@@ -1,0 +1,17 @@
+.box-container {
+  border: solid 1px #ccc;
+  //min-height: 60px;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+  padding: 5px 10px 10px 10px;
+
+  mat-form-field {
+    width: 40%;
+  }
+
+  textarea {
+    width: 100%;
+  }
+}

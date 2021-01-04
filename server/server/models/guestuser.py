@@ -75,3 +75,18 @@ class GuestUserDateMap(Base):
     @classmethod
     def get_user_date_details(cls, DBSession, guest_id):
         return DBSession.query(GuestUserDateMap).filter_by(guest_id=guest_id).all()
+
+    @classmethod
+    def filter_dates(cls, DBSession, date):
+        user_dates = DBSession.query(GuestUserDateMap).filter( \
+            (GuestUserDateMap.to_date == date, GuestUserDateMap.from_date == None) | \
+            (GuestUserDateMap.to_date == None, GuestUserDateMap.from_date == date) | \
+            (GuestUserDateMap.to_date <= date, GuestUserDateMap.from_date >= date)
+        ).all()
+        user_dates_list = []
+        for ele in user_dates:
+            user_dates_list.append({
+                "id": ele.id,
+                "guest_id": ele.guest_id
+            })
+        return user_dates_list

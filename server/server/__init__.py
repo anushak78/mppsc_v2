@@ -2,15 +2,20 @@ from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
 from pyramid.csrf import CookieCSRFStoragePolicy
 import os
+from zope.sqlalchemy import register
+import sqlalchemy
+from sqlalchemy.orm import sessionmaker, scoped_session
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    my_session_factory = SignedCookieSessionFactory('itsaseekreet')
-    with Configurator(settings=settings, session_factory=my_session_factory) as config:
+    #my_session_factory = SignedCookieSessionFactory('itsaseekreet')
+    with Configurator(settings=settings) as config:
         config.include('.models')
         config.include('cornice')
         config.include('pyramid_tm')
+        
         config.include('pyramid_jinja2')
         config.include('.routes')
         config.add_route('home', '/home')
