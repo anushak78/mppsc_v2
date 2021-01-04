@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserMaster} from '../model/UserMaster';
 import {UserMasterService} from '../user-master.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MessageDialogComponent} from '../../dialogs/message/message.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-user',
@@ -10,12 +12,36 @@ import {Router} from '@angular/router';
 })
 export class AddUserComponent implements OnInit {
   userMaster = new UserMaster();
+  activity: string;
+
+
+  @ViewChild('messageDlg', {static: false})
+  messageDlg: MessageDialogComponent;
 
   constructor(private userMasterService: UserMasterService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute,
+              private dialog: MatDialog) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    if (this.route.snapshot.params.userId !== undefined) {
+      this.activity = 'Edit';
+      await this.loadUserDetails();
+    } else {
+      this.activity = 'Add';
+    }
+  }
+
+  async loadUserDetails() {
+    const rel = await this.userMasterService.getUserDetails(this.route.snapshot.params.userId);
+    if (rel) {
+      this.userMaster = this.userMasterService.getUserDetailsData;
+      console.log('this.userMaster');
+      console.log(this.userMaster);
+    } else {
+      this.messageDlg.openDialog(this.userMasterService.getErrorMessage);
+    }
   }
 
   gotoPage(pageName: string) {
@@ -24,7 +50,14 @@ export class AddUserComponent implements OnInit {
 
   async onSubmit() {
     let rel;
-    rel = await this.userMasterService.addUser(this.userMaster);
+    if (this.activity === 'Add') {
+      rel = await this.userMasterService.addUser(this.userMaster);
+    } else {
+      console.log('this.userMaster2');
+      console.log(this.userMaster);
+      rel = await this.userMasterService.updateUser(this.userMaster);
+    }
+
     if (!rel) {
       alert(this.userMasterService.getErrorMessage);
     } else {

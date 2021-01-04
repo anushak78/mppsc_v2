@@ -1,7 +1,7 @@
 <div class="box-container">
   <div class="grid-2">
     <div>
-      <h2 class="mat-h2">Add User</h2>
+      <h2 class="mat-h2">{{activity}} User</h2>
     </div>
     <div class="right">
       <button mat-raised-button color="primary" (click)="gotoPage('users')"
@@ -17,16 +17,16 @@
           <mat-form-field>
             <mat-label>Select Title</mat-label>
             <mat-select [(ngModel)]="userMaster.title" #title="ngModel" name="title" required>
-              <mat-option [value]="0">
+              <mat-option [value]="1">
                 Mr.
               </mat-option>
-              <mat-option [value]="1">
+              <mat-option [value]="2">
                 Mrs.
               </mat-option>
-              <mat-option [value]="2">
+              <mat-option [value]="3">
                 Miss
               </mat-option>
-              <mat-option [value]="3">
+              <mat-option [value]="4">
                 Dr.
               </mat-option>
             </mat-select>
@@ -61,28 +61,28 @@
           </div>
         </div>
 
-          <div>
-            <mat-form-field>
-              <mat-label>Select Role</mat-label>
-              <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
-                <mat-option [value]="1">
-                  Board Member
-                </mat-option>
-                <mat-option [value]="2">
-                  Chairman
-                </mat-option>
-                <mat-option [value]="3">
-                  Verification Officer
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div class="error-message">
-              <div *ngIf="f.submitted && role.invalid" class="invalid-feedback">
-                <div *ngIf="role.errors.required"> Enter Role</div>
-              </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Select Role</mat-label>
+            <mat-select [(ngModel)]="userMaster.role" #role="ngModel" name="role" required>
+              <mat-option [value]="1">
+                Board Member
+              </mat-option>
+              <mat-option [value]="2">
+                Chairman
+              </mat-option>
+              <mat-option [value]="3">
+                Verification Officer
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="error-message">
+            <div *ngIf="f.submitted && role.invalid" class="invalid-feedback">
+              <div *ngIf="role.errors.required"> Enter Role</div>
             </div>
+          </div>
         </div>
-        <div class="grid-3"  *ngIf="userMaster.role == 2">
+        <div class="grid-3" *ngIf="userMaster.role == 2">
           <div class="field">
             <mat-form-field>
               <input matInput type="text" name="user_id" [(ngModel)]="userMaster.userId" #user_id="ngModel"
@@ -137,10 +137,12 @@
       <!--            </div>-->
       <div style="text-align: center;">
         <button [disabled]="!f.valid" mat-raised-button style="background-color: green!important;color: whitesmoke;"
-                type="submit">Add
+                type="submit">{{activity}}
           User
         </button>
       </div>
     </form>
   </div>
 </div>
+
+<app-message-dialog #messageDlg></app-message-dialog>

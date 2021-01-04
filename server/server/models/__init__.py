@@ -20,12 +20,13 @@ from .guestuser import (
 from .interview import (
     InterviewMaster,
     BoardInterviewMap,
-    BoardUserMap
+    BoardUserMap,
+    InterviewDatesMaster,
+    InterviewMarksMaster
 )
 from .usermaster import (
     UserMaster,
     UserFingerPrintMap,
-    UserLoginMaster
 )
 from .verificationstatus import (
     VerificationStatus,

@@ -18,7 +18,7 @@ from pyramid.csrf import new_csrf_token
 
 from cornice import Service
 
-from ..models.usermaster import UserLoginMaster
+from ..models.usermaster import UserMaster
 from . import cors
 
 log = logging.getLogger(__name__)
@@ -45,7 +45,7 @@ def login(request):
     # TODO: Board role
     # Admin and VO role login
     if role == 0 or role == 2:
-        user = UserLoginMaster.by_login(request.dbsession, login)
+        user = UserMaster.by_login(request.dbsession, login)
         if user and user.check_password(passwd):
             headers = remember(request, login)
             request.response.headerlist.extend(headers)

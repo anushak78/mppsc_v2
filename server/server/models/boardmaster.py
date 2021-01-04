@@ -15,7 +15,7 @@ class BoardMaster(Base):
     no_of_members = Column(Integer)
     login_id = Column(Text)
     password = Column(Text)
-    status = Column(Text)
+    status = Column(Integer)
 
     def __init__(self, subject_name, no_of_members, login_id, status):
         self.login_id = login_id
@@ -28,11 +28,31 @@ class BoardMaster(Base):
 
     @classmethod
     def get_boards(cls, DBSession):
-        return DBSession.query(BoardMaster).all()
+        boards = DBSession.query(BoardMaster).all()
+        board_list = []
+        for ele in boards:
+            board_list.append({
+                "id": ele.id,
+                "login_id": ele.login_id,
+                "password": ele.password,
+                "status": ele.status,
+                "no_of_members": ele.no_of_members,
+                "subject_name": ele.subject_name
+            })
+        return board_list
 
     @classmethod
-    def get_board(cls, DBSession, login_id):
-        return DBSession.query(BoardMaster).filter_by(id=id).first()
+    def get_board(cls, DBSession, id):
+        board = DBSession.query(BoardMaster).filter_by(id=id).first()
+        board_details = {
+            "id": ele.id,
+            "login_id": board.login_id,
+            "password": board.password,
+            "status": board.status,
+            "no_of_members": board.no_of_members,
+            "subject_name": board.subject_name
+        }
+        return board_details
 
     @classmethod
     def check_board(cls, DBSession, login_id):

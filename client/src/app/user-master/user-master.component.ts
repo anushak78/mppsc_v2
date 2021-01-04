@@ -5,6 +5,7 @@ import {UserMaster} from './model/UserMaster';
 import {UserMasterService} from './user-master.service';
 import {ConfirmDialogComponent} from '../dialogs/confirm/confirm.component';
 import {MessageDialogComponent} from '../dialogs/message/message.component';
+import {Roles, Status, Titles} from '../constant';
 
 @Component({
   selector: 'app-user-master',
@@ -13,9 +14,10 @@ import {MessageDialogComponent} from '../dialogs/message/message.component';
 })
 export class UserMasterComponent implements OnInit {
 
-  displayedColumns: string[];
   deleteUserId: number;
   users: UserMaster[] = [];
+  roles = Roles;
+  status = Status;
   @ViewChild('confirmDlg', {static: false})
   confirmDlg: ConfirmDialogComponent;
 
