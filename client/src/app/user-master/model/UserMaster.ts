@@ -12,6 +12,7 @@ export class UserMaster {
   static fromJson(data: Map<string, any>): UserMaster {
     const u: UserMaster = new UserMaster();
     u.id = data['id'];
+    u.userId = data['login']
     u.name = data['name'];
     u.title = data['title'];
     u.role = data['role'];
@@ -23,6 +24,7 @@ export class UserMaster {
   toJSON(): Map<string, any> {
     const data: Map<string, any> = new Map<string, any>();
     data['id'] = this.id;
+    data['userId'] = this.userId;
     data['name'] = this.name;
     data['title'] = this.title;
     data['role'] = this.role;

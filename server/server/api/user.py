@@ -60,6 +60,7 @@ def get_user_details(request):
         "name": user.name,
         "role": user.role,
         "title": user.title,
+        "login": user.login,
         "designation": user.designation,
         "status": user.status
     }
@@ -123,7 +124,7 @@ def delete_user(request):
     #del_user = UserMaster.delete_user(request.dbsession, id)
     user = UserMaster.get_user(request.dbsession, id)
     user.status = 0
-    request.dbsession.commit()
+
     return {
         "code": 0,
         "message": "success"
@@ -138,30 +139,18 @@ def edit_user(request):
     designation = request.json_body['designation']
     status = request.json_body['status']
     if role == 1 or role == 2:
-        user = UserMaster.check_user(request.dbsession, name)
-        if user is not None:
-            return {
-                "code": 0,
-                "message": "Data exists"
-            }
         user = UserMaster.get_user(request.dbsession, id)
         user.name = name
         user.role = role
         user.title = title
         user.designation = designation
         user.status = status
-        request.dbsession.commit()
         # TODO: add fingerprint entry
 
     elif role == 3:
         login = request.json_body['userId']
         password = request.json_body['password']
-        user = UserMaster.check_user_vo(request.dbsession, login)
-        if user is not None:
-            return {
-                "code": 0,
-                "message": "Data exists"
-            }
+        
         user = UserMaster.get_user(request.dbsession, id)
         user.name = name
         user.role = role
@@ -170,7 +159,6 @@ def edit_user(request):
         user.status = status
         user.login = login
         user.set_password(password)
-        request.dbsession.commit()
 
     return {
         "code": 0,

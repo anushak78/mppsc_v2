@@ -7,6 +7,12 @@ from sqlalchemy import engine_from_config
 
 from .. import models
 from ..models.meta import Base, DBSession
+from ..models import (
+    get_engine,
+    get_session_factory,
+    get_tm_session,
+)
+import transaction
 
 
 def setup_models(dbsession):
@@ -34,23 +40,14 @@ def main(argv=sys.argv):
     setup_logging(args.config_uri)
     env = bootstrap(args.config_uri)
     settings = get_appsettings(args.config_uri)
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
+    engine = get_engine(settings)
+    Base.metadata.drop_all(engine)
+    initialize_db(engine)
+ 
+def initialize_db(engine):
     Base.metadata.create_all(engine)
-
-    try:
-        with env['request'].tm:
-            dbsession = env['request'].dbsession
-            setup_models(dbsession)
-    except OperationalError:
-        print('''
-Pyramid is having a problem using your SQL database.  The problem
-might be caused by one of the following things:
-
-1.  You may need to initialize your database tables with `alembic`.
-    Check your README.txt for description and try to run it.
-
-2.  Your database server may not be running.  Check that the
-    database server referred to by the "sqlalchemy.url" setting in
-    your "development.ini" file is running.
-            ''')
+    session_factory = get_session_factory(engine)
+    with transaction.manager:
+        dbsession = get_tm_session(
+            session_factory, transaction.manager)
+        setup_models(dbsession)

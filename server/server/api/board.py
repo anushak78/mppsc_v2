@@ -87,7 +87,8 @@ def add_board(request):
 @svc_delete_board.post(require_csrf=False)
 def delete_board(request):
     id = request.matchdict['id']
-    del_board = BoardMaster.delete_board(request.dbsession, id)
+    board = BoardMaster.get_board(request.dbsession, id)
+    board.status = 0
     
     return {
         "code": 0,
@@ -104,20 +105,12 @@ def edit_board(request):
     password = request.json_body['password']
     status = request.json_body['status']
 
-    board = BoardMaster.check_board(request.dbsession, login_id)
-    if board is not None:
-        return {
-            "code": 0,
-            "message": "Data exists"    
-        }
-
     board = BoardMaster.get_board(request.dbsession, id)
     board.subject_name = subject_name
     board.no_of_members = no_of_members
     board.login_id = login_id
     board.status = status
     board.set_password(password)
-    request.dbsession.commit()
     
     return {
         "code": 0,
