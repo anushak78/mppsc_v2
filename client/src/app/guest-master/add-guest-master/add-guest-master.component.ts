@@ -12,7 +12,6 @@ import {DatesRange} from '../model/DatesRange';
 })
 export class AddGuestMasterComponent implements OnInit {
   tabIndex = 1;
-  parentTabIndex = 0;
   dateList: DatesRange[] = [];
   dateRange = new DatesRange();
   flagDates = false;
@@ -30,7 +29,6 @@ export class AddGuestMasterComponent implements OnInit {
 
   async ngOnInit() {
     this.tabIndex = 0;
-    this.parentTabIndex = 0;
     if (this.route.snapshot.params.userId !== undefined) {
       this.activity = 'Edit';
       this.userId = this.route.snapshot.params.userId;
@@ -46,6 +44,9 @@ export class AddGuestMasterComponent implements OnInit {
     if (rel) {
       this.guestData = this.guestUserService.getGuestUserDetailsData;
       this.dateList = this.guestData.dates;
+      if (this.dateList.length === 0) {
+        this.addDateItem();
+      }
     } else {
       this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
     }
@@ -97,6 +98,4 @@ export class AddGuestMasterComponent implements OnInit {
   sendEmail() {
     this.messageDlg.openDialog('Email Sent!!!');
   }
-
-
 }

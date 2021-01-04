@@ -7,12 +7,14 @@
 // legal@nseit.com.
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {ProjectTitle} from "../../constant";
 
 @Component({
   selector: 'app-message-dialog',
   template: '<div></div>'
 })
 export class MessageDialogComponent {
+
   constructor(public dialog: MatDialog) {
   }
 
@@ -31,6 +33,9 @@ export class MessageDialogComponent {
   templateUrl: 'message.component.html',
 })
 export class MessageDialog {
+
+  projectTitle = ProjectTitle;
+
   constructor(public dialogRef: MatDialogRef<MessageDialog>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
