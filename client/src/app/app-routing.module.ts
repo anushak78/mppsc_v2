@@ -45,8 +45,14 @@ const routes: Routes = [
       },
       {
         path: 'interview-master',
-        component: InterviewMasterComponent
+        loadChildren: () => import('./interview-master/interview-master.module').then(
+          m => m.InterviewMasterModule
+        )
       },
+      // {
+      //   path: 'interview-master',
+      //   component: InterviewMasterComponent
+      // },
       {
         path: 'candidate-master',
         component: CandidateMasterComponent

@@ -9,9 +9,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
 import {LayoutComponent} from './layout/layout.component';
-import {BoardMasterComponent} from './board-master/board-master.component';
 import {GuestMasterComponent} from './guest-master/guest-master.component';
-import {InterviewMasterComponent} from './interview-master/interview-master.component';
 import {CandidateMasterComponent} from './candidate-master/candidate-master.component';
 import {VoDashboardComponent} from './vo-dashboard/vo-dashboard.component';
 import {BoardDashboardComponent} from './board-dashboard/board-dashboard.component';
@@ -24,7 +22,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {MatOptionModule} from '@angular/material/core';
+import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -44,13 +42,13 @@ import {MatButtonModule} from "@angular/material/button";
     AdminDashboardComponent,
     LayoutComponent,
     GuestMasterComponent,
-    InterviewMasterComponent,
     CandidateMasterComponent,
     VoDashboardComponent,
     BoardDashboardComponent,
     MessageDialog,
     ConfirmDialog,
-    LoaderComponent
+    LoaderComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -76,7 +74,8 @@ import {MatButtonModule} from "@angular/material/button";
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
-    MatButtonModule
+    MatButtonModule,
+    MatNativeDateModule,
   ],
   providers: [
     LoaderService

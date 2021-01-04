@@ -6,3 +6,5 @@ export const getApiDeleteUserMastercollectionEndPoint =  'http://0.0.0.0:6543/ui
 export const getApiGuestUserMastercollectionEndPoint =  'http://0.0.0.0:6543/ui/guest_user_list';
 export const getApiAddGuestUserMastercollectionEndPoint =  'http://0.0.0.0:6543/ui/add_guest_user';
 export const getApiAddGuestUserMasterDatescollectionEndPoint =  'http://0.0.0.0:6543/ui/add_guest_user_dates';
+export const getApiAddInterviewMasterEndPoint =  'http://0.0.0.0:6543/ui/0';
+export const getApiInterviewMasterEndPoint =  'http://0.0.0.0:6543/ui/0';
