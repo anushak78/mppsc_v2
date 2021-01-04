@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { InterviewMasterService } from '../interview-master.service';
@@ -17,57 +17,48 @@ export class AddInterviewComponent implements OnInit {
   Officer = [{ name: 'Nseit' }];
   board = [{ name: 'A1' }];
   chairman = [{ name: 'A1' }]
+  interview: FormGroup;
+  dates: FormArray;
 
   constructor(private InterviewMasterService: InterviewMasterService,
-    private router: Router) { }
+    private router: Router,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.interview = this.fb.group({
+      Details: this.fb.group({
+        interview_id: ['', [Validators.required]],
+        interview_name: ['', [Validators.required]],
+        notification: ['', [Validators.required]],
+        status: ['yes', [Validators.required]],
+      }),
+      dates: this.fb.array([this.addDateForm()]),
+      marks: this.fb.group({
+        unreserved_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        unreserved_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        EWS_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        EWS_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        OBC_NCL_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        OBC_NCL_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        SC_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        SC_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        ST_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        ST_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      }),
+      verification: this.fb.group({
+        verfication_officer: ['', [Validators.required]],
+        interviewDatesOfficer: ['', [Validators.required]]
+      }),
+      board: this.fb.group({
+        boardName: ['', [Validators.required]],
+        interviewDatesBoard: ['', [Validators.required]]
+      }),
+      chairman: this.fb.group({
+        boardChairman: ['', [Validators.required]],
+        member: ['', [Validators.required]],
+      }),
+    })
   }
-
-  interview = new FormGroup({
-    Details: new FormGroup({
-      interview_id: new FormControl('', [
-        Validators.required,
-      ]),
-      interview_name: new FormControl('', [
-        Validators.required,
-      ]),
-      notification: new FormControl('', [
-        Validators.required,
-      ]),
-      status: new FormControl('yes', [
-        Validators.required,
-      ]),
-    }),
-    dates: new FormGroup({
-      fromDate: new FormControl('', [Validators.required]),
-      toDate: new FormControl('', [Validators.required])
-    }),
-    marks: new FormGroup({
-      unreserved_max: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      unreserved_min: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      EWS_max: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      EWS_min: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      OBC_NCL_max: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      OBC_NCL_min: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      SC_max: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      SC_min: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      ST_max: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-      ST_min: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-    }),
-    verification: new FormGroup({
-      verfication_officer: new FormControl('', [Validators.required]),
-      interviewDatesOfficer: new FormControl('', [Validators.required])
-    }),
-    board: new FormGroup({
-      boardName: new FormControl('', [Validators.required]),
-      interviewDatesBoard: new FormControl('', [Validators.required])
-    }),
-    chairman: new FormGroup({
-      boardChairman: new FormControl('', [Validators.required]),
-      member: new FormControl('', [Validators.required])
-    }),
-  })
 
   onNext() {
     this.tabIndex += 1;
@@ -84,6 +75,23 @@ export class AddInterviewComponent implements OnInit {
 
   public previousStep() {
     this.selectedIndex -= 1;
+  }
+
+  addDateForm() {
+    return this.fb.group({
+      fromDate: ['', [Validators.required]],
+      toDate: ['', [Validators.required]],
+    })
+  }
+
+  async addDates() {
+    this.dates = this.interview.get('dates') as FormArray;
+    this.dates.push(this.addDateForm());
+  }
+
+  async deleteDates(i) {
+    const arrayControl = <FormArray>this.interview.controls['dates'];
+    arrayControl.removeAt(i);
   }
 
   async onSubmit() {

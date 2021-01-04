@@ -41,35 +41,43 @@
                 </form>
             </mat-tab>
             <mat-tab label="Step 2">
-                <div [formGroup]="interview.controls.dates">
-                    <div class="grid-2">
-                        <div>
-                            <mat-form-field>
-                                <mat-label>From date</mat-label>
-                                <!-- #docregion toggle -->
-                                <input matInput [matDatepicker]="picker" formControlName="fromDate">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                                <!-- #enddocregion toggle -->
-                            </mat-form-field>
+                <form>
+                    <div formArrayName="dates" *ngFor="let a of interview.controls.dates; let i = index">
+                        <div class="grid-2" [formGroupName]="i">
+                            <div>
+                                <mat-form-field>
+                                    <mat-label>From date</mat-label>
+                                    <!-- #docregion toggle -->
+                                    <input matInput [matDatepicker]="picker" formControlName="fromDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <!-- #enddocregion toggle -->
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field>
+                                    <mat-label>To date</mat-label>
+                                    <!-- #docregion toggle -->
+                                    <input matInput [matDatepicker]="topicker" formControlName="toDate">
+                                    <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #topicker></mat-datepicker>
+                                    <!-- #enddocregion toggle -->
+                                </mat-form-field>
+                            </div>
+                            <button mat-mini-fab color="default" (click)="deleteDates(i)">
+                                <mat-icon>remove</mat-icon>
+                            </button>
                         </div>
-                        <div>
-                            <mat-form-field>
-                                <mat-label>To date</mat-label>
-                                <!-- #docregion toggle -->
-                                <input matInput [matDatepicker]="topicker" formControlName="toDate">
-                                <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
-                                <mat-datepicker #topicker></mat-datepicker>
-                                <!-- #enddocregion toggle -->
-                            </mat-form-field>
-                        </div>
+                        <button mat-mini-fab color="default" (click)="addDates()">
+                            <mat-icon>add</mat-icon>
+                        </button>
                     </div>
                     <div class="right">
                         <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
                         <button mat-raised-button color="primary" [disabled]="!interview.controls.dates.valid"
                             class="ml-10" (click)="nextStep()">Next</button>
                     </div>
-                </div>
+                </form>
             </mat-tab>
             <mat-tab label="Step 3">
                 <div [formGroup]="interview.controls.marks">
@@ -191,8 +199,8 @@
                 </div>
                 <div class="right">
                     <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" [disabled]="!interview.controls.board.valid"
-                        class="ml-10" (click)="nextStep()">Next</button>
+                    <button mat-raised-button color="primary" [disabled]="!interview.controls.board.valid" class="ml-10"
+                        (click)="nextStep()">Next</button>
                 </div>
             </mat-tab>
             <mat-tab label="Step 6">
