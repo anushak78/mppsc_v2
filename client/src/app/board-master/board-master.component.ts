@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BoardMasterService } from './board-master.service';
-import { BoardMaster } from './model/board-master.model';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {BoardMasterService} from './board-master.service';
+import {BoardMaster} from './model/board-master.model';
+import {GuestUserMaster} from "../guest-master/model/GuestUserMaster";
+import {ConfirmDialogComponent} from "../dialogs/confirm/confirm.component";
+import {MessageDialogComponent} from "../dialogs/message/message.component";
+import {Status} from "../constant";
 
 @Component({
   selector: 'app-board-master',
@@ -10,35 +14,56 @@ import { BoardMaster } from './model/board-master.model';
 })
 export class BoardMasterComponent implements OnInit {
 
-  displayedColumns: string[];
-  table_data;
-  board: BoardMaster[] = [];
+  boardList: BoardMaster[] = [];
+  boardId: number;
+  status = Status;
+  @ViewChild('confirmDlg', {static: false})
+  confirmDlg: ConfirmDialogComponent;
+
+  @ViewChild('messageDlg', {static: false})
+  messageDlg: MessageDialogComponent;
 
   constructor(private router: Router,
-    private BoardMasterService: BoardMasterService) {
+              private boardMasterService: BoardMasterService) {
   }
 
   async ngOnInit() {
-    let rel = await this.BoardMasterService.fetchBoardList();
-    if (rel) {
-      this.board = this.BoardMasterService.getBoardList;
-      // this.table_data = new MatTableDataSource(this.board);
-    } else {
-      alert(this.BoardMasterService.getErrorMessage);
-    }
-   }
-
-  gotoPage(pageName: string) {
-    this.router.navigate([pageName])
+    await this.loadData();
   }
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase();
-    this.table_data.filter = filterValue;
+  async loadData() {
+    const rel = await this.boardMasterService.fetchBoardList();
+    if (rel) {
+      this.boardList = this.boardMasterService.getBoardList;
+    } else {
+      alert(this.boardMasterService.getErrorMessage);
+    }
+  }
+
+  gotoPage(pageName: string) {
+    this.router.navigate([pageName]);
   }
 
   updateBoard(id: number) {
-    this.router.navigate([`board-master/add-board/${id}`]);
+    this.router.navigate([`boards/add-board/${id}`]);
   }
+
+  async openDeleteBoard(u: BoardMaster) {
+    this.boardId = u.id;
+    this.confirmDlg.openDialog('Delete user',
+      `Do you really want to delete user <b>${u.boardName}</b>?`,
+      await this.onDeleteBoard.bind(this));
+  }
+
+  async onDeleteBoard(flag: boolean) {
+    if (flag) {
+      const rel = await this.boardMasterService.deleteBoardData(this.boardId);
+      if (rel) {
+        this.loadData();
+      } else {
+        this.messageDlg.openDialog(this.boardMasterService.getErrorMessage);
+      }
+    }
+  }
+
 }

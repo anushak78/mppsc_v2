@@ -6,28 +6,28 @@
         <div>
             <mat-form-field>
                 <mat-label>Search</mat-label>
-                <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+                <input type="text" matInput>
                 <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
         </div>
         <div class="right">
         </div>
     </div>
-    <mat-table #table [dataSource]="table_data">
+    <mat-table #table>
 
-        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
-            <ng-container *ngIf="disCol != 'edit'">
-                <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
-            </ng-container>
-            <mat-cell *matCellDef="let element " style="cursor: default;"
-                (click)="openDialogWithTemplateRef(candModal)">
-                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>
-                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>
-            </mat-cell>
-        </ng-container>
+<!--        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">-->
+<!--            <ng-container *ngIf="disCol != 'edit'">-->
+<!--                <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>-->
+<!--            </ng-container>-->
+<!--            <mat-cell *matCellDef="let element " style="cursor: default;"-->
+<!--                (click)="openDialogWithTemplateRef(candModal)">-->
+<!--                <span *ngIf="disCol != 'status' && disCol != 'edit'">{{element[disCol]}}</span>-->
+<!--                <span *ngIf="disCol == 'status'">{{element[disCol] || 'Active'}}</span>-->
+<!--            </mat-cell>-->
+<!--        </ng-container>-->
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+<!--        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
+<!--        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
     </mat-table>
 
     <mat-paginator #paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>

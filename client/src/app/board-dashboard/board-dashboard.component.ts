@@ -1,9 +1,11 @@
-import {Component, OnInit, ViewChildren, QueryList, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import {Component, OnInit, ViewChildren, QueryList, TemplateRef, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {Router} from '@angular/router';
+import {BoardMaster} from '../board-master/model/board-master.model';
+import {MessageDialogComponent} from '../dialogs/message/message.component';
 
 @Component({
   selector: 'app-board-dashboard',
@@ -12,49 +14,19 @@ import { Router } from '@angular/router';
 })
 export class BoardDashboardComponent implements OnInit {
 
-  displayedColumns: string[];
-  table_data;
-  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-  constructor(private router: Router,
-    private dialog: MatDialog) {
+  boardData = new BoardMaster();
+  @ViewChild('messageDlg', {static: false})
+  messageDlg: MessageDialogComponent;
+
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
-    this.displayedColumns = ['id', 'name', 'board_name', 'status']
-    let data = []
-    data = [
-      {id: '123', name: 'abc', board_name: 'some data', status: null},
-      {id: '456', name: 'def', board_name: 'some data', status: null},
-      {id: '789', name: 'ghi', board_name: 'some data', status: null}                                                                                                                                                     
-    ]
-    this.table_data = new MatTableDataSource(data)
-  }
 
-  ngAfterViewInit() {
-    this.table_data.paginator = this.paginator.toArray()[0];
-  }
-
-  openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
-    let config = {
-      position: {
-        top: '0px',
-        right: '0px'
-      },
-      height: '100%',
-      width: '50vw',
-      panelClass: 'full-screen-modal',
-    };
-    this.dialog.open(templateRef, config)
   }
 
   gotoPage(pageName: string) {
     this.router.navigate([pageName])
-  }
-
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase();
-    this.table_data.filter = filterValue;
   }
 
 }

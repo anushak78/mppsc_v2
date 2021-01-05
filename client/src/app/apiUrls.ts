@@ -20,5 +20,12 @@ export const getApiDetailsGuestUserMastercollectionEndPoint = (userId: number) =
 export const getApiDeleteGuestUserMastercollectionEndPoint = (userId: number) => {
   return `http://0.0.0.0:6543/ui/add_delete_user/${userId}`;
 };
+export const getApiDetailsBoardUserMastercollectionEndPoint = (boardId: number) => {
+  return `http://0.0.0.0:6543/ui/board_details/${boardId}`;
+};
+export const getApiDeleteBoardUserMastercollectionEndPoint = (boardId: number) => {
+  return `http://0.0.0.0:6543/ui/delete_board/${boardId}`;
+};
+export const getApiEditBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_board';
 export const getApiAddInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/add_interview';
 export const getApiInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/interview_list';

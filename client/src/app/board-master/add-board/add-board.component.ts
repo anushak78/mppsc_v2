@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { BoardMasterService } from '../board-master.service';
-import { BoardMaster } from '../model/board-master.model';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BoardMasterService} from '../board-master.service';
+import {BoardMaster} from '../model/board-master.model';
+import {MessageDialogComponent} from '../../dialogs/message/message.component';
 
 @Component({
   selector: 'app-add-board',
@@ -10,44 +10,51 @@ import { BoardMaster } from '../model/board-master.model';
   styleUrls: ['./add-board.component.scss']
 })
 export class AddBoardComponent implements OnInit {
-  BoardMaster = new BoardMaster();
+  boardMaster = new BoardMaster();
+  activity: string;
+  boardId: number;
+  @ViewChild('messageDlg', {static: false})
+  messageDlg: MessageDialogComponent;
 
-  constructor(private BoardMasterService: BoardMasterService,
-    private router: Router) { }
-
-  ngOnInit(): void {
+  constructor(private boardMasterService: BoardMasterService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
-  boardData = new FormGroup({
-    subject_name: new FormControl('', [
-      Validators.required,
-    ]),
-    no_of_members: new FormControl(null, [
-      Validators.required,
-    ]),
-    board_id: new FormControl(null, [
-      Validators.required,
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-    ]),
-    confirm_password: new FormControl('', [
-      Validators.required,
-    ]),
-  });
+  async ngOnInit() {
+    if (this.route.snapshot.params.boardId !== undefined) {
+      this.activity = 'Edit';
+      this.boardId = this.route.snapshot.params.boardId;
+      await this.loadBoardDetails();
+    } else {
+      this.activity = 'Add';
+    }
+  }
+
+  async loadBoardDetails() {
+    const rel = await this.boardMasterService.getBoardDetails(this.route.snapshot.params.boardId);
+    if (rel) {
+      this.boardMaster = this.boardMasterService.getBoardData;
+    } else {
+      this.messageDlg.openDialog(this.boardMasterService.getErrorMessage);
+    }
+  }
 
   async onSubmit() {
     let rel;
-    rel = await this.BoardMasterService.addBoard(this.BoardMaster);
+    if (this.activity === 'Edit') {
+      rel = await this.boardMasterService.editBoard(this.boardMaster);
+    } else {
+      rel = await this.boardMasterService.addBoard(this.boardMaster);
+    }
+    if (rel) {
+      this.gotoPage('boards');
+    } else {
+      this.messageDlg.openDialog(this.boardMasterService.getErrorMessage);
+    }
+  }
 
-    if (this.boardData.invalid ) {
-      Object.keys(this.boardData.controls).forEach(key => {
-        this.boardData.get(key).markAsTouched();
-      });
-      return;
-    }
-    else {
-      this.router.navigate([`/board-master`]);
-    }
+  gotoPage(pageName: string) {
+    this.router.navigate([pageName]);
   }
 }

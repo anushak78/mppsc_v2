@@ -45,7 +45,7 @@ class BoardMaster(Base):
     def get_board(cls, DBSession, id):
         board = DBSession.query(BoardMaster).filter_by(id=id).first()
         board_details = {
-            "id": ele.id,
+            "id": board.id,
             "login_id": board.login_id,
             "password": board.password,
             "status": board.status,

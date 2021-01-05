@@ -34,7 +34,7 @@ const routes: Routes = [
         )
       },
       {
-        path: 'board-master',
+        path: 'boards',
         loadChildren: () => import('./board-master/board-master.module').then(
           m => m.BoardMasterModule
         )
