@@ -87,7 +87,7 @@ def add_board(request):
 @svc_delete_board.post(require_csrf=False)
 def delete_board(request):
     id = request.matchdict['id']
-    board = BoardMaster.get_board(request.dbsession, id)
+    board = request.dbsession.query(BoardMaster).filter_by(id=id).first()
     board.status = 0
     
     return {
@@ -105,7 +105,7 @@ def edit_board(request):
     password = request.json_body['password']
     status = request.json_body['status']
 
-    board = BoardMaster.get_board(request.dbsession, id)
+    board = request.dbsession.query(BoardMaster).filter_by(id=id).first()
     board.board_name = board_name
     board.no_of_members = no_of_members
     board.login_id = login_id
