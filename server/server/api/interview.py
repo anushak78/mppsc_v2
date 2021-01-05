@@ -49,6 +49,10 @@ svc_add_user_boards = Service(
     name="api.add_user_boards", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_user_boards", cors_policy=cors.POLICY)
 
+svc_delete_interview = Service(
+    name="api.delete_interview", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/delete_interview/{id}", cors_policy=cors.POLICY)
+
 
 @svc_interview_list.get()
 def get_interview_list(request):
@@ -142,7 +146,7 @@ def add_interview_marks(request):
     marks = request.json_body['marks']
 
     for ele in marks:
-        interview_marks = InterviewDatesMaster(interview_id=id, 
+        interview_marks = InterviewMarksMaster(interview_id=id, 
             min_marks=ele.min_marks, max_marks=ele.max_marks)
         request.dbsession.add(interview_marks)
     
@@ -187,6 +191,24 @@ def add_user_boards(request):
         "code": 0,
         "message": "success"
     }
+
+
+@svc_delete_interview.post(require_csrf=False)
+def delete_interview(request):
+    id = request.matchdict['id']
+    boards = BoardInterviewMap.get_interview_board(request.dbsession, id)
+    for ele in boards:
+        request.dbsession.query(BoardUserMap).filter(
+            BoardUserMap.boardmap_id == ele.id).delete()
+            
+    request.dbsession.query(BoardInterviewMap).filter(
+        BoardInterviewMap.interview_id==id).delete()
+    request.dbsession.query(InterviewMarksMaster).filter(
+        InterviewMarksMaster.interview_id==id).delete()
+    request.dbsession.query(InterviewDatesMaster).filter(
+        InterviewDatesMaster.interview_id==id).delete()
+    request.dbsession.query(InterviewMaster).filter(
+        InterviewMaster.id==id).delete()
 
 
 def get_guest_user_list(request, date):
