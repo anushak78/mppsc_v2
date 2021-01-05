@@ -53,7 +53,7 @@ def get_board_list(request):
 
 @svc_add_board.post(require_csrf=False)
 def add_board(request):
-    subject_name = request.json_body['subject_name']
+    board_name = request.json_body['board_name']
     no_of_members = request.json_body['no_of_members']
     login_id = request.json_body['login_id']
     password = request.json_body['password']
@@ -73,7 +73,7 @@ def add_board(request):
             "message": "Data exists"    
         }
 
-    board = BoardMaster(subject_name=subject_name, no_of_members=no_of_members, 
+    board = BoardMaster(board_name=board_name, no_of_members=no_of_members, 
         login_id=login_id, status=status)
     board.set_password(password)
     request.dbsession.add(board)
@@ -99,14 +99,14 @@ def delete_board(request):
 @svc_edit_board.post(require_csrf=False)
 def edit_board(request):
     id = request.json_body['id']
-    subject_name = request.json_body['subject_name']
+    board_name = request.json_body['board_name']
     no_of_members = request.json_body['no_of_members']
     login_id = request.json_body['login_id']
     password = request.json_body['password']
     status = request.json_body['status']
 
     board = BoardMaster.get_board(request.dbsession, id)
-    board.subject_name = subject_name
+    board.board_name = board_name
     board.no_of_members = no_of_members
     board.login_id = login_id
     board.status = status

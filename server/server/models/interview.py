@@ -120,7 +120,7 @@ class BoardInterviewMap(Base):
                 "board_id": ele.board_id,
                 "date": str(ele.date),
                 "interview_id": ele.interview_id,
-                "subject_name": board.subject_name,
+                "board_name": board.board_name,
                 "login_id": board.login_id,
                 "status": board.status
             })

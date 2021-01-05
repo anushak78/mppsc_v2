@@ -11,15 +11,15 @@ from .meta import Base
 class BoardMaster(Base):
     __tablename__ = 'board_master'
     id = Column(Integer, primary_key=True)
-    subject_name = Column(Text)
+    board_name = Column(Text)
     no_of_members = Column(Integer)
     login_id = Column(Text)
     password = Column(Text)
     status = Column(Integer)
 
-    def __init__(self, subject_name, no_of_members, login_id, status):
+    def __init__(self, board_name, no_of_members, login_id, status):
         self.login_id = login_id
-        self.subject_name = subject_name
+        self.board_name = board_name
         self.no_of_members = no_of_members
         self.status = status
 
@@ -37,7 +37,7 @@ class BoardMaster(Base):
                 "password": ele.password,
                 "status": ele.status,
                 "no_of_members": ele.no_of_members,
-                "subject_name": ele.subject_name
+                "board_name": ele.board_name
             })
         return board_list
 
@@ -50,7 +50,7 @@ class BoardMaster(Base):
             "password": board.password,
             "status": board.status,
             "no_of_members": board.no_of_members,
-            "subject_name": board.subject_name
+            "board_name": board.board_name
         }
         return board_details
 
