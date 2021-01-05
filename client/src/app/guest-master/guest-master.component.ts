@@ -47,15 +47,11 @@ export class GuestMasterComponent implements OnInit {
     this.router.navigate([pageName]);
   }
 
-
-  editGuestUser(element) {
-    // this.parentTabIndex = 2;
-    // this.flag_edit = true;
-    // console.log(element);
-    // this.editGuestUserData = element;
+  updateUser(id: number) {
+    this.router.navigate([`guest-users/add-guest-user/${id}`]);
   }
 
-  async openDeleteUser(u: UserMaster) {
+  async openDeleteUser(u: GuestUserMaster) {
     this.deleteUserId = u.id;
     this.confirmDlg.openDialog('Delete user',
       `Do you really want to delete user <b>${u.name}</b>?`,
@@ -63,13 +59,13 @@ export class GuestMasterComponent implements OnInit {
   }
 
   async onDeleteUser(flag: boolean) {
-    // if (flag) {
-    //   const rel = await this.guestUserService.deleteUser(this.deleteUserId);
-    //   if (rel) {
-    //     this.loadData();
-    //   } else {
-    this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
-    //   }
-    // }
+    if (flag) {
+      const rel = await this.guestUserService.deleteGuestUser(this.deleteUserId);
+      if (rel) {
+        this.loadData();
+      } else {
+        this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
+      }
+    }
   }
 }

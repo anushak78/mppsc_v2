@@ -13,11 +13,13 @@ from .boardmaster import BoardMaster
 class InterviewMaster(Base):
     __tablename__ = 'interview_master'
     id = Column(Integer, primary_key=True)
+    interview_id = Column(Text)
     name = Column(Text)
     notification_no = Column(Text)
     status = Column(Integer)
 
-    def __init__(self, name, notification_no, status):
+    def __init__(self, name, notification_no, status, interview_id):
+        self.interview_id = interview_id
         self.notification_no = notification_no
         self.name = name
         self.status = status

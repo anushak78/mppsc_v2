@@ -27,8 +27,8 @@ export class AddInterviewComponent implements OnInit {
 
     this.addInterview = this.fb.group({
       interview_id: ['', [Validators.required]],
-      interview_name: ['', [Validators.required]],
-      notification: ['', [Validators.required]],
+      name: ['', [Validators.required]],
+      notification_no: ['', [Validators.required]],
       status: ['yes', [Validators.required]],
     })
 
@@ -107,8 +107,8 @@ export class AddInterviewComponent implements OnInit {
 
   async onSubmit() {
     let rel;
-    console.log("value", this.interview.value);
-    
+    console.log("value", this.addInterview.value);
+
     rel = await this.InterviewMasterService.addInterview(this.addInterview.value);
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);

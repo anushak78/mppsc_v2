@@ -78,10 +78,10 @@ def get_guest_user_details(request):
     date_list = []
     for ele in dates:
         date_list.append({
-            "id": ele1.id,
-            "guest_id": ele1.guest_id,
-            "from_date": str(ele1.from_date),
-            "to_date": str(ele1.to_date)
+            "id": ele.id,
+            "guest_id": ele.guest_id,
+            "from_date": str(ele.from_date),
+            "to_date": str(ele.to_date)
         })
     user_details = {
         "id": user.id,
@@ -145,8 +145,9 @@ def add_guest_user_dates(request):
 @svc_guest_delete_user.post(require_csrf=False)
 def delete_guest_user(request):
     id = request.matchdict['id']
-    delete_dates_date = request.dbsession(GuestUserDateMap).filter_by(guest_id=id).delete()
-    delete_data = request.dbsession(GuestUserMaster).filter_by(id=id).delete()
+    delete_dates_date = request.dbsession.query(GuestUserDateMap).filter(
+        GuestUserDateMap.guest_id==id).delete()
+    delete_data = request.dbsession.query(GuestUserMaster).filter_by(id=id).delete()
 
     return {
         "code": 0,
@@ -163,20 +164,12 @@ def edit_guest_user(request):
     phone_no = request.json_body['phone_no']
     status = request.json_body['status']
 
-    users = GuestUserMaster.check_user(request.dbsession, email, phone_no)
-    if len(users) > 0:
-        return {
-            "code": 0,
-            "message": "Data exists"
-        }
-
     user = GuestUserMaster.get_user(request.dbsession, id)
     user.name = name
     user.email = email
     user.title = title
     user.phone_no = phone_no
     user.status = status
-    request.dbsession.commit()
     
     return {
         "code": 0,
@@ -189,7 +182,7 @@ def edit_guest_user_dates(request):
     guest_id = request.json_body['id']
     dates = request.json_body['dates']
 
-    delete_dates_date = request.dbsession(GuestUserDateMap).filter_by(guest_id=id).delete()
+    delete_dates_date = request.dbsession.query(GuestUserDateMap).filter_by(guest_id=id).delete()
     for ele in dates:
         to_date = ele['to_date']
         from_date = ele['from_date']

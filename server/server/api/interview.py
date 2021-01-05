@@ -59,7 +59,8 @@ def get_interview_list(request):
             "id": ele.id,
             "name": ele.name,
             "notification_no": ele.notification_no,
-            "status": ele.status
+            "status": ele.status,
+            "interview_id": ele.interview_id
         })
     return {
         "code": 0,
@@ -80,6 +81,7 @@ def get_interview_details(request):
         "id": ele.id,
         "name": ele.name,
         "notification_no": ele.notification_no,
+        "interview_id": ele.interview_id,
         "status": ele.status,
         "dates": dates,
         "marks": marks,
@@ -95,6 +97,7 @@ def get_interview_details(request):
 
 @svc_add_interview.post(require_csrf=False)
 def add_interview(request):
+    interview_id = request.json_body['interview_id']
     name = request.json_body['name']
     notification_no = request.json_body['notification_no']
     status = request.json_body['status']
@@ -107,7 +110,7 @@ def add_interview(request):
         }
 
     interview = InterviewMaster(name=name, 
-        notification_no=notification_no, status=status)
+        notification_no=notification_no, status=status, interview_id=interview_id)
     request.dbsession.add(interview)
     return {
             "code": 0,

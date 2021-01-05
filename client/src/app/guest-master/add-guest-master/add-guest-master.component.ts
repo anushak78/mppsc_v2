@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {GuestUserServiceService} from "../guest-user-service.service";
-import {GuestUserMaster} from "../model/GuestUserMaster";
-import {MessageDialogComponent} from "../../dialogs/message/message.component";
+import {ActivatedRoute, Router} from '@angular/router';
+import {GuestUserServiceService} from '../guest-user-service.service';
+import {GuestUserMaster} from '../model/GuestUserMaster';
+import {MessageDialogComponent} from '../../dialogs/message/message.component';
+import {DatesRange} from '../model/DatesRange';
 
 @Component({
   selector: 'app-add-guest-master',
@@ -12,24 +12,44 @@ import {MessageDialogComponent} from "../../dialogs/message/message.component";
 })
 export class AddGuestMasterComponent implements OnInit {
   tabIndex = 1;
-  parentTabIndex = 0;
-  date_list = [];
-  flag_dates = false;
-  flag_edit = false;
-  editGuestUserData;
+  dateList: DatesRange[] = [];
+  dateRange = new DatesRange();
+  flagDates = false;
   guestData = new GuestUserMaster();
+  activity: string;
+  userId: number;
+
   @ViewChild('messageDlg', {static: false})
   messageDlg: MessageDialogComponent;
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private guestUserService: GuestUserServiceService) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.tabIndex = 0;
-    this.parentTabIndex = 0;
-    this.date_list = [];
-    this.date_list.push({id: 1, to_date: '', from_date: ''});
+    if (this.route.snapshot.params.userId !== undefined) {
+      this.activity = 'Edit';
+      this.userId = this.route.snapshot.params.userId;
+      await this.loadUserDetails();
+    } else {
+      this.activity = 'Add';
+      this.dateList.push(this.dateRange);
+    }
+  }
+
+  async loadUserDetails() {
+    const rel = await this.guestUserService.getUserDetails(this.route.snapshot.params.userId);
+    if (rel) {
+      this.guestData = this.guestUserService.getGuestUserDetailsData;
+      this.dateList = this.guestData.dates;
+      if (this.dateList.length === 0) {
+        this.addDateItem();
+      }
+    } else {
+      this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
+    }
   }
 
   gotoPage(pageName: string) {
@@ -38,7 +58,11 @@ export class AddGuestMasterComponent implements OnInit {
 
   async onNext() {
     let rel;
-    rel = await this.guestUserService.addGuestUser(this.guestData);
+    if (this.activity === 'Edit') {
+      rel = await this.guestUserService.editGuestUser(this.guestData);
+    } else {
+      rel = await this.guestUserService.addGuestUser(this.guestData);
+    }
     if (!rel) {
       this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
     } else {
@@ -47,34 +71,31 @@ export class AddGuestMasterComponent implements OnInit {
   }
 
   addDateItem() {
-    let len = this.date_list.length + 1;
-    this.date_list.push({id: len, to_date: '', from_date: ''})
+    this.dateRange = new DatesRange();
+    this.dateList.push(this.dateRange);
+    console.log(this.dateList);
   }
 
   deleteDateItem(id) {
-    this.date_list.splice(id - 1, 1);
-    for (let i in this.date_list) {
-      this.date_list[i] = i + 1;
-    }
-  }
-
-  nextActivated() {
-    // return this.guestUserData.invalid
+    this.dateList.splice(id - 1, 1);
   }
 
   async addDates() {
-    console.log(this.date_list);
-    this.flag_dates = true;
+    console.log(this.dateList);
     let relDates;
-    relDates = await this.guestUserService.addGuestUserDates(this.date_list);
+    if (this.activity === 'Edit') {
+      relDates = await this.guestUserService.editGuestUserDates(this.dateList, this.userId);
+    } else {
+      relDates = await this.guestUserService.addGuestUserDates(this.dateList);
+    }
     if (!relDates) {
       this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
+    } else {
+      this.flagDates = true;
     }
   }
 
   sendEmail() {
     this.messageDlg.openDialog('Email Sent!!!');
   }
-
-
 }

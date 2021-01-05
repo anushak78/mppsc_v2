@@ -1,20 +1,19 @@
 <div class="box-container">
   <div class="grid-2">
     <div>
-      <h2 class="mat-h2">Add Guest User</h2>
+      <h2 class="mat-h2">{{activity}} Guest User</h2>
     </div>
     <div class="right">
-      <button mat-raised-button color="primary" (click)="gotoPage('users')"
+      <button mat-raised-button color="primary" (click)="gotoPage('guest-users')"
               style="margin-left: 10px;">Back
       </button>
     </div>
   </div>
-  <hr>
   <div>
     <ng-container>
       <mat-tab-group [(selectedIndex)]="tabIndex">
         <mat-tab label="Step 1">
-          <div>
+          <div style="margin-top: 10px">
             <form #f="ngForm" (ngSubmit)="f.form.valid">
               <div class="box-container">
                 <div class="center">
@@ -81,15 +80,15 @@
           </div>
         </mat-tab>
         <mat-tab label="Step 2">
-          <div class="box-container">
-            <div *ngFor="let item of date_list; let i=index">
-              <div class="grid-3">
+          <div class="box-container"  style="margin-top: 10px">
+            <div *ngFor="let item of dateList; let i=index">
+              <div class="grid-3" style="width: 50%">
                 <div class="field">
                   <mat-form-field>
                     <mat-label>From date</mat-label>
                     <!-- #docregion toggle -->
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="item['from_date']"
-                           [disabled]="flag_dates">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="item.fromDate"
+                           [disabled]="flagDates">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                     <!-- #enddocregion toggle -->
@@ -99,23 +98,23 @@
                   <mat-form-field>
                     <mat-label>To date</mat-label>
                     <!-- #docregion toggle -->
-                    <input matInput [matDatepicker]="topicker" [(ngModel)]="item['to_date']"
-                           [disabled]="flag_dates">
+                    <input matInput [matDatepicker]="topicker" [(ngModel)]="item.toDate"
+                           [disabled]="flagDates">
                     <mat-datepicker-toggle matSuffix [for]="topicker">
                     </mat-datepicker-toggle>
                     <mat-datepicker #topicker></mat-datepicker>
                     <!-- #enddocregion toggle -->
                   </mat-form-field>
                 </div>
-                <div *ngIf="i == date_list.length-1">
+                <div *ngIf="i == dateList.length-1">
                   <button mat-mini-fab color="default" (click)="addDateItem()"
-                          [disabled]="flag_dates">
+                          [disabled]="flagDates">
                     <mat-icon>add</mat-icon>
                   </button>
                 </div>
-                <div *ngIf="i != date_list.length-1">
+                <div *ngIf="i != dateList.length-1">
                   <button mat-mini-fab color="default" (click)="deleteDateItem(i)"
-                          [disabled]="flag_dates">
+                          [disabled]="flagDates">
                     <mat-icon>remove</mat-icon>
                   </button>
                 </div>
@@ -123,13 +122,13 @@
             </div>
             <div class="right">
               <button mat-raised-button color="primary" (click)="addDates()"
-                      [disabled]="flag_dates">Done
+                      [disabled]="flagDates">Done
               </button>
             </div>
-            <div *ngIf="flag_dates">
-              <div *ngFor="let item of date_list; let i=index">
+            <div *ngIf="flagDates">
+              <div *ngFor="let item of dateList; let i=index">
                 <mat-checkbox></mat-checkbox>
-                {{item['from_date']}} to {{item['to_date']}}
+                {{item.fromDate}} to {{item.toDate}}
               </div>
               <div class="right">
                 <button mat-raised-button color="primary" (click)="sendEmail()">Send Email</button>
@@ -141,3 +140,4 @@
     </ng-container>
   </div>
 </div>
+<app-message-dialog #messageDlg></app-message-dialog>
