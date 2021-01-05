@@ -13,3 +13,5 @@ export const Status = {
   1: 'Active',
   0: 'Inactive'
 };
+
+export const ProjectTitle = 'Interview Management System';
