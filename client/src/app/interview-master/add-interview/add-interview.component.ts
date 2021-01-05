@@ -18,13 +18,20 @@ export class AddInterviewComponent implements OnInit {
   board = [{ name: 'A1' }];
   chairman = [{ name: 'A1' }]
   interview: FormGroup;
-  dates: FormArray;
-
+  addInterview: FormGroup;
   constructor(private InterviewMasterService: InterviewMasterService,
     private router: Router,
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
+
+    this.addInterview = this.fb.group({
+      interview_id: ['', [Validators.required]],
+      interview_name: ['', [Validators.required]],
+      notification: ['', [Validators.required]],
+      status: ['yes', [Validators.required]],
+    })
+
     this.interview = this.fb.group({
       Details: this.fb.group({
         interview_id: ['', [Validators.required]],
@@ -32,7 +39,10 @@ export class AddInterviewComponent implements OnInit {
         notification: ['', [Validators.required]],
         status: ['yes', [Validators.required]],
       }),
-      dates: this.fb.array([this.addDateForm()]),
+      dates: this.fb.group({
+        fromDate: ['', [Validators.required]],
+        toDate: ['', [Validators.required]]
+      }),
       marks: this.fb.group({
         unreserved_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
         unreserved_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
@@ -78,15 +88,16 @@ export class AddInterviewComponent implements OnInit {
   }
 
   addDateForm() {
-    return this.fb.group({
-      fromDate: ['', [Validators.required]],
-      toDate: ['', [Validators.required]],
-    })
+    return this.fb.group(
+      {
+        fromDate: ['', [Validators.required]],
+        toDate: ['', [Validators.required]],
+      })
   }
 
   async addDates() {
-    this.dates = this.interview.get('dates') as FormArray;
-    this.dates.push(this.addDateForm());
+    // this.dates = this.interview.get('dates') as FormArray;
+    // this.dates.push(this.addDateForm());
   }
 
   async deleteDates(i) {
@@ -96,11 +107,14 @@ export class AddInterviewComponent implements OnInit {
 
   async onSubmit() {
     let rel;
-    rel = await this.InterviewMasterService.addInterview(this.InterviewMaster);
+    console.log("value", this.interview.value);
+    
+    rel = await this.InterviewMasterService.addInterview(this.addInterview.value);
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);
     } else {
       this.router.navigate([`/interview-master`]);
     }
   }
+
 }

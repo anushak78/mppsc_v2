@@ -1,10 +1,11 @@
 <!-- <pre>Form Values: {{interview.value | json}}</pre>
 <pre>Form Values: {{interview.controls.dates.status}}</pre> -->
+{{addInterview.value | json}}
 <div class="box-container">
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
         <div [formGroup]="interview">
             <mat-tab label="Step 1">
-                <form [formGroup]="interview.controls.Details">
+                <form [formGroup]="addInterview">
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
@@ -35,42 +36,39 @@
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" [disabled]="!interview.controls.Details.valid"
+                        <button mat-raised-button color="primary" (click)="onSubmit()">Add</button>
+                        <button mat-raised-button color="primary" [disabled]="!addInterview.valid"
                             (click)="nextStep()">Next</button>
                     </div>
                 </form>
             </mat-tab>
             <mat-tab label="Step 2">
-                <form>
-                    <div formArrayName="dates" *ngFor="let a of interview.controls.dates; let i = index">
-                        <div class="grid-2" [formGroupName]="i">
+                <form [formGroup]="interview.controls.dates">
+                    <div>
+                        <div class="grid-2">
                             <div>
                                 <mat-form-field>
                                     <mat-label>From date</mat-label>
-                                    <!-- #docregion toggle -->
                                     <input matInput [matDatepicker]="picker" formControlName="fromDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
-                                    <!-- #enddocregion toggle -->
                                 </mat-form-field>
                             </div>
                             <div>
                                 <mat-form-field>
                                     <mat-label>To date</mat-label>
-                                    <!-- #docregion toggle -->
                                     <input matInput [matDatepicker]="topicker" formControlName="toDate">
                                     <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
                                     <mat-datepicker #topicker></mat-datepicker>
-                                    <!-- #enddocregion toggle -->
                                 </mat-form-field>
                             </div>
-                            <button mat-mini-fab color="default" (click)="deleteDates(i)">
+                            <!-- <button mat-mini-fab color="default" (click)="deleteDates(i)">
                                 <mat-icon>remove</mat-icon>
-                            </button>
+                            </button> -->
                         </div>
-                        <button mat-mini-fab color="default" (click)="addDates()">
+                        <!-- <button mat-mini-fab color="default" (click)="addDates()">
                             <mat-icon>add</mat-icon>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="right">
                         <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
@@ -79,6 +77,7 @@
                     </div>
                 </form>
             </mat-tab>
+
             <mat-tab label="Step 3">
                 <div [formGroup]="interview.controls.marks">
                     <div class="grid-3">
