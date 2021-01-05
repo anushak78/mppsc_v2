@@ -36,7 +36,7 @@ export class InterviewMasterService {
 
   async addInterview(interview: InterviewMaster) {
     return await this.http.post(
-      apiUrl.getApiAddInterviewMasterEndPoint, interview.toJSON).toPromise()
+      apiUrl.getApiAddInterviewMasterEndPoint, interview.toJSON()).toPromise()
       .then((response) => {
         this.httpErrorMessage = response['message'];
         return true;

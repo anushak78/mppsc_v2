@@ -11,27 +11,26 @@ import { InterviewMaster } from '../model/interview-master.model';
   styleUrls: ['./add-interview.component.scss']
 })
 export class AddInterviewComponent implements OnInit {
-  InterviewMaster = new InterviewMaster();
+  interviewMaster = new InterviewMaster();
 
   tabIndex = 0
   Officer = [{ name: 'Nseit' }];
   board = [{ name: 'A1' }];
   chairman = [{ name: 'A1' }]
   interview: FormGroup;
-  addInterview: FormGroup;
+  //addInterview: FormGroup;
   constructor(private InterviewMasterService: InterviewMasterService,
     private router: Router,
     private fb: FormBuilder) { }
 
+  addInterview = new FormGroup({
+    interview_id: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    notification_no: new FormControl('', [Validators.required]),
+    status: new FormControl('yes', [Validators.required]),
+  })
+
   ngOnInit(): void {
-
-    this.addInterview = this.fb.group({
-      interview_id: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      notification_no: ['', [Validators.required]],
-      status: ['yes', [Validators.required]],
-    })
-
     this.interview = this.fb.group({
       Details: this.fb.group({
         interview_id: ['', [Validators.required]],
@@ -107,9 +106,10 @@ export class AddInterviewComponent implements OnInit {
 
   async onSubmit() {
     let rel;
-    console.log("value", this.addInterview.value);
-
-    rel = await this.InterviewMasterService.addInterview(this.addInterview.value);
+    this.interviewMaster = new InterviewMaster(this.addInterview.value);
+    console.log("in",this.interviewMaster);
+    
+    rel = await this.InterviewMasterService.addInterview(this.interviewMaster);
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);
     } else {

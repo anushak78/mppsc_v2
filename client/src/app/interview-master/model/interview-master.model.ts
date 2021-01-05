@@ -3,24 +3,28 @@ export class InterviewMaster {
     name: string;
     notification_no: number;
     status: string;
-    fromDate: any;
-    toDate: any;
-    unreserved_max: number;
-    unreserved_min: number;
-    EWS_max: number;
-    EWS_min: number;
-    OBC_NCL_max: number;
-    OBC_NCL_min: number;
-    SC_max: number;
-    SC_min: number;
-    ST_max: number;
-    ST_min: number;
-    verfication_officer: string;
-    interviewDatesOfficer: string;
-    boardName: string;
-    interviewDatesBoard: string
-    boardChairman: string;
-    member: string;
+    // fromDate: any;
+    // toDate: any;
+    // unreserved_max: number;
+    // unreserved_min: number;
+    // EWS_max: number;
+    // EWS_min: number;
+    // OBC_NCL_max: number;
+    // OBC_NCL_min: number;
+    // SC_max: number;
+    // SC_min: number;
+    // ST_max: number;
+    // ST_min: number;
+    // verfication_officer: string;
+    // interviewDatesOfficer: string;
+    // boardName: string;
+    // interviewDatesBoard: string
+    // boardChairman: string;
+    // member: string;
+
+    public constructor(init?: Partial<InterviewMaster>) {
+        Object.assign(this, init);
+    }
 
     static fromJson(data: Map<string, any>): InterviewMaster {
         const u: InterviewMaster = new InterviewMaster();
