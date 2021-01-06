@@ -22,7 +22,8 @@ requires = [
     'waitress',
     'cornice',
     'psycopg2-binary',
-    'colander'
+    'colander',
+    'six'
 ]
 
 tests_require = [
