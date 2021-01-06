@@ -27,6 +27,13 @@ class BoardMaster(Base):
         self.password = _sha512(password)
 
     @classmethod
+    def by_login(cls, DBSession, login_id):
+        return DBSession.query(BoardMaster).filter_by(login_id=login_id).first()
+
+    def check_password(self, password):
+        return self.password == _sha512(password)
+
+    @classmethod
     def get_boards(cls, DBSession):
         boards = DBSession.query(BoardMaster).all()
         board_list = []

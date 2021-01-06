@@ -38,18 +38,29 @@ export class LoginComponent implements OnInit {
     const userId = this.signInForm.controls['user_id'].value;
     const password = this.signInForm.controls['password'].value;
     const role = this.signInForm.controls['role'].value;
-    const rel = this.authService.login(userId, password, role);
+    const rel = await this.authService.login(userId, password, role);
     if (rel) {
       sessionStorage.setItem('role', this.signInForm.controls['role'].value);
-      if (this.signInForm.controls['role'].value == 0) {
-        this.router.navigate(['admin-dashboard']);
+      let user = this.authService.currentUserValue
+      console.log(user)
+      if (user['authenticated'] == true) {
+        if (this.signInForm.controls['role'].value == 0) {
+          this.router.navigate(['admin-dashboard']);
+        }
+        if (this.signInForm.controls['role'].value == 4) {
+          this.router.navigate(['board-dashboard']);
+        }
+        if (this.signInForm.controls['role'].value == 3) {
+          this.router.navigate(['vo-dashboard']);
+        }
       }
-      if (this.signInForm.controls['role'].value == 1) {
-        this.router.navigate(['board-dashboard']);
+      else {
+        alert("Invalid credentials!!")
       }
-      if (this.signInForm.controls['role'].value == 2) {
-        this.router.navigate(['vo-dashboard']);
-      }
+    }
+    else {
+      let message = this.authService.getErrorMessage
+      alert(message)
     }
   }
 }

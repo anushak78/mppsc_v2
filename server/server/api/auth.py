@@ -19,6 +19,7 @@ from pyramid.csrf import new_csrf_token
 from cornice import Service
 
 from ..models.usermaster import UserMaster
+from ..models.boardmaster import BoardMaster
 from . import cors
 
 log = logging.getLogger(__name__)
@@ -44,9 +45,9 @@ def login(request):
     ret = None
     # TODO: Board role
     # Admin and VO role login
-    if role == 0 or role == 2:
+    if role == 0 or role == 3:
         user = UserMaster.by_login(request.dbsession, login)
-        if user and user.check_password(passwd):
+        if user and user.check_password(passwd) and user.status == 1:
             headers = remember(request, login)
             request.response.headerlist.extend(headers)
             # set the new csrf token in response
@@ -56,6 +57,25 @@ def login(request):
             request.session["id"] = user.id
             request.session["role"] = user.role
             request.session["title"] = user.title
+            request.session["token"] = new_csrf_token(request)
+            ret = compute_whoami(request, login)
+        else:
+            headers = forget(request)
+            request.response.headerlist.extend(headers)
+            ret = compute_whoami(request, None)
+
+    elif role == 4:
+        user = BoardMaster.by_login(request.dbsession, login)
+        if user and user.check_password(passwd) and user.status == 1:
+            headers = remember(request, login)
+            request.response.headerlist.extend(headers)
+            # set the new csrf token in response
+            new_csrf_token(request)
+            request.session["login"] = login
+            request.session["board_name"] = user.board_name
+            request.session["id"] = user.id
+            request.session["no_of_members"] = user.no_of_members
+            request.session["role"] = 4
             request.session["token"] = new_csrf_token(request)
             ret = compute_whoami(request, login)
         else:
@@ -92,13 +112,22 @@ def compute_whoami(request, login):
     if login is None:
         return result
 
-    result['authenticated'] = True
-    result['login'] = request.session['login']
-    result['name'] = request.session['name']
-    result['id'] = request.session['id']
-    result['role'] = request.session['role']
-    result['title'] = request.session['title']
-    result['token'] = request.session['token']
+    if request.session['role'] == 0 or request.session['role'] == 3:
+        result['authenticated'] = True
+        result['login'] = request.session['login']
+        result['name'] = request.session['name']
+        result['id'] = request.session['id']
+        result['role'] = request.session['role']
+        result['title'] = request.session['title']
+        result['token'] = request.session['token']
+    elif request.session['role'] == 4:
+        result['authenticated'] = True
+        result['login'] = request.session['login']
+        result['board_name'] = request.session['board_name']
+        result['id'] = request.session['id']
+        result['role'] = request.session['role']
+        result['no_of_members'] = request.session['no_of_members']
+        result['token'] = request.session['token']
     return result
 
 # Local Variables:
