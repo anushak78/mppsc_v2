@@ -1,5 +1,5 @@
 export const Roles = {
-  1: 'Board Member',
+  1: 'Board Chairman',
   2: 'Chairman',
   3: 'Verification Officer'
 };

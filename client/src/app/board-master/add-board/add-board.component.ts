@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BoardMasterService} from '../board-master.service';
 import {BoardMaster} from '../model/board-master.model';
 import {MessageDialogComponent} from '../../dialogs/message/message.component';
+import {ConfirmDialogComponent} from '../../dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-add-board',
@@ -13,6 +14,8 @@ export class AddBoardComponent implements OnInit {
   boardMaster = new BoardMaster();
   activity: string;
   boardId: number;
+  @ViewChild('confirmDlg', {static: false})
+  confirmDlg: ConfirmDialogComponent;
   @ViewChild('messageDlg', {static: false})
   messageDlg: MessageDialogComponent;
 
@@ -40,17 +43,25 @@ export class AddBoardComponent implements OnInit {
     }
   }
 
-  async onSubmit() {
-    let rel;
-    if (this.activity === 'Edit') {
-      rel = await this.boardMasterService.editBoard(this.boardMaster);
-    } else {
-      rel = await this.boardMasterService.addBoard(this.boardMaster);
-    }
-    if (rel) {
-      this.gotoPage('boards');
-    } else {
-      this.messageDlg.openDialog(this.boardMasterService.getErrorMessage);
+  async openAddBoardConfirmation() {
+    this.confirmDlg.openDialog('Add Board',
+      `Do you really want to add this board <b>${this.boardMaster.boardName}</b>?`,
+      await this.onSubmit.bind(this));
+  }
+
+  async onSubmit(flag: boolean) {
+    if (flag) {
+      let rel;
+      if (this.activity === 'Edit') {
+        rel = await this.boardMasterService.editBoard(this.boardMaster);
+      } else {
+        rel = await this.boardMasterService.addBoard(this.boardMaster);
+      }
+      if (rel) {
+        this.gotoPage('boards');
+      } else {
+        this.messageDlg.openDialog(this.boardMasterService.getErrorMessage);
+      }
     }
   }
 

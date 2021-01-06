@@ -4,6 +4,7 @@ import {UserMasterService} from '../user-master.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MessageDialogComponent} from '../../dialogs/message/message.component';
 import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from "../../dialogs/confirm/confirm.component";
 
 @Component({
   selector: 'app-add-user',
@@ -14,6 +15,9 @@ export class AddUserComponent implements OnInit {
   userMaster = new UserMaster();
   activity: string;
 
+
+  @ViewChild('confirmDlg', {static: false})
+  confirmDlg: ConfirmDialogComponent;
 
   @ViewChild('messageDlg', {static: false})
   messageDlg: MessageDialogComponent;
@@ -48,20 +52,29 @@ export class AddUserComponent implements OnInit {
     this.router.navigate([pageName]);
   }
 
-  async onSubmit() {
-    let rel;
-    if (this.activity === 'Add') {
-      rel = await this.userMasterService.addUser(this.userMaster);
-    } else {
-      console.log('this.userMaster2');
-      console.log(this.userMaster);
-      rel = await this.userMasterService.updateUser(this.userMaster);
-    }
 
-    if (!rel) {
-      alert(this.userMasterService.getErrorMessage);
-    } else {
-      this.router.navigate([`/users`]);
+  async openSubmitUser() {
+    this.confirmDlg.openDialog('Add User',
+      `Do you want to add this detail of user <b>${this.userMaster.name}</b>?`,
+      await this.onSubmit.bind(this));
+  }
+
+  async onSubmit(flag: boolean) {
+    if (flag) {
+      let rel;
+      if (this.activity === 'Add') {
+        rel = await this.userMasterService.addUser(this.userMaster);
+      } else {
+        console.log('this.userMaster2');
+        console.log(this.userMaster);
+        rel = await this.userMasterService.updateUser(this.userMaster);
+      }
+
+      if (!rel) {
+        alert(this.userMasterService.getErrorMessage);
+      } else {
+        this.router.navigate([`/users`]);
+      }
     }
   }
 }

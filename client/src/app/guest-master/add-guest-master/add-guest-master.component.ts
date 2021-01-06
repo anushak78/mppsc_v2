@@ -4,6 +4,7 @@ import {GuestUserServiceService} from '../guest-user-service.service';
 import {GuestUserMaster} from '../model/GuestUserMaster';
 import {MessageDialogComponent} from '../../dialogs/message/message.component';
 import {DatesRange} from '../model/DatesRange';
+import {ConfirmDialogComponent} from '../../dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-add-guest-master',
@@ -18,6 +19,9 @@ export class AddGuestMasterComponent implements OnInit {
   guestData = new GuestUserMaster();
   activity: string;
   userId: number;
+
+  @ViewChild('confirmDlg', {static: false})
+  confirmDlg: ConfirmDialogComponent;
 
   @ViewChild('messageDlg', {static: false})
   messageDlg: MessageDialogComponent;

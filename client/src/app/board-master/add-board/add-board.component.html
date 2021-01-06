@@ -16,31 +16,31 @@
     <form #f="ngForm" (ngSubmit)="f.form.valid">
       <div class="field">
         <mat-form-field>
-          <input matInput [(ngModel)]="boardMaster.boardName" type="text" name="board_name"
+          <input matInput [(ngModel)]="boardMaster.boardName" maxlength="100" type="text" name="board_name"
                  placeholder="Enter Board Name" required>
         </mat-form-field>
       </div>
       <div class="field">
         <mat-form-field>
-          <input matInput [(ngModel)]="boardMaster.noOfMembers" type="number" name="no_of_members"
+          <input matInput [(ngModel)]="boardMaster.noOfMembers" maxlength="3" type="number" name="no_of_members"
                  placeholder="Enter Number of Members" required>
         </mat-form-field>
       </div>
       <div class="field">
         <mat-form-field>
-          <input matInput [(ngModel)]="boardMaster.loginId" type="text" name="boardId"
+          <input matInput [(ngModel)]="boardMaster.loginId" maxlength="15" minlength="10" type="text" name="boardId"
                  placeholder="Enter Login ID" required>
         </mat-form-field>
       </div>
       <div class="field">
         <mat-form-field>
-          <input matInput appBlockCopyPaste [(ngModel)]="boardMaster.password" type="password" name="password"
+          <input matInput appBlockCopyPaste [(ngModel)]="boardMaster.password" maxlength="15" minlength="8" type="password" name="password"
                  placeholder="Enter Password" required>
         </mat-form-field>
       </div>
       <div class="field">
         <mat-form-field>
-          <input matInput appBlockCopyPaste [(ngModel)]="boardMaster.confirmPassword" type="password"
+          <input matInput appBlockCopyPaste [(ngModel)]="boardMaster.confirmPassword" type="password" maxlength="15" minlength="8"
                  name="confirm_password" placeholder="Enter Confirm Password" required>
         </mat-form-field>
       </div>
@@ -57,7 +57,7 @@
     </form>
     <div style="margin-top: 10px">
       <button mat-raised-button style="background-color: green!important;color: whitesmoke;"
-              (click)="onSubmit()">{{activity}}
+              (click)="openAddBoardConfirmation()">{{activity}}
         Board
       </button>
     </div>
@@ -65,3 +65,4 @@
 </div>
 
 <app-message-dialog #messageDlg></app-message-dialog>
+<app-confirm-dialog #confirmDlg></app-confirm-dialog>
