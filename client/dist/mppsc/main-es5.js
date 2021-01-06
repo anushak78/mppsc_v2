@@ -2447,7 +2447,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               while (1) {
                 switch (_context2.prev = _context2.next) {
                   case 0:
-                    return _context2.abrupt("return", this.http.post('http://0.0.0.0:6543/ui/login', {
+                    return _context2.abrupt("return", this.http.post('/ui/login', {
                       login: username,
                       password: password,
                       role: role

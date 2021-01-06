@@ -139,45 +139,45 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       return getApiInterviewMasterEndPoint;
     });
 
-    var getApiUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/user_list';
-    var getApiAddUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_user';
-    var getApiBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/board_list';
-    var getApiAddBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_board';
+    var getApiUserMastercollectionEndPoint = '/ui/user_list';
+    var getApiAddUserMastercollectionEndPoint = '/ui/add_user';
+    var getApiBoardMastercollectionEndPoint = '/ui/board_list';
+    var getApiAddBoardMastercollectionEndPoint = '/ui/add_board';
 
     var getApiDeleteUserMastercollectionEndPoint = function getApiDeleteUserMastercollectionEndPoint(userId) {
-      return "http://0.0.0.0:6543/ui/delete_user/".concat(userId);
+      return "/ui/delete_user/".concat(userId);
     };
 
     var getApiDetailsUserMastercollectionEndPoint = function getApiDetailsUserMastercollectionEndPoint(userId) {
-      return "http://0.0.0.0:6543/ui/user_details/".concat(userId);
+      return "/ui/user_details/".concat(userId);
     };
 
-    var getApiUpdateUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_user';
-    var getApiGuestUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/guest_user_list';
-    var getApiAddGuestUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_guest_user';
-    var getApiEditGuestUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_guest_user';
-    var getApiAddGuestUserMasterDatescollectionEndPoint = 'http://0.0.0.0:6543/ui/add_guest_user_dates';
-    var getApiEditGuestUserMasterDatescollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_guest_user_dates';
+    var getApiUpdateUserMastercollectionEndPoint = '/ui/edit_user';
+    var getApiGuestUserMastercollectionEndPoint = '/ui/guest_user_list';
+    var getApiAddGuestUserMastercollectionEndPoint = '/ui/add_guest_user';
+    var getApiEditGuestUserMastercollectionEndPoint = '/ui/edit_guest_user';
+    var getApiAddGuestUserMasterDatescollectionEndPoint = '/ui/add_guest_user_dates';
+    var getApiEditGuestUserMasterDatescollectionEndPoint = '/ui/edit_guest_user_dates';
 
     var getApiDetailsGuestUserMastercollectionEndPoint = function getApiDetailsGuestUserMastercollectionEndPoint(userId) {
-      return "http://0.0.0.0:6543/ui/guest_user_details/".concat(userId);
+      return "/ui/guest_user_details/".concat(userId);
     };
 
     var getApiDeleteGuestUserMastercollectionEndPoint = function getApiDeleteGuestUserMastercollectionEndPoint(userId) {
-      return "http://0.0.0.0:6543/ui/add_delete_user/".concat(userId);
+      return "/ui/add_delete_user/".concat(userId);
     };
 
     var getApiDetailsBoardUserMastercollectionEndPoint = function getApiDetailsBoardUserMastercollectionEndPoint(boardId) {
-      return "http://0.0.0.0:6543/ui/board_details/".concat(boardId);
+      return "/ui/board_details/".concat(boardId);
     };
 
     var getApiDeleteBoardUserMastercollectionEndPoint = function getApiDeleteBoardUserMastercollectionEndPoint(boardId) {
-      return "http://0.0.0.0:6543/ui/delete_board/".concat(boardId);
+      return "/ui/delete_board/".concat(boardId);
     };
 
-    var getApiEditBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_board';
-    var getApiAddInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/add_interview';
-    var getApiInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/interview_list';
+    var getApiEditBoardMastercollectionEndPoint = '/ui/edit_board';
+    var getApiAddInterviewMasterEndPoint = '/ui/add_interview';
+    var getApiInterviewMasterEndPoint = '/ui/interview_list';
     /***/
   },
 

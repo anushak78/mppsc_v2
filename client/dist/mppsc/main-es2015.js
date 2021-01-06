@@ -1279,7 +1279,7 @@ class LoginService {
     }
     login(username, password, role) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            return this.http.post('http://0.0.0.0:6543/ui/login', { login: username, password: password, role: role })
+            return this.http.post('/ui/login', { login: username, password: password, role: role })
                 .toPromise().then((user => {
                 console.log(user);
                 sessionStorage.setItem('currentUser', JSON.stringify(user));

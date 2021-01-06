@@ -28,37 +28,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiEditBoardMastercollectionEndPoint", function() { return getApiEditBoardMastercollectionEndPoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiAddInterviewMasterEndPoint", function() { return getApiAddInterviewMasterEndPoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiInterviewMasterEndPoint", function() { return getApiInterviewMasterEndPoint; });
-const getApiUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/user_list';
-const getApiAddUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_user';
-const getApiBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/board_list';
-const getApiAddBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_board';
+const getApiUserMastercollectionEndPoint = '/ui/user_list';
+const getApiAddUserMastercollectionEndPoint = '/ui/add_user';
+const getApiBoardMastercollectionEndPoint = '/ui/board_list';
+const getApiAddBoardMastercollectionEndPoint = '/ui/add_board';
 const getApiDeleteUserMastercollectionEndPoint = (userId) => {
-    return `http://0.0.0.0:6543/ui/delete_user/${userId}`;
+    return `/ui/delete_user/${userId}`;
 };
 const getApiDetailsUserMastercollectionEndPoint = (userId) => {
-    return `http://0.0.0.0:6543/ui/user_details/${userId}`;
+    return `/ui/user_details/${userId}`;
 };
-const getApiUpdateUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_user';
-const getApiGuestUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/guest_user_list';
-const getApiAddGuestUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_guest_user';
-const getApiEditGuestUserMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_guest_user';
-const getApiAddGuestUserMasterDatescollectionEndPoint = 'http://0.0.0.0:6543/ui/add_guest_user_dates';
-const getApiEditGuestUserMasterDatescollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_guest_user_dates';
+const getApiUpdateUserMastercollectionEndPoint = '/ui/edit_user';
+const getApiGuestUserMastercollectionEndPoint = '/ui/guest_user_list';
+const getApiAddGuestUserMastercollectionEndPoint = '/ui/add_guest_user';
+const getApiEditGuestUserMastercollectionEndPoint = '/ui/edit_guest_user';
+const getApiAddGuestUserMasterDatescollectionEndPoint = '/ui/add_guest_user_dates';
+const getApiEditGuestUserMasterDatescollectionEndPoint = '/ui/edit_guest_user_dates';
 const getApiDetailsGuestUserMastercollectionEndPoint = (userId) => {
-    return `http://0.0.0.0:6543/ui/guest_user_details/${userId}`;
+    return `/ui/guest_user_details/${userId}`;
 };
 const getApiDeleteGuestUserMastercollectionEndPoint = (userId) => {
-    return `http://0.0.0.0:6543/ui/add_delete_user/${userId}`;
+    return `/ui/add_delete_user/${userId}`;
 };
 const getApiDetailsBoardUserMastercollectionEndPoint = (boardId) => {
-    return `http://0.0.0.0:6543/ui/board_details/${boardId}`;
+    return `/ui/board_details/${boardId}`;
 };
 const getApiDeleteBoardUserMastercollectionEndPoint = (boardId) => {
-    return `http://0.0.0.0:6543/ui/delete_board/${boardId}`;
+    return `/ui/delete_board/${boardId}`;
 };
-const getApiEditBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_board';
-const getApiAddInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/add_interview';
-const getApiInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/interview_list';
+const getApiEditBoardMastercollectionEndPoint = '/ui/edit_board';
+const getApiAddInterviewMasterEndPoint = '/ui/add_interview';
+const getApiInterviewMasterEndPoint = '/ui/interview_list';
 
 
 /***/ }),
