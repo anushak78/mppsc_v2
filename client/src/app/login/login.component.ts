@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {LoginService} from './login.service';
-import {first} from 'rxjs/operators';
+import {MessageDialogComponent} from '../dialogs/message/message.component';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +10,9 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  @ViewChild('messageDlg', {static: false})
+  messageDlg: MessageDialogComponent;
 
   signInForm = new FormGroup({
     user_id: new FormControl('', [
@@ -40,27 +43,24 @@ export class LoginComponent implements OnInit {
     const role = this.signInForm.controls['role'].value;
     const rel = await this.authService.login(userId, password, role);
     if (rel) {
-      sessionStorage.setItem('role', this.signInForm.controls['role'].value);
-      let user = this.authService.currentUserValue
-      console.log(user)
-      if (user['authenticated'] == true) {
-        if (this.signInForm.controls['role'].value == 0) {
+      sessionStorage.setItem('role', role);
+      const user = this.authService.currentUserValue;
+      console.log(user);
+      if (user['authenticated'] === true) {
+        if (role === 0) {
           this.router.navigate(['admin-dashboard']);
         }
-        if (this.signInForm.controls['role'].value == 4) {
+        if (role === 4) {
           this.router.navigate(['board-dashboard']);
         }
-        if (this.signInForm.controls['role'].value == 3) {
+        if (role === 3) {
           this.router.navigate(['vo-dashboard']);
         }
+      } else {
+        this.messageDlg.openDialog('Invalid credentials!!');
       }
-      else {
-        alert("Invalid credentials!!")
-      }
-    }
-    else {
-      let message = this.authService.getErrorMessage
-      alert(message)
+    } else {
+      this.messageDlg.openDialog(this.authService.getErrorMessage);
     }
   }
 }
