@@ -30,14 +30,6 @@ svc_guest_delete_user = Service(
     name="api.add_delete_user", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_delete_user/{id}", cors_policy=cors.POLICY)
 
-svc_guest_add_user_dates = Service(
-    name="api.add_guest_user_dates", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/add_guest_user_dates", cors_policy=cors.POLICY)
-
-svc_guest_edit_user_dates = Service(
-    name="api.edit_guest_user_dates", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/edit_guest_user_dates", cors_policy=cors.POLICY)
-
 
 @svc_guest_user_list.get()
 def get_guest_user_list(request):
@@ -118,13 +110,14 @@ def add_guest_user(request):
     user = GuestUserMaster(name=name, email=email, 
         title=title, phone_no=phone_no, status=status)
     request.dbsession.add(user)
+    add_guest_user_dates(request)
     
     return {
         "code": 0,
         "message": "success"
     }
 
-@svc_guest_add_user_dates.post(require_csrf=False)
+
 def add_guest_user_dates(request):
     guest_id = GuestUserMaster.get_first(request.dbsession)
     print(guest_id)
@@ -170,6 +163,7 @@ def edit_guest_user(request):
     user.title = title
     user.phone_no = phone_no
     user.status = status
+    edit_guest_user_dates(request)
     
     return {
         "code": 0,
@@ -177,7 +171,6 @@ def edit_guest_user(request):
     }
 
 
-@svc_guest_edit_user_dates.post(require_csrf=False)
 def edit_guest_user_dates(request):
     guest_id = request.json_body['id']
     dates = request.json_body['dates']
