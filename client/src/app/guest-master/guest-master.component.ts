@@ -16,6 +16,7 @@ import {MessageDialogComponent} from '../dialogs/message/message.component';
 export class GuestMasterComponent implements OnInit {
   status = Status;
   deleteUserId: number;
+  deleteUserName: string;
   users: GuestUserMaster[] = [];
 
   @ViewChild('confirmDlg', {static: false})
@@ -51,11 +52,28 @@ export class GuestMasterComponent implements OnInit {
     this.router.navigate([`guest-users/add-guest-user/${id}`]);
   }
 
-  async openDeleteUser(u: GuestUserMaster) {
+  async openDeleteGuestUser(u: GuestUserMaster) {
     this.deleteUserId = u.id;
-    this.confirmDlg.openDialog('Delete user',
-      `Do you really want to delete user <b>${u.name}</b>?`,
-      await this.onDeleteUser.bind(this));
+    this.deleteUserName = u.name;
+    this.confirmDlg.openDialog('Delete guest user',
+      `Confirmation 1: Do you really want to delete guest user <b>${this.deleteUserName}</b>?`,
+      await this.onDeleteGuestUser1.bind(this));
+  }
+
+  async onDeleteGuestUser1(flag: boolean) {
+    if (flag) {
+      this.confirmDlg.openDialog('Delete guest user',
+        `Confirmation 2: Do you really want to delete guest user <b>${this.deleteUserName}</b>?`,
+        await this.onDeleteGuestUser2.bind(this));
+    }
+  }
+
+  async onDeleteGuestUser2(flag: boolean) {
+    if (flag) {
+      this.confirmDlg.openDialog('Delete guest user',
+        `Confirmation 3: Do you really want to delete guest user <b>${this.deleteUserName}</b>?`,
+        await this.onDeleteUser.bind(this));
+    }
   }
 
   async onDeleteUser(flag: boolean) {

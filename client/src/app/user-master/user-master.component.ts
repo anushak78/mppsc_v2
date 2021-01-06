@@ -15,6 +15,7 @@ import {Roles, Status, Titles} from '../constant';
 export class UserMasterComponent implements OnInit {
 
   deleteUserId: number;
+  deleteUserName: string;
   users: UserMaster[] = [];
   roles = Roles;
   status = Status;
@@ -58,9 +59,26 @@ export class UserMasterComponent implements OnInit {
 
   async openDeleteUser(u: UserMaster) {
     this.deleteUserId = u.id;
+    this.deleteUserName = u.name;
     this.confirmDlg.openDialog('Delete user',
-      `Do you really want to delete user <b>${u.name}</b>?`,
-      await this.onDeleteUser.bind(this));
+      `Confirmation 1: Do you really want to delete user <b>${this.deleteUserName}</b>?`,
+      await this.openDeleteUser2.bind(this));
+  }
+
+  async openDeleteUser2(flag: boolean) {
+    if (flag) {
+      this.confirmDlg.openDialog('Delete user',
+        `Confirmation 2: Do you really want to delete user <b>${this.deleteUserName}</b>?`,
+        await this.openDeleteUser3.bind(this));
+    }
+  }
+
+  async openDeleteUser3(flag: boolean) {
+    if (flag) {
+      this.confirmDlg.openDialog('Delete user',
+        `Confirmation 3: Do you really want to delete user <b>${this.deleteUserName}</b>?`,
+        await this.onDeleteUser.bind(this));
+    }
   }
 
   async onDeleteUser(flag: boolean) {

@@ -16,6 +16,7 @@ export class BoardMasterComponent implements OnInit {
 
   boardList: BoardMaster[] = [];
   boardId: number;
+  boardName: string;
   status = Status;
   @ViewChild('confirmDlg', {static: false})
   confirmDlg: ConfirmDialogComponent;
@@ -50,9 +51,26 @@ export class BoardMasterComponent implements OnInit {
 
   async openDeleteBoard(u: BoardMaster) {
     this.boardId = u.id;
-    this.confirmDlg.openDialog('Delete user',
-      `Do you really want to delete user <b>${u.boardName}</b>?`,
-      await this.onDeleteBoard.bind(this));
+    this.boardName = u.boardName;
+    this.confirmDlg.openDialog('Delete board',
+      `Confirmation 1: Do you really want to delete user <b>${this.boardName}</b>?`,
+      await this.openDeleteBoard2.bind(this));
+  }
+
+  async openDeleteBoard2(flag: boolean) {
+    if (flag) {
+      this.confirmDlg.openDialog('Delete board',
+        `Confirmation 2: Do you really want to delete user <b>${this.boardName}</b>?`,
+        await this.openDeleteBoard3.bind(this));
+    }
+  }
+
+  async openDeleteBoard3(flag: boolean) {
+    if (flag) {
+      this.confirmDlg.openDialog('Delete board',
+        `Confirmation 3: Do you really want to delete user <b>${this.boardName}</b>?`,
+        await this.onDeleteBoard.bind(this));
+    }
   }
 
   async onDeleteBoard(flag: boolean) {
