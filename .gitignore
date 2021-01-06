@@ -10,4 +10,3 @@ logs
 config/config.js
 config/config.prod.js
 package-lock.json
-dist
