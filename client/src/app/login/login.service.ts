@@ -21,7 +21,7 @@ export class LoginService {
   }
 
   async login(username: string, password: string, role: Number) {
-    return this.http.post('http://0.0.0.0:6543/ui/login', {login: username, password: password, role: role})
+    return this.http.post('/ui/login', {login: username, password: password, role: role})
       .toPromise().then((user => {
         console.log(user);
         sessionStorage.setItem('currentUser', JSON.stringify(user));
