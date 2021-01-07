@@ -22,7 +22,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   goto(pageName: string) {
-    this.router.navigate([pageName])
+    this.router.navigate([pageName]);
   }
 
 

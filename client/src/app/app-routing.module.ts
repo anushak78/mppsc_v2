@@ -6,6 +6,7 @@ import {LayoutComponent} from './layout/layout.component';
 import {CandidateMasterComponent} from './candidate-master/candidate-master.component';
 import {VoDashboardComponent} from './vo-dashboard/vo-dashboard.component';
 import {BoardDashboardComponent} from './board-dashboard/board-dashboard.component';
+import {AuthGuard} from './auth.guard';
 
 const routes: Routes = [
   {
@@ -13,20 +14,12 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'home',
-    pathMatch: 'full',
-    redirectTo: 'login'
-  },
-  {
     path: '',
     component: LayoutComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'admin-dashboard',
-        component: AdminDashboardComponent
-      },
-      {
-        path: '',
         component: AdminDashboardComponent
       },
       {
