@@ -1,59 +1,59 @@
 <div class="box-container">
-    <div class="grid-2">
-        <h2 class="mat-h2">Interview Master</h2>
-        <div class="right">
-            <button mat-raised-button color="primary" (click)="gotoPage('interview-master/add-interview')">Add
-                Interview</button>
-            <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')"
-                style="margin-left: 10px;">Back
-            </button>
-        </div>
+  <div class="grid-2">
+    <h2 class="mat-h2">Interview Master</h2>
+    <div class="right">
+      <button mat-raised-button color="primary" (click)="gotoPage('interview-master/add-interview')">Add
+        Interview</button>
+      <button mat-raised-button color="primary" (click)="gotoPage('admin-dashboard')" style="margin-left: 10px;">Back
+      </button>
     </div>
-    <div>
-        <div class="grid-3">
-            <div></div>
-            <div class="center">
-                <mat-form-field>
-                    <mat-label>Search</mat-label>
-                    <input type="text" matInput (keyup)="applyFilter($event.target.value)">
-                    <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
-            </div>
-            <div></div>
-        </div>
-        <ng-container *ngIf="interview.length > 0">
-            <div class="grid-header grid">
-              <div class="sub-grid bold-head">
-                <div>ID</div>
-                <div>Name</div>
-                <div>Notification No</div>
-                <div>Status</div>
-              </div>
-            </div>
-            <div class="grid" *ngFor="let i of interview;">
-              <div class="sub-grid"
-                   matTooltip="Details">
-                <div>{{i.interview_id}}</div>
-                <div>{{i.interview_name}}</div>
-                <div>{{i.notification}}</div>
-                <div>{{i.status}}</div>
-              </div>
-              <div class="icon-column">
-                <mat-icon matTooltip="Edit">
-                  edit
-                </mat-icon>
-              </div>
-              <div class="icon-column">
-                <mat-icon matTooltip="Delete">
-                  delete
-                </mat-icon>
-              </div>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="interview.length == 0">
-            <div class="no-data">
-              Currently, there are no interview
-            </div>
-          </ng-container>
+  </div>
+  <div>
+    <div class="grid-3">
+      <div></div>
+      <div class="center">
+        <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input type="text" matInput (keyup)="applyFilter($event.target.value)">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div></div>
     </div>
+    <ng-container *ngIf="interview.length > 0">
+      <div class="grid-header grid">
+        <div class="sub-grid bold-head">
+          <div>Interview ID</div>
+          <div>Interview Name</div>
+          <div>Notification No</div>
+          <div>Status</div>
+        </div>
+      </div>
+      <div class="grid" *ngFor="let i of interview;">
+        <div class="sub-grid" matTooltip="Details">
+          <div>{{i.interview_id}}</div>
+          <div>{{i.name}}</div>
+          <div>{{i.notification_no}}</div>
+          <div>{{i.status}}</div>
+        </div>
+        <div class="icon-column">
+          <mat-icon matTooltip="Edit" (click)="editInterview(i.interview_id)">
+            edit
+          </mat-icon>
+        </div>
+        <div class="icon-column">
+          <mat-icon matTooltip="Delete" (click)="openDeleteInterview(i)">
+            delete
+          </mat-icon>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="interview.length == 0">
+      <div class="no-data">
+        Currently, there are no interview
+      </div>
+    </ng-container> 
+  </div>
 </div>
+<app-message-dialog #messageDlg></app-message-dialog>
+<app-confirm-dialog #confirmDlg></app-confirm-dialog>

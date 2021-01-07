@@ -1,24 +1,32 @@
 <!-- <pre>Form Values: {{interview.value | json}}</pre>
 <pre>Form Values: {{interview.controls.dates.status}}</pre> -->
-{{addInterview.value | json}}
 <div class="box-container">
+    <div class="grid-2">
+        <div>
+            <h2 class="mat-h2">{{activity}} Guest User</h2>
+        </div>
+    </div>
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
-        <div [formGroup]="interview">
+        <div>
             <mat-tab label="Step 1">
                 <form [formGroup]="addInterview">
-                    <div class="grid-3">
+                    <div class="field">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="name" placeholder="Interview Id"
+                                <input matInput type="text" name="id" placeholder="Interview Id"
                                     formControlName="interview_id" required>
                             </mat-form-field>
                         </div>
+                    </div>
+                    <div class="field">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="name" placeholder="Enter Name"
-                                    formControlName="name" required>
+                                <input matInput type="text" name="name" placeholder="Enter Name" formControlName="name"
+                                    required>
                             </mat-form-field>
                         </div>
+                    </div>
+                    <div class="field">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="notification_no" placeholder="Enter Notification No."
@@ -26,8 +34,8 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3">
-                        <div>
+                    <div class="field">
+                        <div class="center">
                             <mat-radio-group aria-label="Select an option" formControlName="status">
                                 <mat-label>Interview Status: </mat-label>
                                 <mat-radio-button value="yes">Yes</mat-radio-button>
@@ -36,50 +44,54 @@
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" (click)="onSubmit()">Add</button>
                         <button mat-raised-button color="primary" [disabled]="!addInterview.valid"
-                            (click)="nextStep()">Next</button>
-                    </div>
-                </form>
-            </mat-tab>
-            <mat-tab label="Step 2">
-                <form [formGroup]="interview.controls.dates">
-                    <div>
-                        <div class="grid-2">
-                            <div>
-                                <mat-form-field>
-                                    <mat-label>From date</mat-label>
-                                    <input matInput [matDatepicker]="picker" formControlName="fromDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <mat-form-field>
-                                    <mat-label>To date</mat-label>
-                                    <input matInput [matDatepicker]="topicker" formControlName="toDate">
-                                    <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #topicker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <!-- <button mat-mini-fab color="default" (click)="deleteDates(i)">
-                                <mat-icon>remove</mat-icon>
-                            </button> -->
-                        </div>
-                        <!-- <button mat-mini-fab color="default" (click)="addDates()">
-                            <mat-icon>add</mat-icon>
-                        </button> -->
-                    </div>
-                    <div class="right">
-                        <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                        <button mat-raised-button color="primary" [disabled]="!interview.controls.dates.valid"
-                            class="ml-10" (click)="nextStep()">Next</button>
+                            (click)="addInterviewData()">Next</button>
                     </div>
                 </form>
             </mat-tab>
 
+            <mat-tab label="Step 2">
+                <div class="box-container" style="margin-top: 10px">
+                    <div *ngFor="let item of dateList; let i=index">
+                        <div class="grid-3" style="width: 50%">
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>From date</mat-label>
+                                    <input matInput [matDatepicker]="picker" [(ngModel)]="item.fromDate" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="field">
+                                <mat-form-field>
+                                    <mat-label>To date</mat-label>
+                                    <input matInput [matDatepicker]="topicker" [(ngModel)]="item.toDate" required>
+                                    <mat-datepicker-toggle matSuffix [for]="topicker">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #topicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div *ngIf="i == dateList.length-1">
+                                <button mat-mini-fab color="default" (click)="addDateItem()">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                            <div *ngIf="i != dateList.length-1">
+                                <button mat-mini-fab color="default" (click)="deleteDateItem(i)">
+                                    <mat-icon>remove</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" (click)="Dates()">Next
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+
             <mat-tab label="Step 3">
-                <div [formGroup]="interview.controls.marks">
+                <div [formGroup]="interviewMarks">
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
@@ -150,76 +162,84 @@
                             </mat-form-field>
                         </div>
                     </div>
-
                 </div>
                 <div class="right">
                     <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" [disabled]="!interview.controls.marks.valid" class="ml-10"
-                        (click)="nextStep()">Next</button>
+                    <button mat-raised-button color="primary" class="ml-10" (click)=" marks()">Next</button>
                 </div>
             </mat-tab>
             <mat-tab label="Step 4">
-                <div class="grid-3" [formGroup]="interview.controls.verification">
-                    <div>
-                        <mat-form-field>
-                            <mat-label>Verification Officer Name</mat-label>
-                            <mat-select formControlName="verfication_officer">
-                                <mat-option *ngFor="let office of Officer" [value]="office.name">
-                                    {{office.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                <div class="field">
+                    <mat-form-field>
+                        <mat-label>Verification Officer Name</mat-label>
+                        <mat-select [(ngModel)]="gender">
+                            <mat-option *ngFor="let office of Officer" [value]="office.name">
+                                {{office.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="field">
                     <div class="example-margin">
-                        <mat-checkbox formControlName="interviewDatesOfficer">Date</mat-checkbox>
+                        <div *ngFor="let item of date; let i=index">
+                            <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
+                            </mat-checkbox>
+                            {{item.fromDate}} to {{item.toDate}}
+                        </div>
                     </div>
                 </div>
                 <div class="right">
                     <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" [disabled]="!interview.controls.verification.valid"
-                        class="ml-10" (click)="nextStep()">Next</button>
+                    <button mat-raised-button color="primary" class="ml-10">Next</button>
                 </div>
             </mat-tab>
             <mat-tab label="Step 5">
-                <div class="grid-3" [formGroup]="interview.controls.board">
-                    <div class="field">
-                        <mat-form-field>
-                            <mat-label>Select Board/Chairmen</mat-label>
-                            <mat-select name="board" formControlName="boardName">
-                                <mat-option *ngFor="let Board of board" [value]="Board.name">
-                                    {{Board.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                <div class="field">
+                    <mat-form-field>
+                        <mat-label>Board Name</mat-label>
+                        <mat-select name="board" formControlName="boardName">
+                            <mat-option *ngFor="let Board of board" [value]="Board.name">
+                                {{Board.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="field">
                     <div class="example-margin">
-                        <mat-checkbox formControlName="interviewDatesBoard">Date</mat-checkbox>
+                        <div *ngFor="let item of date; let i=index">
+                            <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
+                            </mat-checkbox>
+                            {{item.fromDate}} to {{item.toDate}}
+                        </div>
                     </div>
                 </div>
                 <div class="right">
                     <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" [disabled]="!interview.controls.board.valid" class="ml-10"
-                        (click)="nextStep()">Next</button>
+                    <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
                 </div>
             </mat-tab>
             <mat-tab label="Step 6">
-                <div class="grid-3" [formGroup]="interview.controls.chairman">
-                    <div class="field">
-                        <mat-form-field>
-                            <mat-label>Select Board/Chairmen</mat-label>
-                            <mat-select name="board" formControlName="boardChairman">
-                                <mat-option *ngFor="let Chairman of chairman" [value]="Chairman.name">
-                                    {{Chairman.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                <div class="field">
+                    <mat-form-field>
+                        <mat-label>Select Board/Chairman</mat-label>
+                        <mat-select name="board">
+                            <mat-option *ngFor="let Chairman of chairman" [value]="Chairman.name">
+                                {{Chairman.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="field">
                     <div class="example-margin">
-                        <mat-checkbox formControlName="member">Date</mat-checkbox>
+                        <div *ngFor="let item of date; let i=index">
+                            <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
+                            </mat-checkbox>
+                            {{item.fromDate}} to {{item.toDate}}
+                        </div>
                     </div>
                 </div>
                 <div class="right">
-                    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+                    <button mat-raised-button color="primary">Submit</button>
                 </div>
             </mat-tab>
         </div>
