@@ -167,8 +167,8 @@ def add_interview(request):
     id = InterviewMaster.get_first(request.dbsession)
     return {
             "code": 0,
-            "message": "success"
-            # "id": id
+            "message": "success",
+            "id": id
         }
 
 
