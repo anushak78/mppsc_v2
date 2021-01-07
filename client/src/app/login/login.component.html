@@ -1,40 +1,41 @@
 <mat-expansion-panel expanded="true" hideToggle="true" disabled="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Sign In
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <form [formGroup]="signInForm" (keyup.enter)="submit()">
-      <div class="field">
-        <mat-form-field>
-          <input matInput type="text" name="user_id" formControlName="user_id" placeholder="Enter user id" required>
-        </mat-form-field>
-      </div>
-      <div class="field">
-        <mat-form-field>
-          <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
-            placeholder="Enter Password" required>
-        </mat-form-field>
-      </div>
-      <div class="field">
-        <mat-form-field>
-          <mat-label>Select Role</mat-label>
-          <mat-select formControlName="role" name="role">
-            <mat-option [value]="0">
-              Admin
-            </mat-option>
-            <mat-option [value]="1">
-              Board
-            </mat-option>
-            <mat-option [value]="2">
-              Verification Officer
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
-    <div class="button">
-      <button [disabled]="!canSubmit()" (click)="submit()" mat-raised-button color="primary">Sign In
-      </button>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Sign In
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <form [formGroup]="signInForm" (keyup.enter)="submit()">
+    <div class="field">
+      <mat-form-field>
+        <input matInput type="text" name="user_id" formControlName="user_id" placeholder="Enter user id" required>
+      </mat-form-field>
     </div>
-  </mat-expansion-panel>
+    <div class="field">
+      <mat-form-field>
+        <input matInput appBlockCopyPaste type="password" formControlName="password" name="password"
+               placeholder="Enter Password" required>
+      </mat-form-field>
+    </div>
+    <div class="field">
+      <mat-form-field>
+        <mat-label>Select Role</mat-label>
+        <mat-select formControlName="role" name="role">
+          <mat-option [value]="0">
+            Admin
+          </mat-option>
+          <mat-option [value]="4">
+            Board
+          </mat-option>
+          <mat-option [value]="3">
+            Verification Officer
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="button">
+    <button [disabled]="!canSubmit()" (click)="submit()" mat-raised-button color="primary">Sign In
+    </button>
+  </div>
+</mat-expansion-panel>
+<app-message-dialog #messageDlg></app-message-dialog>

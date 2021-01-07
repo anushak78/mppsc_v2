@@ -7,6 +7,7 @@ import {User} from './models/User';
 })
 export class LoginService {
   private httpErrorMessage: string;
+  private user;
 
   get getErrorMessage(): string {
     return this.httpErrorMessage;
@@ -16,14 +17,15 @@ export class LoginService {
   }
 
   public get currentUserValue(): User {
-    return JSON.parse(sessionStorage.getItem('currentUser'));
+    return this.user;
   }
 
-  login(username: string, password: string, role: Number) {
+  async login(username: string, password: string, role: Number) {
     return this.http.post('http://0.0.0.0:6543/ui/login', {login: username, password: password, role: role})
       .toPromise().then((user => {
         console.log(user);
         sessionStorage.setItem('currentUser', JSON.stringify(user));
+        this.user = user; 
         return true;
       })).catch((error: HttpErrorResponse) => {
         console.log(error);

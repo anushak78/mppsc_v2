@@ -95,7 +95,8 @@ export class AddGuestMasterComponent implements OnInit {
     if (!relDates) {
       this.messageDlg.openDialog(this.guestUserService.getErrorMessage);
     } else {
-      this.flagDates = true;
+      // this.flagDates = true;
+      this.gotoPage('guest-users');
     }
   }
 

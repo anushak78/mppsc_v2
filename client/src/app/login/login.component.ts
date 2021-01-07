@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {LoginService} from './login.service';
-import {first} from 'rxjs/operators';
+import {MessageDialogComponent} from '../dialogs/message/message.component';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +10,9 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  @ViewChild('messageDlg', {static: false})
+  messageDlg: MessageDialogComponent;
 
   signInForm = new FormGroup({
     user_id: new FormControl('', [
@@ -38,18 +41,26 @@ export class LoginComponent implements OnInit {
     const userId = this.signInForm.controls['user_id'].value;
     const password = this.signInForm.controls['password'].value;
     const role = this.signInForm.controls['role'].value;
-    const rel = this.authService.login(userId, password, role);
+    const rel = await this.authService.login(userId, password, role);
     if (rel) {
-      sessionStorage.setItem('role', this.signInForm.controls['role'].value);
-      if (this.signInForm.controls['role'].value == 0) {
-        this.router.navigate(['admin-dashboard']);
+      sessionStorage.setItem('role', role);
+      const user = this.authService.currentUserValue;
+      console.log(user);
+      if (user['authenticated'] === true) {
+        if (role === 0) {
+          this.router.navigate(['admin-dashboard']);
+        }
+        if (role === 4) {
+          this.router.navigate(['board-dashboard']);
+        }
+        if (role === 3) {
+          this.router.navigate(['vo-dashboard']);
+        }
+      } else {
+        this.messageDlg.openDialog('Invalid credentials!!');
       }
-      if (this.signInForm.controls['role'].value == 1) {
-        this.router.navigate(['board-dashboard']);
-      }
-      if (this.signInForm.controls['role'].value == 2) {
-        this.router.navigate(['vo-dashboard']);
-      }
+    } else {
+      this.messageDlg.openDialog(this.authService.getErrorMessage);
     }
   }
 }
