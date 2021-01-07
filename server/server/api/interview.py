@@ -137,11 +137,13 @@ def fetch_users(request):
     date = BoardInterviewMap.get_board_date(request.dbsession, id)
     guest_user_ids = get_guest_user_list(request, date)
     board_users = UserMaster.get_board_users(request.dbsession)
+    vo_users = UserMaster.get_vo_users(request.dbsession)
     return {
         "code": 0,
         "message": "success",
         "guest_user_list": guest_user_ids,
-        "board_user_list": board_users
+        "board_user_list": board_users,
+        "vo_user_list": vo_users
     }
 
 

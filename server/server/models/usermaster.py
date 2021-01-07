@@ -74,6 +74,19 @@ class UserMaster(Base):
             })
         return user_list
 
+    @classmethod
+    def get_vo_users(cls, DBSession):
+        users = DBSession.query(UserMaster).filter_by(role=3).all()
+        user_list = []
+        for ele in users:
+            user_list.append({
+                "id": ele.id,
+                "name": ele.name,
+                "role": ele.role,
+                "title": ele.title
+            })
+        return user_list
+
 
 
 class UserFingerPrintMap(Base):
