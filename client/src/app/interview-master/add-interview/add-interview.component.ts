@@ -23,13 +23,13 @@ export class AddInterviewComponent implements OnInit {
   board = [{ name: 'A1' }];
   chairman = [{ name: 'A1' }]
   interview: FormGroup;
-  interviewMarks: FormGroup;
   dateList: DatesRange[] = [];
   activity = 'add'
   date = [{ fromDate: '2019', toDate: '2021' }, { fromDate: '2020', toDate: '2021' }]
   officer: MapVerficationOfficer[] = [];
+  interviewId
   gender
-  arr
+
   constructor(private InterviewMasterService: InterviewMasterService,
     private router: Router,
     private fb: FormBuilder) { }
@@ -41,58 +41,54 @@ export class AddInterviewComponent implements OnInit {
     status: new FormControl('yes', [Validators.required]),
   })
 
+  InterviewMarks = this.fb.group({
+    unreserved: this.fb.group({
+      marks_type: ['UR'],
+      min_marks: [''],
+      max_marks: [''],
+      interview_id: ['']
+    }),
+    EWS: this.fb.group({
+      marks_type: ['EWS'],
+      min_marks: [''],
+      max_marks: [''],
+      interview_id: ['']
+    }),
+    OBC_NCL: this.fb.group({
+      marks_type: ['OBC_NCL'],
+      min_marks: [''],
+      max_marks: [''],
+      interview_id: ['']
+
+    }),
+    SC: this.fb.group({
+      marks_type: ['SC'],
+      min_marks: [''],
+      max_marks: [''],
+      interview_id: ['']
+    }),
+    ST: this.fb.group({
+      marks_type: ['ST'],
+      min_marks: [''],
+      max_marks: [''],
+      interview_id: ['']
+    }),
+  })
+
   valueChangeVerification(unit, $event) {
     if ($event.checked) {
       this.officer.push(unit);
       console.log("officer", this.officer);
-
     }
     console.log("unit", unit);
     console.log("$event", $event);
     console.log("unit.checked = $event.checked;", unit.checked = $event.checked);
   }
-  // interviewMarks = this.fb.group({
-  //   unreserved: this.fb.group({
-  //     interview_id: ['UR'],
-  //     min_marks: [''],
-  //     max_marks: [''],
-  //   }),
-  //   EWS: this.fb.group({
-  //     interview_id: ['EWS'],
-  //     min_marks: [''],
-  //     max_marks: [''],
-  //   }),
-  //   OBC_NCL: this.fb.group({
-  //     interview_id: ['OBC_NCL'],
-  //     min_marks: [''],
-  //     max_marks: [''],
-  //   }),
-  //   SC: this.fb.group({
-  //     interview_id: ['SC'],
-  //     min_marks: [''],
-  //     max_marks: [''],
-  //   }),
-  //   ST: this.fb.group({
-  //     interview_id: ['ST'],
-  //     min_marks: [''],
-  //     max_marks: [''],
-  //   }),
-  // })
+
 
   ngOnInit(): void {
     this.addDateItem();
-    this.interviewMarks = this.fb.group({
-      unreserved_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      unreserved_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      EWS_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      EWS_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      OBC_NCL_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      OBC_NCL_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      SC_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      SC_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      ST_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      ST_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-    })
+
   }
 
   onNext() {
@@ -122,11 +118,14 @@ export class AddInterviewComponent implements OnInit {
     this.dateList.splice(id - 1, 1);
   }
 
-  async addInterviewData() {
+   async addInterviewData() {
     let rel;
     this.interviewMaster = new InterviewMaster(this.addInterview.value);
     console.log("in", this.interviewMaster);
     rel = await this.InterviewMasterService.addInterview(this.interviewMaster);
+    this.interviewId = this.addInterview.controls.interview_id.value;
+    console.log("this",this.interviewId);
+    
     this.nextStep();
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);
@@ -157,7 +156,18 @@ export class AddInterviewComponent implements OnInit {
 }
 
 
-
+ // this.interviewMarks = this.fb.group({
+    //   unreserved_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   unreserved_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   EWS_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   EWS_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   OBC_NCL_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   OBC_NCL_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   SC_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   SC_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   ST_max: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    //   ST_min: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    // })
 
 
 

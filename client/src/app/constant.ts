@@ -13,5 +13,12 @@ export const Status = {
   1: 'Active',
   0: 'Inactive'
 };
+export const interviewMarkType = {
+  1: 'Unreserved',
+  2: 'EWS',
+  3: 'OBC',
+  4: 'SC',
+  5: 'ST'
+};
 
 export const ProjectTitle = 'Interview Management System';

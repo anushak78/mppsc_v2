@@ -1,5 +1,6 @@
 <!-- <pre>Form Values: {{interview.value | json}}</pre>
 <pre>Form Values: {{interview.controls.dates.status}}</pre> -->
+{{InterviewMarks.value | json}}
 <div class="box-container">
     <div class="grid-2">
         <div>
@@ -91,74 +92,74 @@
             </mat-tab>
 
             <mat-tab label="Step 3">
-                <div [formGroup]="interviewMarks">
-                    <div class="grid-3">
+                <div [formGroup]="InterviewMarks">
+                    <div class="grid-3" [formGroup]="InterviewMarks.controls.unreserved">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="Unreserved Max Marks"
-                                    formControlName="unreserved_max" required>
+                                    formControlName="max_marks" required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_min" placeholder="Unreserved Min Marks"
-                                    formControlName="unreserved_min" required>
+                                    formControlName="min_marks" required>
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3">
+                    <div class="grid-3" [formGroup]="InterviewMarks.controls.EWS">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="EWS Max Marks"
-                                    formControlName="EWS_max" required>
+                                    formControlName="max_marks" required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_min" placeholder="EWS Min Marks"
-                                    formControlName="EWS_min" required>
+                                    formControlName="min_marks" required>
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3">
+                    <div class="grid-3" [formGroup]="InterviewMarks.controls.OBC_NCL">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="OBC NCL Max Marks"
-                                    formControlName="OBC_NCL_max" required>
+                                    formControlName="max_marks" required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_min" placeholder="OBC NCL Min Marks"
-                                    formControlName="OBC_NCL_min" required>
+                                    formControlName="min_marks" required>
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3">
+                    <div class="grid-3" [formGroup]="InterviewMarks.controls.SC">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="SC Max Marks"
-                                    formControlName="SC_max" required>
+                                    formControlName="max_marks" required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_min" placeholder="SC Min Marks"
-                                    formControlName="SC_min" required>
+                                    formControlName="min_marks" required>
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3">
+                    <div class="grid-3" [formGroup]="InterviewMarks.controls.ST">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="ST Max Marks"
-                                    formControlName="ST_max" required>
+                                    formControlName="max_marks" required>
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_min" placeholder="ST Min Marks"
-                                    formControlName="ST_min" required>
+                                    formControlName="min_marks" required>
                             </mat-form-field>
                         </div>
                     </div>

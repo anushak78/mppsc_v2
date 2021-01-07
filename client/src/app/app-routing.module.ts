@@ -53,10 +53,6 @@ const routes: Routes = [
           m => m.InterviewMasterModule
         )
       },
-      // {
-      //   path: 'interview-master',
-      //   component: InterviewMasterComponent
-      // },
       {
         path: 'candidate-master',
         component: CandidateMasterComponent
