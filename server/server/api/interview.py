@@ -49,6 +49,28 @@ svc_add_user_boards = Service(
     name="api.add_user_boards", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_user_boards", cors_policy=cors.POLICY)
 
+svc_edit_interview = Service(
+    name="api.edit_interview", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview", cors_policy=cors.POLICY)
+
+svc_edit_interview_dates = Service(
+    name="api.edit_interview_dates", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview_dates", cors_policy=cors.POLICY)
+
+
+svc_edit_interview_marks = Service(
+    name="api.edit_interview_marks", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview_marks", cors_policy=cors.POLICY)
+
+
+svc_edit_interview_boards = Service(
+    name="api.edit_interview_boards", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview_boards", cors_policy=cors.POLICY)
+
+svc_edit_user_boards = Service(
+    name="api.edit_user_boards", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_user_boards", cors_policy=cors.POLICY)
+
 svc_delete_interview = Service(
     name="api.delete_interview", permission=NO_PERMISSION_REQUIRED,
     path="/ui/delete_interview/{id}", cors_policy=cors.POLICY)
@@ -147,7 +169,7 @@ def add_interview_marks(request):
 
     for ele in marks:
         interview_marks = InterviewMarksMaster(interview_id=id, 
-            min_marks=ele.min_marks, max_marks=ele.max_marks)
+            min_marks=ele.min_marks, max_marks=ele.max_marks, marks_type=ele.marks_type)
         request.dbsession.add(interview_marks)
     
     return {
@@ -200,7 +222,7 @@ def delete_interview(request):
     for ele in boards:
         request.dbsession.query(BoardUserMap).filter(
             BoardUserMap.boardmap_id == ele.id).delete()
-            
+
     request.dbsession.query(BoardInterviewMap).filter(
         BoardInterviewMap.interview_id==id).delete()
     request.dbsession.query(InterviewMarksMaster).filter(
