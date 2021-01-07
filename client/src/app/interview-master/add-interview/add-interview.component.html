@@ -1,6 +1,6 @@
 <!-- <pre>Form Values: {{interview.value | json}}</pre>
 <pre>Form Values: {{interview.controls.dates.status}}</pre> -->
-{{InterviewMarks.value | json}}
+{{marks.value | json}}
 <div class="box-container">
     <div class="grid-2">
         <div>
@@ -10,7 +10,7 @@
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
         <div>
             <mat-tab label="Step 1">
-                <form [formGroup]="addInterview">
+                <div [formGroup]="addInterview">
                     <div class="field">
                         <div>
                             <mat-form-field>
@@ -48,7 +48,7 @@
                         <button mat-raised-button color="primary" [disabled]="!addInterview.valid"
                             (click)="addInterviewData()">Next</button>
                     </div>
-                </form>
+                </div>
             </mat-tab>
 
             <mat-tab label="Step 2">
@@ -92,8 +92,8 @@
             </mat-tab>
 
             <mat-tab label="Step 3">
-                <div [formGroup]="InterviewMarks">
-                    <div class="grid-3" [formGroup]="InterviewMarks.controls.unreserved">
+                <div [formGroup]="marks">
+                    <div class="grid-3" [formGroup]="marks.controls.unreserved">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="Unreserved Max Marks"
@@ -107,7 +107,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3" [formGroup]="InterviewMarks.controls.EWS">
+                    <div class="grid-3" [formGroup]="marks.controls.EWS">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="EWS Max Marks"
@@ -121,7 +121,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3" [formGroup]="InterviewMarks.controls.OBC_NCL">
+                    <div class="grid-3" [formGroup]="marks.controls.OBC_NCL">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="OBC NCL Max Marks"
@@ -135,7 +135,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3" [formGroup]="InterviewMarks.controls.SC">
+                    <div class="grid-3" [formGroup]="marks.controls.SC">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="SC Max Marks"
@@ -149,7 +149,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3" [formGroup]="InterviewMarks.controls.ST">
+                    <div class="grid-3" [formGroup]="marks.controls.ST">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="ur_max" placeholder="ST Max Marks"
@@ -166,14 +166,14 @@
                 </div>
                 <div class="right">
                     <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" class="ml-10" (click)=" marks()">Next</button>
+                    <button mat-raised-button color="primary" class="ml-10" (click)=" addmarks()">Next</button>
                 </div>
             </mat-tab>
             <mat-tab label="Step 4">
                 <div class="field">
                     <mat-form-field>
                         <mat-label>Verification Officer Name</mat-label>
-                        <mat-select [(ngModel)]="gender">
+                        <mat-select [(ngModel)]="verficationofficername">
                             <mat-option *ngFor="let office of Officer" [value]="office.name">
                                 {{office.name}}
                             </mat-option>

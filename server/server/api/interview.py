@@ -19,6 +19,10 @@ from ..models.guestuser import (
     GuestUserDateMap
 )
 
+from ..models.usermaster import (
+    UserMaster
+)
+
 log = logging.getLogger(__name__)
 
 svc_interview_list = Service(
@@ -28,6 +32,10 @@ svc_interview_list = Service(
 svc_interview_details = Service(
     name="api.interview_details", permission=NO_PERMISSION_REQUIRED,
     path="/ui/interview_details/{id}", cors_policy=cors.POLICY)
+
+svc_fetch_users = Service(
+    name="api.fetch_users", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/fetch_users", cors_policy=cors.POLICY)
 
 svc_add_interview = Service(
     name="api.add_interview", permission=NO_PERMISSION_REQUIRED,
@@ -123,6 +131,22 @@ def get_interview_details(request):
     }
 
 
+@svc_fetch_users.get()
+def fetch_users(request):
+    id = request.json_body['id']
+    date = BoardInterviewMap.get_board_date(request.dbsession, id)
+    guest_user_ids = get_guest_user_list(request, date)
+    board_users = UserMaster.get_board_users(request.dbsession)
+    vo_users = UserMaster.get_vo_users(request.dbsession)
+    return {
+        "code": 0,
+        "message": "success",
+        "guest_user_list": guest_user_ids,
+        "board_user_list": board_users,
+        "vo_user_list": vo_users
+    }
+
+
 @svc_add_interview.post(require_csrf=False)
 def add_interview(request):
     interview_id = request.json_body['interview_id']
@@ -140,15 +164,16 @@ def add_interview(request):
     interview = InterviewMaster(name=name, 
         notification_no=notification_no, status=status, interview_id=interview_id)
     request.dbsession.add(interview)
+    id = InterviewMaster.get_first(request.dbsession)
     return {
             "code": 0,
             "message": "success"
+            # "id": id
         }
 
 
 @svc_add_interview_dates.post(require_csrf=False)
 def add_interview_dates(request):
-    id = InterviewMaster.get_first(request.dbsession)
     dates = request.json_body['dates']
 
     for ele in dates:
@@ -166,7 +191,6 @@ def add_interview_dates(request):
 
 @svc_add_interview_marks.post(require_csrf=False)
 def add_interview_marks(request):
-    id = InterviewMaster.get_first(request.dbsession)
     marks = request.json_body['marks']
 
     for ele in marks:
@@ -182,7 +206,6 @@ def add_interview_marks(request):
 
 @svc_add_interview_boards.post(require_csrf=False)
 def add_interview_boards(request):
-    id = InterviewMaster.get_first(request.dbsession)
     boards = request.json_body['boards']
 
     for ele in boards:

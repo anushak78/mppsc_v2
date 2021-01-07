@@ -4,9 +4,9 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { InterviewMasterService } from '../interview-master.service';
 import { DatesRange } from '../model/dates-range.model';
-import { InterviewMark } from '../model/interview-mark.model';
 import { InterviewMaster } from '../model/interview-master.model';
 import { MapVerficationOfficer } from '../model/map-verfication-officer.model';
+import { Marks } from '../model/marks.model';
 
 @Component({
   selector: 'app-add-interview',
@@ -16,7 +16,7 @@ import { MapVerficationOfficer } from '../model/map-verfication-officer.model';
 export class AddInterviewComponent implements OnInit {
   interviewMaster = new InterviewMaster();
   dateRange = new DatesRange();
-  interviewMark = new InterviewMark();
+  Marks = new Marks();
   MapVerficationOfficer = new MapVerficationOfficer();
   tabIndex = 0
   Officer = [{ name: 'Nseit' }];
@@ -28,8 +28,8 @@ export class AddInterviewComponent implements OnInit {
   date = [{ fromDate: '2019', toDate: '2021' }, { fromDate: '2020', toDate: '2021' }]
   officer: MapVerficationOfficer[] = [];
   interviewId
-  gender
-
+  verficationofficername
+  Interviewmarks: Marks[] = [];
   constructor(private InterviewMasterService: InterviewMasterService,
     private router: Router,
     private fb: FormBuilder) { }
@@ -41,38 +41,68 @@ export class AddInterviewComponent implements OnInit {
     status: new FormControl('yes', [Validators.required]),
   })
 
-  InterviewMarks = this.fb.group({
+  marks = this.fb.group({
     unreserved: this.fb.group({
-      marks_type: ['UR'],
-      min_marks: [''],
-      max_marks: [''],
-      interview_id: ['']
+      marks_type: [1],
+      min_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
+      max_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
+      interview_id: []
     }),
     EWS: this.fb.group({
-      marks_type: ['EWS'],
-      min_marks: [''],
-      max_marks: [''],
+      marks_type: [2],
+      min_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
+      max_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
       interview_id: ['']
     }),
     OBC_NCL: this.fb.group({
-      marks_type: ['OBC_NCL'],
-      min_marks: [''],
-      max_marks: [''],
+      marks_type: [3],
+      min_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
+      max_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
       interview_id: ['']
 
     }),
     SC: this.fb.group({
-      marks_type: ['SC'],
-      min_marks: [''],
-      max_marks: [''],
+      marks_type: [4],
+      min_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
+      max_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
       interview_id: ['']
     }),
     ST: this.fb.group({
-      marks_type: ['ST'],
-      min_marks: [''],
-      max_marks: [''],
+      marks_type: [5],
+      min_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
+      max_marks: [, [Validators.required, Validators.pattern("^[0-9]*$")]],
       interview_id: ['']
     }),
+
+    // interview_id: [''],
+
+    // marks: this.fb.array([
+    //   {
+    //     marks_type: '1',
+    //     min_marks: '',
+    //     max_marks: '',
+    //   },
+    //   {
+    //     marks_type: '2',
+    //     min_marks: '',
+    //     max_marks: '',
+    //   },
+    //   {
+    //     marks_type: '3',
+    //     min_marks: '',
+    //     max_marks: '',
+    //   },
+    //   {
+    //     marks_type: '4',
+    //     min_marks: '',
+    //     max_marks: '',
+    //   },
+    //    {
+    //     marks_type: '4',
+    //     min_marks: '',
+    //     max_marks: '',
+    //   },
+    // ])
   })
 
   valueChangeVerification(unit, $event) {
@@ -118,14 +148,18 @@ export class AddInterviewComponent implements OnInit {
     this.dateList.splice(id - 1, 1);
   }
 
-   async addInterviewData() {
+  async addInterviewData() {
     let rel;
     this.interviewMaster = new InterviewMaster(this.addInterview.value);
     console.log("in", this.interviewMaster);
     rel = await this.InterviewMasterService.addInterview(this.interviewMaster);
     this.interviewId = this.addInterview.controls.interview_id.value;
-    console.log("this",this.interviewId);
-    
+    console.log("this", this.interviewId);
+    this.marks.get(['unreserved', 'interview_id']).setValue(this.interviewId)
+    this.marks.get(['EWS', 'interview_id']).setValue(this.interviewId)
+    this.marks.get(['OBC_NCL', 'interview_id']).setValue(this.interviewId)
+    this.marks.get(['SC', 'interview_id']).setValue(this.interviewId)
+    this.marks.get(['ST', 'interview_id']).setValue(this.interviewId)
     this.nextStep();
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);
@@ -143,10 +177,23 @@ export class AddInterviewComponent implements OnInit {
     }
   }
 
-  async marks() {
+  async addmarks() {
     let rel
-    this.interviewMark = new InterviewMark(this.addInterview.value);
-    rel = await this.InterviewMasterService.interviewMarks(this.interviewMark);
+
+    Object.keys(this.marks.controls).forEach(key => {
+      let u = this.marks.get(key).value
+      this.Interviewmarks.push(u);
+      this.Marks = new Marks(u);
+      console.log("Marks", this.Marks);
+    }
+    );
+    // this.Marks = new Marks(this.marks.value);
+    // console.log("Marks", this.Marks);
+    // this.Marks = new Marks(this.Interviewmarks);
+    //console.log("Marks", this.Marks);
+    console.log("marksssss", this.Interviewmarks);
+    rel = await this.InterviewMasterService.interviewMarks(this.Marks)
+
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);
     } else {

@@ -2,8 +2,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as apiUrl from '../apiUrls';
 import { DatesRange } from './model/dates-range.model';
-import { InterviewMark } from './model/interview-mark.model';
 import { InterviewMaster } from './model/interview-master.model';
+import { Marks } from './model/marks.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class InterviewMasterService {
 
   private httpErrorMessage = '';
   interview: InterviewMaster[] = [];
-  interviewMark: InterviewMark[] = [];
+  Marks: Marks[] = [];
   constructor(private http: HttpClient) { }
 
   get getErrorMessage(): string {
@@ -82,7 +82,7 @@ export class InterviewMasterService {
       }).catch((error) => this.errorHandler(error));
   }
 
-  async interviewMarks(interview: InterviewMark){
+  async interviewMarks(interview: Marks){
     return await this.http.post(
       apiUrl.getApiInterviewMarksEndPoint, interview.toJSON()).toPromise()
       .then((response) => {
