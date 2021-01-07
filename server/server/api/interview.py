@@ -164,15 +164,16 @@ def add_interview(request):
     interview = InterviewMaster(name=name, 
         notification_no=notification_no, status=status, interview_id=interview_id)
     request.dbsession.add(interview)
+    id = InterviewMaster.get_first(request.dbsession)
     return {
             "code": 0,
             "message": "success"
+            "id": id
         }
 
 
 @svc_add_interview_dates.post(require_csrf=False)
 def add_interview_dates(request):
-    id = InterviewMaster.get_first(request.dbsession)
     dates = request.json_body['dates']
 
     for ele in dates:
@@ -190,7 +191,6 @@ def add_interview_dates(request):
 
 @svc_add_interview_marks.post(require_csrf=False)
 def add_interview_marks(request):
-    id = InterviewMaster.get_first(request.dbsession)
     marks = request.json_body['marks']
 
     for ele in marks:
@@ -206,7 +206,6 @@ def add_interview_marks(request):
 
 @svc_add_interview_boards.post(require_csrf=False)
 def add_interview_boards(request):
-    id = InterviewMaster.get_first(request.dbsession)
     boards = request.json_body['boards']
 
     for ele in boards:
