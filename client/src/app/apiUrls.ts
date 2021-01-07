@@ -29,3 +29,9 @@ export const getApiDeleteBoardUserMastercollectionEndPoint = (boardId: number) =
 export const getApiEditBoardMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/edit_board';
 export const getApiAddInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/add_interview';
 export const getApiInterviewMasterEndPoint = 'http://0.0.0.0:6543/ui/interview_list';
+export const getApiDeleteInterviewMasterEndPoint = (interviewId) => {
+  return `http://0.0.0.0:6543/ui/delete_interview/${interviewId}`;
+};
+export const getApiEditInterviewMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/0';
+export const getApiDatesInterviewMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_interview_dates';
+export const getApiInterviewMarksEndPoint = 'http://0.0.0.0:6543/ui/add_interview_marks';
