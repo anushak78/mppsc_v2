@@ -1,5 +1,7 @@
 import logging
 from cornice import Service
+from datetime import datetime
+
 from pyramid.security import (
     NO_PERMISSION_REQUIRED,
 )
@@ -17,6 +19,10 @@ from ..models.guestuser import (
     GuestUserDateMap
 )
 
+from ..models.usermaster import (
+    UserMaster
+)
+
 log = logging.getLogger(__name__)
 
 svc_interview_list = Service(
@@ -26,6 +32,10 @@ svc_interview_list = Service(
 svc_interview_details = Service(
     name="api.interview_details", permission=NO_PERMISSION_REQUIRED,
     path="/ui/interview_details/{id}", cors_policy=cors.POLICY)
+
+svc_fetch_users = Service(
+    name="api.fetch_users", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/fetch_users", cors_policy=cors.POLICY)
 
 svc_add_interview = Service(
     name="api.add_interview", permission=NO_PERMISSION_REQUIRED,
@@ -48,6 +58,28 @@ svc_add_interview_boards = Service(
 svc_add_user_boards = Service(
     name="api.add_user_boards", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_user_boards", cors_policy=cors.POLICY)
+
+svc_edit_interview = Service(
+    name="api.edit_interview", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview", cors_policy=cors.POLICY)
+
+svc_edit_interview_dates = Service(
+    name="api.edit_interview_dates", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview_dates", cors_policy=cors.POLICY)
+
+
+svc_edit_interview_marks = Service(
+    name="api.edit_interview_marks", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview_marks", cors_policy=cors.POLICY)
+
+
+svc_edit_interview_boards = Service(
+    name="api.edit_interview_boards", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_interview_boards", cors_policy=cors.POLICY)
+
+svc_edit_user_boards = Service(
+    name="api.edit_user_boards", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/edit_user_boards", cors_policy=cors.POLICY)
 
 svc_delete_interview = Service(
     name="api.delete_interview", permission=NO_PERMISSION_REQUIRED,
@@ -99,6 +131,22 @@ def get_interview_details(request):
     }
 
 
+@svc_fetch_users.get()
+def fetch_users(request):
+    id = request.json_body['id']
+    date = BoardInterviewMap.get_board_date(request.dbsession, id)
+    guest_user_ids = get_guest_user_list(request, date)
+    board_users = UserMaster.get_board_users(request.dbsession)
+    vo_users = UserMaster.get_vo_users(request.dbsession)
+    return {
+        "code": 0,
+        "message": "success",
+        "guest_user_list": guest_user_ids,
+        "board_user_list": board_users,
+        "vo_user_list": vo_users
+    }
+
+
 @svc_add_interview.post(require_csrf=False)
 def add_interview(request):
     interview_id = request.json_body['interview_id']
@@ -147,7 +195,7 @@ def add_interview_marks(request):
 
     for ele in marks:
         interview_marks = InterviewMarksMaster(interview_id=id, 
-            min_marks=ele.min_marks, max_marks=ele.max_marks)
+            min_marks=ele.min_marks, max_marks=ele.max_marks, marks_type=ele.marks_type)
         request.dbsession.add(interview_marks)
     
     return {
@@ -200,7 +248,7 @@ def delete_interview(request):
     for ele in boards:
         request.dbsession.query(BoardUserMap).filter(
             BoardUserMap.boardmap_id == ele.id).delete()
-            
+
     request.dbsession.query(BoardInterviewMap).filter(
         BoardInterviewMap.interview_id==id).delete()
     request.dbsession.query(InterviewMarksMaster).filter(

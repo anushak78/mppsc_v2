@@ -1,5 +1,5 @@
 ::ng-deep .mat-form-field-infix{
-    width: 250px !important;
+    width: 350px !important;
   }
 
   .mat-radio-button ~ .mat-radio-button {
@@ -30,3 +30,8 @@
     margin-top: 4px;
   }
   
+  .field {
+    mat-form-field{
+      width: 100%;
+    }
+  }

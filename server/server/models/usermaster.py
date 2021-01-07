@@ -7,6 +7,7 @@ from sqlalchemy import (
 import hashlib
 import six
 from .meta import Base
+from sqlalchemy import or_
 
 
 class UserMaster(Base):
@@ -58,6 +59,34 @@ class UserMaster(Base):
     @classmethod
     def by_login(cls, DBSession, login):
         return DBSession.query(UserMaster).filter_by(login=login).first()
+
+    @classmethod
+    def get_board_users(cls, DBSession):
+        users = DBSession.query(UserMaster).filter(
+            or_(UserMaster.role==1, UserMaster.role==2)).all()
+        user_list = []
+        for ele in users:
+            user_list.append({
+                "id": ele.id,
+                "name": ele.name,
+                "role": ele.role,
+                "title": ele.title
+            })
+        return user_list
+
+    @classmethod
+    def get_vo_users(cls, DBSession):
+        users = DBSession.query(UserMaster).filter_by(role=3).all()
+        user_list = []
+        for ele in users:
+            user_list.append({
+                "id": ele.id,
+                "name": ele.name,
+                "role": ele.role,
+                "title": ele.title
+            })
+        return user_list
+
 
 
 class UserFingerPrintMap(Base):

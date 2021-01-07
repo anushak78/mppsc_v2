@@ -9558,7 +9558,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     !*** ./src/app/apiUrls.ts ***!
     \****************************/
 
-  /*! exports provided: getApiUserMastercollectionEndPoint, getApiAddUserMastercollectionEndPoint, getApiBoardMastercollectionEndPoint, getApiAddBoardMastercollectionEndPoint, getApiDeleteUserMastercollectionEndPoint, getApiDetailsUserMastercollectionEndPoint, getApiUpdateUserMastercollectionEndPoint, getApiGuestUserMastercollectionEndPoint, getApiAddGuestUserMastercollectionEndPoint, getApiEditGuestUserMastercollectionEndPoint, getApiAddGuestUserMasterDatescollectionEndPoint, getApiEditGuestUserMasterDatescollectionEndPoint, getApiDetailsGuestUserMastercollectionEndPoint, getApiDeleteGuestUserMastercollectionEndPoint, getApiDetailsBoardUserMastercollectionEndPoint, getApiDeleteBoardUserMastercollectionEndPoint, getApiEditBoardMastercollectionEndPoint, getApiAddInterviewMasterEndPoint, getApiInterviewMasterEndPoint */
+  /*! exports provided: getApiUserMastercollectionEndPoint, getApiAddUserMastercollectionEndPoint, getApiBoardMastercollectionEndPoint, getApiAddBoardMastercollectionEndPoint, getApiDeleteUserMastercollectionEndPoint, getApiDetailsUserMastercollectionEndPoint, getApiUpdateUserMastercollectionEndPoint, getApiGuestUserMastercollectionEndPoint, getApiAddGuestUserMastercollectionEndPoint, getApiEditGuestUserMastercollectionEndPoint, getApiAddGuestUserMasterDatescollectionEndPoint, getApiEditGuestUserMasterDatescollectionEndPoint, getApiDetailsGuestUserMastercollectionEndPoint, getApiDeleteGuestUserMastercollectionEndPoint, getApiDetailsBoardUserMastercollectionEndPoint, getApiDeleteBoardUserMastercollectionEndPoint, getApiEditBoardMastercollectionEndPoint, getApiAddInterviewMasterEndPoint, getApiInterviewMasterEndPoint, getApiDeleteInterviewMasterEndPoint, getApiEditInterviewMastercollectionEndPoint, getApiDatesInterviewMastercollectionEndPoint, getApiInterviewMarksEndPoint */
 
   /***/
   function srcAppApiUrlsTs(module, __webpack_exports__, __webpack_require__) {
@@ -9679,6 +9679,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     __webpack_require__.d(__webpack_exports__, "getApiInterviewMasterEndPoint", function () {
       return getApiInterviewMasterEndPoint;
     });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getApiDeleteInterviewMasterEndPoint", function () {
+      return getApiDeleteInterviewMasterEndPoint;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getApiEditInterviewMastercollectionEndPoint", function () {
+      return getApiEditInterviewMastercollectionEndPoint;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getApiDatesInterviewMastercollectionEndPoint", function () {
+      return getApiDatesInterviewMastercollectionEndPoint;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getApiInterviewMarksEndPoint", function () {
+      return getApiInterviewMarksEndPoint;
+    });
 
     var getApiUserMastercollectionEndPoint = '/ui/user_list';
     var getApiAddUserMastercollectionEndPoint = '/ui/add_user';
@@ -9719,6 +9743,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var getApiEditBoardMastercollectionEndPoint = '/ui/edit_board';
     var getApiAddInterviewMasterEndPoint = '/ui/add_interview';
     var getApiInterviewMasterEndPoint = '/ui/interview_list';
+
+    var getApiDeleteInterviewMasterEndPoint = function getApiDeleteInterviewMasterEndPoint(interviewId) {
+      return "/ui/delete_interview/".concat(interviewId);
+    };
+
+    var getApiEditInterviewMastercollectionEndPoint = '/ui/0';
+    var getApiDatesInterviewMastercollectionEndPoint = '/ui/add_interview_dates';
+    var getApiInterviewMarksEndPoint = '/ui/add_interview_marks';
     /***/
   }
 }]);

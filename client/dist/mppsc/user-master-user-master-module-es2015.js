@@ -4,7 +4,7 @@
 /*!****************************!*\
   !*** ./src/app/apiUrls.ts ***!
   \****************************/
-/*! exports provided: getApiUserMastercollectionEndPoint, getApiAddUserMastercollectionEndPoint, getApiBoardMastercollectionEndPoint, getApiAddBoardMastercollectionEndPoint, getApiDeleteUserMastercollectionEndPoint, getApiDetailsUserMastercollectionEndPoint, getApiUpdateUserMastercollectionEndPoint, getApiGuestUserMastercollectionEndPoint, getApiAddGuestUserMastercollectionEndPoint, getApiEditGuestUserMastercollectionEndPoint, getApiAddGuestUserMasterDatescollectionEndPoint, getApiEditGuestUserMasterDatescollectionEndPoint, getApiDetailsGuestUserMastercollectionEndPoint, getApiDeleteGuestUserMastercollectionEndPoint, getApiDetailsBoardUserMastercollectionEndPoint, getApiDeleteBoardUserMastercollectionEndPoint, getApiEditBoardMastercollectionEndPoint, getApiAddInterviewMasterEndPoint, getApiInterviewMasterEndPoint */
+/*! exports provided: getApiUserMastercollectionEndPoint, getApiAddUserMastercollectionEndPoint, getApiBoardMastercollectionEndPoint, getApiAddBoardMastercollectionEndPoint, getApiDeleteUserMastercollectionEndPoint, getApiDetailsUserMastercollectionEndPoint, getApiUpdateUserMastercollectionEndPoint, getApiGuestUserMastercollectionEndPoint, getApiAddGuestUserMastercollectionEndPoint, getApiEditGuestUserMastercollectionEndPoint, getApiAddGuestUserMasterDatescollectionEndPoint, getApiEditGuestUserMasterDatescollectionEndPoint, getApiDetailsGuestUserMastercollectionEndPoint, getApiDeleteGuestUserMastercollectionEndPoint, getApiDetailsBoardUserMastercollectionEndPoint, getApiDeleteBoardUserMastercollectionEndPoint, getApiEditBoardMastercollectionEndPoint, getApiAddInterviewMasterEndPoint, getApiInterviewMasterEndPoint, getApiDeleteInterviewMasterEndPoint, getApiEditInterviewMastercollectionEndPoint, getApiDatesInterviewMastercollectionEndPoint, getApiInterviewMarksEndPoint */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28,6 +28,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiEditBoardMastercollectionEndPoint", function() { return getApiEditBoardMastercollectionEndPoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiAddInterviewMasterEndPoint", function() { return getApiAddInterviewMasterEndPoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiInterviewMasterEndPoint", function() { return getApiInterviewMasterEndPoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiDeleteInterviewMasterEndPoint", function() { return getApiDeleteInterviewMasterEndPoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiEditInterviewMastercollectionEndPoint", function() { return getApiEditInterviewMastercollectionEndPoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiDatesInterviewMastercollectionEndPoint", function() { return getApiDatesInterviewMastercollectionEndPoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getApiInterviewMarksEndPoint", function() { return getApiInterviewMarksEndPoint; });
 const getApiUserMastercollectionEndPoint = '/ui/user_list';
 const getApiAddUserMastercollectionEndPoint = '/ui/add_user';
 const getApiBoardMastercollectionEndPoint = '/ui/board_list';
@@ -59,6 +63,12 @@ const getApiDeleteBoardUserMastercollectionEndPoint = (boardId) => {
 const getApiEditBoardMastercollectionEndPoint = '/ui/edit_board';
 const getApiAddInterviewMasterEndPoint = '/ui/add_interview';
 const getApiInterviewMasterEndPoint = '/ui/interview_list';
+const getApiDeleteInterviewMasterEndPoint = (interviewId) => {
+    return `/ui/delete_interview/${interviewId}`;
+};
+const getApiEditInterviewMastercollectionEndPoint = '/ui/0';
+const getApiDatesInterviewMastercollectionEndPoint = '/ui/add_interview_dates';
+const getApiInterviewMarksEndPoint = '/ui/add_interview_marks';
 
 
 /***/ }),

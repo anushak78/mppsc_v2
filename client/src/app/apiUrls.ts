@@ -29,3 +29,9 @@ export const getApiDeleteBoardUserMastercollectionEndPoint = (boardId: number) =
 export const getApiEditBoardMastercollectionEndPoint = '/ui/edit_board';
 export const getApiAddInterviewMasterEndPoint = '/ui/add_interview';
 export const getApiInterviewMasterEndPoint = '/ui/interview_list';
+export const getApiDeleteInterviewMasterEndPoint = (interviewId) => {
+  return `/ui/delete_interview/${interviewId}`;
+};
+export const getApiEditInterviewMastercollectionEndPoint = '/ui/0';
+export const getApiDatesInterviewMastercollectionEndPoint = '/ui/add_interview_dates';
+export const getApiInterviewMarksEndPoint = '/ui/add_interview_marks';

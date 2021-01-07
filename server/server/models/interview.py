@@ -110,6 +110,11 @@ class BoardInterviewMap(Base):
         self.status = status
 
     @classmethod
+    def get_board_date(cls, DBSession, id):
+        board = DBSession.query(BoardInterviewMap).filter_by(id=id).first()
+        return board.date
+
+    @classmethod
     def get_interview_board(cls, DBSession, id):
         boards = DBSession.query(BoardInterviewMap).join(BoardMaster).filter(
             BoardInterviewMap.interview_id == id).all()

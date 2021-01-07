@@ -28,6 +28,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { InterviewMasterComponent } from './interview-master.component';
+import { sharedStylesheetJitUrl } from '@angular/compiler';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { InterviewMasterComponent } from './interview-master.component';
     MatNativeDateModule,
     MatSortModule,
     MatProgressBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    SharedModule
+
   ]
 })
 export class InterviewMasterModule { }
