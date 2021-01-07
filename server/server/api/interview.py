@@ -1,5 +1,7 @@
 import logging
 from cornice import Service
+from datetime import datetime
+
 from pyramid.security import (
     NO_PERMISSION_REQUIRED,
 )
@@ -17,6 +19,10 @@ from ..models.guestuser import (
     GuestUserDateMap
 )
 
+from ..models.usermaster import (
+    UserMaster
+)
+
 log = logging.getLogger(__name__)
 
 svc_interview_list = Service(
@@ -26,6 +32,10 @@ svc_interview_list = Service(
 svc_interview_details = Service(
     name="api.interview_details", permission=NO_PERMISSION_REQUIRED,
     path="/ui/interview_details/{id}", cors_policy=cors.POLICY)
+
+svc_fetch_users = Service(
+    name="api.fetch_users", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/fetch_users", cors_policy=cors.POLICY)
 
 svc_add_interview = Service(
     name="api.add_interview", permission=NO_PERMISSION_REQUIRED,
@@ -118,6 +128,22 @@ def get_interview_details(request):
         "code": 0,
         "message": "sucess",
         "data": interview_details
+    }
+
+
+@svc_fetch_users.get()
+def fetch_users(request):
+    id = request.json_body['id']
+    date = BoardInterviewMap.get_board_date(request.dbsession, id)
+    guest_user_ids = get_guest_user_list(request, date)
+    board_users = UserMaster.get_board_users(request.dbsession)
+    vo_users = UserMaster.get_vo_users(request.dbsession)
+    return {
+        "code": 0,
+        "message": "success",
+        "guest_user_list": guest_user_ids,
+        "board_user_list": board_users,
+        "vo_user_list": vo_users
     }
 
 

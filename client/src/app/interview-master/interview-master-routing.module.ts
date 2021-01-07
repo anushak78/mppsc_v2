@@ -13,6 +13,10 @@ const routes: Routes = [
     path: 'add-interview',
     component: AddInterviewComponent,
   },
+  {
+    path: 'add-interview/:userId',
+    component: AddInterviewComponent
+  }
 ];
 
 @NgModule({
