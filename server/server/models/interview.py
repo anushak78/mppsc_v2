@@ -70,7 +70,7 @@ class InterviewDatesMaster(Base):
         dates = DBSession.query(InterviewDatesMaster).filter_by(interview_id=id).all()
         date_list = []
         for ele in dates:
-            date_list({
+            date_list.append({
                 "id": ele.id,
                 "to_date": str(ele.to_date),
                 "from_date": str(ele.from_date),
