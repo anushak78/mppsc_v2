@@ -5,7 +5,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey
 )
-from sqlalchemy import or_
+from sqlalchemy import or_, not_
 
 from .meta import Base
 
@@ -78,11 +78,10 @@ class GuestUserDateMap(Base):
 
     @classmethod
     def filter_dates(cls, DBSession, date):
-        user_dates = DBSession.query(GuestUserDateMap).filter( \
-            (GuestUserDateMap.to_date == date, GuestUserDateMap.from_date == None) | \
-            (GuestUserDateMap.to_date == None, GuestUserDateMap.from_date == date) | \
-            (GuestUserDateMap.to_date <= date, GuestUserDateMap.from_date >= date)
-        ).all()
+        to_date = date.to_date
+        from_date = date.from_date
+        user_dates = DBSession.query(GuestUserDateMap).filter(not_(
+            GuestUserDateMap.to_date < from_date | GuestUserDateMap.from_date > to_date)).all()
         user_dates_list = []
         for ele in user_dates:
             user_dates_list.append({

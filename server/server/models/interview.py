@@ -42,6 +42,17 @@ class InterviewMaster(Base):
         return first_id.id
 
 
+class InterviewVOMap(Base):
+    __tablename__ = 'interview_vo_map'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(DateTime)
+    interview_id = Column(Integer, ForeignKey('interview_master.id'))
+
+    def __init__(self, user_id, interview_id):
+        self.user_id = user_id
+        self.interview_id = interview_id
+        
+
 class InterviewDatesMaster(Base):
     __tablename__ = 'interview_dates_master'
     id = Column(Integer, primary_key=True)
@@ -102,17 +113,23 @@ class BoardInterviewMap(Base):
     id = Column(Integer, primary_key=True)
     interview_id = Column(Integer, ForeignKey('interview_master.id'))
     board_id = Column(Integer, ForeignKey('board_master.id'))
-    date = Column(DateTime)
+    from_date = Column(DateTime)
+    to_date = Column(DateTime)
 
-    def __init__(self, interview_id, board_id, date):
+    def __init__(self, interview_id, board_id, from_date, to_date):
         self.interview_id = interview_id
         self.board_id = board_id
+        self.from_date = from_date
+        self.to_date = to_date
         self.status = status
 
     @classmethod
     def get_board_date(cls, DBSession, id):
         board = DBSession.query(BoardInterviewMap).filter_by(id=id).first()
-        return board.date
+        return {
+            "to_date": board.to_date,
+            "from_date": from_date
+        }
 
     @classmethod
     def get_interview_board(cls, DBSession, id):
@@ -123,7 +140,8 @@ class BoardInterviewMap(Base):
             board_list({
                 "id": ele.id,
                 "board_id": ele.board_id,
-                "date": str(ele.date),
+                "from_date": str(ele.from_date),
+                "to_date": str(ele.to_date),
                 "interview_id": ele.interview_id,
                 "board_name": board.board_name,
                 "login_id": board.login_id,
