@@ -248,12 +248,14 @@ def add_interview_marks(request):
 
 @svc_add_interview_boards.post(require_csrf=False)
 def add_interview_boards(request):
+    id = request.json_body['id']
     boards = request.json_body['boards']
 
     for ele in boards:
-        board_date = datetime.strptime(str(ele['date']), "%Y-%m-%dT%H:%M:%S.000z")
+        from_date = datetime.strptime(str(ele['from_date']), "%Y-%m-%dT%H:%M:%S.000z")
+        to_date = datetime.strptime(str(ele['to_date']), "%Y-%m-%dT%H:%M:%S.000z")
         interview_board = BoardInterviewMap(interview_id=id, 
-            board_id=ele.board_id, date=board_date)
+            board_id=ele.board_id, from_date=from_date, to_date=to_date)
         request.dbsession.add(interview_board)
 
     board_map_list = get_board_interview_map_ids(request, id)
