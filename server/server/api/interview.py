@@ -24,6 +24,8 @@ from ..models.usermaster import (
     UserMaster
 )
 
+from ..models.constants import MarksCategory
+
 log = logging.getLogger(__name__)
 
 svc_interview_list = Service(
@@ -218,13 +220,26 @@ def add_interview_dates(request):
 
 @svc_add_interview_marks.post(require_csrf=False)
 def add_interview_marks(request):
-    marks = request.json_body['marks']
+    interview_id = request.json_body['interview_id']
+    interview_marks_list = []
 
-    for ele in marks:
-        interview_marks = InterviewMarksMaster(interview_id=id, 
-            min_marks=ele.min_marks, max_marks=ele.max_marks, marks_type=ele.marks_type)
-        request.dbsession.add(interview_marks)
-    
+    interview_marks_list.append(InterviewMarksMaster(
+        interview_id=interview_id, min_marks=request.json_body['min_marks_unreserved'],
+        max_marks=request.json_body['min_marks_unreserved'], marks_type=MarksCategory.UR.value))
+    interview_marks_list.append(InterviewMarksMaster(
+        interview_id=interview_id, min_marks=request.json_body['min_marks_sc'],
+        max_marks=request.json_body['min_marks_sc'], marks_type=MarksCategory.SC.value))
+    interview_marks_list.append(InterviewMarksMaster(
+        interview_id=interview_id, min_marks=request.json_body['min_marks_st'],
+        max_marks=request.json_body['min_marks_st'], marks_type=MarksCategory.ST.value))
+    interview_marks_list.append(InterviewMarksMaster(
+        interview_id=interview_id, min_marks=request.json_body['min_marks_ews'],
+        max_marks=request.json_body['min_marks_ews'], marks_type=MarksCategory.EWS.value))
+    interview_marks_list.append(InterviewMarksMaster(
+        interview_id=interview_id, min_marks=request.json_body['min_marks_obc'],
+        max_marks=request.json_body['min_marks_obc'], marks_type=MarksCategory.OBC.value))
+
+    request.dbsession.add_all(interview_marks_list)
     return {
         "code": 0,
         "message": "success"
