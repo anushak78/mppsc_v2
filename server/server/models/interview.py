@@ -42,6 +42,17 @@ class InterviewMaster(Base):
         return first_id.id
 
 
+class InterviewVOMap(Base):
+    __tablename__ = 'interview_vo_map'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(DateTime)
+    interview_id = Column(Integer, ForeignKey('interview_master.id'))
+
+    def __init__(self, user_id, interview_id):
+        self.user_id = user_id
+        self.interview_id = interview_id
+        
+
 class InterviewDatesMaster(Base):
     __tablename__ = 'interview_dates_master'
     id = Column(Integer, primary_key=True)

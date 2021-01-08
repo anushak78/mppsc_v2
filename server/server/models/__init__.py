@@ -22,7 +22,8 @@ from .interview import (
     BoardInterviewMap,
     BoardUserMap,
     InterviewDatesMaster,
-    InterviewMarksMaster
+    InterviewMarksMaster,
+    InterviewVOMap
 )
 from .usermaster import (
     UserMaster,

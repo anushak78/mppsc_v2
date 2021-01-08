@@ -11,7 +11,8 @@ from ..models.interview import (
     InterviewDatesMaster, 
     InterviewMarksMaster, 
     BoardInterviewMap, 
-    BoardUserMap
+    BoardUserMap,
+    InterviewVOMap
 )
 
 from ..models.guestuser import (
@@ -37,6 +38,10 @@ svc_fetch_users = Service(
     name="api.fetch_users", permission=NO_PERMISSION_REQUIRED,
     path="/ui/fetch_users", cors_policy=cors.POLICY)
 
+svc_fetch_vo_users = Service(
+    name="api.fetch_vo_users", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/fetch_vo_users", cors_policy=cors.POLICY)
+
 svc_add_interview = Service(
     name="api.add_interview", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_interview", cors_policy=cors.POLICY)
@@ -45,11 +50,13 @@ svc_add_interview_dates = Service(
     name="api.add_interview_dates", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_interview_dates", cors_policy=cors.POLICY)
 
-
 svc_add_interview_marks = Service(
     name="api.add_interview_marks", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_interview_marks", cors_policy=cors.POLICY)
 
+svc_add_interview_vo = Service(
+    name="api.add_interview_vo", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/add_interview_vo", cors_policy=cors.POLICY)
 
 svc_add_interview_boards = Service(
     name="api.add_interview_boards", permission=NO_PERMISSION_REQUIRED,
@@ -131,18 +138,38 @@ def get_interview_details(request):
     }
 
 
+@svc_add_interview_vo.post(require_csrf=False)
+def add_interview_vo(request):
+    id = request.json_body['id']
+    user_id = request.json_body['user_id']
+    user_map = InterviewVOMap(interview_id=id, user_id=user_id)
+    request.dbsession.add(user_map)
+    return {
+        "code": 0,
+        "message": "success"
+    }
+
+
 @svc_fetch_users.get()
 def fetch_users(request):
     id = request.json_body['id']
     date = BoardInterviewMap.get_board_date(request.dbsession, id)
     guest_user_ids = get_guest_user_list(request, date)
     board_users = UserMaster.get_board_users(request.dbsession)
-    vo_users = UserMaster.get_vo_users(request.dbsession)
     return {
         "code": 0,
         "message": "success",
         "guest_user_list": guest_user_ids,
-        "board_user_list": board_users,
+        "board_user_list": board_users
+    }
+
+
+@svc_fetch_vo_users.get()
+def fetch_vo_users(request):
+    vo_users = UserMaster.get_vo_users(request.dbsession)
+    return {
+        "code": 0,
+        "message": "success",
         "vo_user_list": vo_users
     }
 
