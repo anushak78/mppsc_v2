@@ -36,6 +36,10 @@ svc_interview_details = Service(
     name="api.interview_details", permission=NO_PERMISSION_REQUIRED,
     path="/ui/interview_details/{id}", cors_policy=cors.POLICY)
 
+svc_fetch_interview_dates = Service(
+    name="api.fetch_interview_dates", permission=NO_PERMISSION_REQUIRED,
+    path="/ui/fetch_interview_dates/{id}", cors_policy=cors.POLICY)
+
 svc_fetch_users = Service(
     name="api.fetch_users", permission=NO_PERMISSION_REQUIRED,
     path="/ui/fetch_users", cors_policy=cors.POLICY)
@@ -111,6 +115,18 @@ def get_interview_list(request):
         "code": 0,
         "message": "success",
         "data": interview_list 
+    }
+
+
+@svc_fetch_interview_dates.post(require_csrf=False)
+def fetch_interview_dates(request):
+    id = request.matchdict['id']
+    dates = InterviewDatesMaster.get_interview_dates(request.dbsession, id)
+    
+    return {
+        "code": 0,
+        "message": "sucess",
+        "dates": dates
     }
 
 
