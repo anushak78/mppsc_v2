@@ -1,6 +1,6 @@
 <!-- <pre>Form Values: {{interview.value | json}}</pre>
 <pre>Form Values: {{interview.controls.dates.status}}</pre> -->
-{{marks.value | json}}
+
 <div class="box-container">
     <div class="grid-2">
         <div>
@@ -10,20 +10,20 @@
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
         <div>
             <mat-tab label="Step 1">
-                <div [formGroup]="addInterview">
+                <form #f="ngForm" (ngSubmit)="f.form.valid && openSubmitUser()">
                     <div class="field">
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="id" placeholder="Interview Id"
-                                    formControlName="interview_id" required>
+                                    [(ngModel)]="interviewMaster.name" #name="ngModel" required>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="field">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="name" placeholder="Enter Name" formControlName="name"
-                                    required>
+                                <input matInput type="text" name="name" placeholder="Enter Name" required
+                                    [(ngModel)]="interviewMaster.interview_id" #interview_id="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
@@ -31,24 +31,28 @@
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="notification_no" placeholder="Enter Notification No."
-                                    formControlName="notification_no" required>
+                                    required [(ngModel)]="interviewMaster.notification_no" #notification_no="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="field">
                         <div class="center">
-                            <mat-radio-group aria-label="Select an option" formControlName="status">
+                            <mat-radio-group name="status" [(ngModel)]="interviewMaster.status">
                                 <mat-label>Interview Status: </mat-label>
-                                <mat-radio-button value="yes">Yes</mat-radio-button>
-                                <mat-radio-button value="no">No</mat-radio-button>
+                                <mat-radio-button class="margin-left" [value]="1">
+                                    Active
+                                </mat-radio-button>
+                                <mat-radio-button class="margin-left" [value]="0">
+                                    Inactive
+                                </mat-radio-button>
                             </mat-radio-group>
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" [disabled]="!addInterview.valid"
-                            (click)="addInterviewData()">Next</button>
+                        <button mat-raised-button color="primary" [disabled]="!f.valid" type="submit">Next</button>
+                        <!--  -->
                     </div>
-                </div>
+                </form>
             </mat-tab>
 
             <mat-tab label="Step 2">
@@ -91,85 +95,85 @@
                 </div>
             </mat-tab>
 
-            <mat-tab label="Step 3">
-                <div [formGroup]="marks">
-                    <div class="grid-3" [formGroup]="marks.controls.unreserved">
+            <mat-tab label="Step 3">{{f1.value | json}}
+                <form #f1="ngForm" (ngSubmit)="f1.form.valid && addmarks()">
+                    <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="ur_max" placeholder="Unreserved Max Marks"
-                                    formControlName="max_marks" required>
+                                <input matInput type="text" name="max_marks_unreserved" placeholder="Unreserved Max Marks" required
+                                    [(ngModel)]="Marks.max_marks_unreserved" #max_marks_unreserved="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="ur_min" placeholder="Unreserved Min Marks"
-                                    formControlName="min_marks" required>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="grid-3" [formGroup]="marks.controls.EWS">
-                        <div>
-                            <mat-form-field>
-                                <input matInput type="text" name="ur_max" placeholder="EWS Max Marks"
-                                    formControlName="max_marks" required>
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <mat-form-field>
-                                <input matInput type="text" name="ur_min" placeholder="EWS Min Marks"
-                                    formControlName="min_marks" required>
+                                <input matInput type="text" name="min_marks_unreserved" placeholder="Unreserved Min Marks" required
+                                    [(ngModel)]="Marks.min_marks_unreserved" #min_marks_unreserved="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3" [formGroup]="marks.controls.OBC_NCL">
+                    <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="ur_max" placeholder="OBC NCL Max Marks"
-                                    formControlName="max_marks" required>
+                                <input matInput type="text" name="max_marks_ews" placeholder="EWS Max Marks" required
+                                    [(ngModel)]="Marks.max_marks_ews" #max_marks_ews="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="ur_min" placeholder="OBC NCL Min Marks"
-                                    formControlName="min_marks" required>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="grid-3" [formGroup]="marks.controls.SC">
-                        <div>
-                            <mat-form-field>
-                                <input matInput type="text" name="ur_max" placeholder="SC Max Marks"
-                                    formControlName="max_marks" required>
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <mat-form-field>
-                                <input matInput type="text" name="ur_min" placeholder="SC Min Marks"
-                                    formControlName="min_marks" required>
+                                <input matInput type="text" name="min_marks_ews" placeholder="EWS Min Marks" required
+                                    [(ngModel)]="Marks.min_marks_ews" #min_marks_ews="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="grid-3" [formGroup]="marks.controls.ST">
+                    <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="ur_max" placeholder="ST Max Marks"
-                                    formControlName="max_marks" required>
+                                <input matInput type="text" name="max_marks_obc" placeholder="OBC NCL Max Marks" required
+                                    [(ngModel)]="Marks.max_marks_obc" #max_marks_obc="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="ur_min" placeholder="ST Min Marks"
-                                    formControlName="min_marks" required>
+                                <input matInput type="text" name="min_marks_obc" placeholder="OBC NCL Min Marks" required
+                                    [(ngModel)]="Marks.min_marks_obc" #min_marks_obc="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
-                </div>
-                <div class="right">
-                    <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" class="ml-10" (click)=" addmarks()">Next</button>
-                </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="max_marks_sc" placeholder="SC Max Marks" required
+                                    [(ngModel)]="Marks.max_marks_sc" #max_marks_sc="ngModel">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="min_marks_sc" placeholder="SC Min Marks" required
+                                    [(ngModel)]="Marks.min_marks_sc" #min_marks_sc="ngModel">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="max_marks_st" placeholder="ST Max Marks" required
+                                    [(ngModel)]="Marks.max_marks_st" #max_marks_st="ngModel">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="min_marks_st" placeholder="ST Min Marks" required
+                                    [(ngModel)]="Marks.min_marks_st" #min_marks_st="ngModel">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" class="ml-10" [disabled]="!f1.valid">Next</button>
+                    </div>
+                </form>
+
             </mat-tab>
-            <mat-tab label="Step 4">
+            <!-- <mat-tab label="Step 4">
                 <div class="field">
                     <mat-form-field>
                         <mat-label>Verification Officer Name</mat-label>
@@ -245,4 +249,7 @@
             </mat-tab>
         </div>
     </mat-tab-group>
-</div>
+</div> -->
+
+            <app-message-dialog #messageDlg></app-message-dialog>
+            <app-confirm-dialog #confirmDlg></app-confirm-dialog>

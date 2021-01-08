@@ -2,12 +2,8 @@ export class InterviewMaster {
     interview_id: number;
     name: string;
     notification_no: number;
-    status: string;
+    status = 1;
    
-    public constructor(init?: Partial<InterviewMaster>) {
-        Object.assign(this, init);
-    }
-
     static fromJson(data: Map<string, any>): InterviewMaster {
         const u: InterviewMaster = new InterviewMaster();
         u.interview_id = data['interview_id'];

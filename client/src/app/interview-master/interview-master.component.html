@@ -34,7 +34,7 @@
           <div>{{i.interview_id}}</div>
           <div>{{i.name}}</div>
           <div>{{i.notification_no}}</div>
-          <div>{{i.status}}</div>
+          <div>{{status[i.status]}}</div>
         </div>
         <div class="icon-column">
           <mat-icon matTooltip="Edit" (click)="editInterview(i.interview_id)">

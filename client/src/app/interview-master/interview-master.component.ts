@@ -7,6 +7,7 @@ import { ConfirmDialogComponent } from '../dialogs/confirm/confirm.component';
 import { MessageDialogComponent } from '../dialogs/message/message.component';
 import { InterviewMasterService } from './interview-master.service';
 import { InterviewMaster } from './model/interview-master.model';
+import { Status} from '../constant';
 
 @Component({
   selector: 'app-interview-master',
@@ -20,7 +21,8 @@ export class InterviewMasterComponent implements OnInit {
   table_data;
   deleteInterviewId;
   deleteInterviewName;
-  
+  status = Status;
+
   @ViewChild('confirmDlg', {static: false})
   confirmDlg: ConfirmDialogComponent;
 

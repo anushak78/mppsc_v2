@@ -13,10 +13,15 @@ export class InterviewMasterService {
   private httpErrorMessage = '';
   interview: InterviewMaster[] = [];
   Marks: Marks[] = [];
+  addResponse
   constructor(private http: HttpClient) { }
 
   get getErrorMessage(): string {
     return this.httpErrorMessage;
+  }
+
+  get response(): any {
+    return this.addResponse;
   }
 
   get getInterviewList(): InterviewMaster[] {
@@ -42,6 +47,7 @@ export class InterviewMasterService {
       apiUrl.getApiAddInterviewMasterEndPoint, interview.toJSON()).toPromise()
       .then((response) => {
         this.httpErrorMessage = response['message'];
+        this.addResponse = response
         return true;
       }).catch((error) => this);
   }
@@ -82,7 +88,7 @@ export class InterviewMasterService {
       }).catch((error) => this.errorHandler(error));
   }
 
-  async interviewMarks(interview: Marks){
+  async interviewMarks(interview: Marks) {
     return await this.http.post(
       apiUrl.getApiInterviewMarksEndPoint, interview.toJSON()).toPromise()
       .then((response) => {
