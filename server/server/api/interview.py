@@ -222,6 +222,7 @@ def add_interview_dates(request):
     dates = request.json_body['dates']
 
     for ele in dates:
+        id = ele['id']
         to_date = datetime.strptime(str(ele['to_date']), "%Y-%m-%dT%H:%M:%S.000z")
         from_date = datetime.strptime(str(ele['from_date']), "%Y-%m-%dT%H:%M:%S.000z")
         interview_date = InterviewDatesMaster(interview_id=id, 
