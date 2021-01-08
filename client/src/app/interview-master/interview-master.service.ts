@@ -13,21 +13,26 @@ export class InterviewMasterService {
   private httpErrorMessage = '';
   interview: InterviewMaster[] = [];
   Marks: Marks[] = [];
-  addResponse
+  dates: DatesRange[] = [];
+  interviewID
   constructor(private http: HttpClient) { }
 
   get getErrorMessage(): string {
     return this.httpErrorMessage;
   }
 
-  get response(): any {
-    return this.addResponse;
+  get interviewId(): any {
+    return this.interviewID;
   }
 
   get getInterviewList(): InterviewMaster[] {
     return this.interview;
   }
 
+  get getInterviewDates(): DatesRange[]{
+    return this.dates
+  }
+  
   async fetchInterviewList(): Promise<boolean> {
     return await this.http.get(
       apiUrl.getApiInterviewMasterEndPoint).toPromise()
@@ -47,7 +52,7 @@ export class InterviewMasterService {
       apiUrl.getApiAddInterviewMasterEndPoint, interview.toJSON()).toPromise()
       .then((response) => {
         this.httpErrorMessage = response['message'];
-        this.addResponse = response
+        this.interviewID = response
         return true;
       }).catch((error) => this);
   }
@@ -95,6 +100,22 @@ export class InterviewMasterService {
         this.httpErrorMessage = response['message'];
         return true;
       }).catch((error) => this);
+  }
+
+  async fetchInterviewDates(interviewid: number): Promise<boolean> {
+    return await this.http.post(
+      apiUrl.getApiInterviewBoardDatescollectionEndPoint(interviewid), {}
+    ).toPromise()
+      .then((response) => {
+        this.httpErrorMessage = response['message'];
+        const result = response['dates'];
+        this.dates = [];
+        for (let u of result) {
+          this.dates.push(DatesRange.fromJson(u));
+        }
+        console.log(this.dates);
+        return true;
+      }).catch(error => this.errorHandler(error));
   }
 
   errorHandler(error: HttpErrorResponse): boolean {

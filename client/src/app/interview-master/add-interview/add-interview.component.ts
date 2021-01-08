@@ -24,7 +24,7 @@ export class AddInterviewComponent implements OnInit {
   dateRange = new DatesRange();
   Marks = new Marks();
   MapVerficationOfficer = new MapVerficationOfficer();
-  BoardInterviewMap= new BoardInterviewMap();
+  BoardInterviewMap = new BoardInterviewMap();
 
   tabIndex = 0
   activity: string
@@ -66,7 +66,7 @@ export class AddInterviewComponent implements OnInit {
       this.activity = 'Add';
     }
     await this.loadData();
-    
+    await this.InterviewDates();
   }
 
   async loadData() {
@@ -76,8 +76,7 @@ export class AddInterviewComponent implements OnInit {
     } else {
       alert(this.BoardMasterService.getErrorMessage);
     }
-    console.log("date sssssssssssss",this.boardList);
-    
+    console.log("this.boardList", this.boardList);
   }
 
   onNext() {
@@ -114,8 +113,8 @@ export class AddInterviewComponent implements OnInit {
     if (!rel) {
       alert(this.InterviewMasterService.getErrorMessage);
     } else {
-      this.id = this.InterviewMasterService.response['id'];
-      console.log('this.InterviewMasterService.response', this.InterviewMasterService.response)
+      this.id = this.InterviewMasterService.interviewId['id'];
+      console.log('this.InterviewMasterService.response', this.InterviewMasterService.interviewId)
       await this.nextStep();
     }
   }
@@ -130,13 +129,23 @@ export class AddInterviewComponent implements OnInit {
     }
   }
 
-  addmarks(){
-    console.log("Marks",this.Marks);
+  addmarks() {
+    console.log("Marks", this.Marks);
   }
-  mapBoard(){
+  mapBoard() {
 
   }
-  
+
+  async InterviewDates() {
+    //this.dateList = [];
+    const rel = await this.InterviewMasterService.fetchInterviewDates(this.id);
+    if (rel) {
+      this.dateList = this.InterviewMasterService.getInterviewDates;
+    } else {
+      alert(this.InterviewMasterService.getErrorMessage);
+    }
+    console.log("this.dateList", this.dateList);
+  }
   // async addmarks() {
   //   let rel
 
@@ -161,7 +170,7 @@ export class AddInterviewComponent implements OnInit {
   //   }
   // }
 
-  valueChangeVerification(unit, $event) {
+  valueChange(unit, $event) {
     if ($event.checked) {
       this.officer.push(unit);
       console.log("officer", this.officer);

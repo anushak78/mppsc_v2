@@ -35,3 +35,6 @@ export const getApiDeleteInterviewMasterEndPoint = (interviewId) => {
 export const getApiEditInterviewMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/0';
 export const getApiDatesInterviewMastercollectionEndPoint = 'http://0.0.0.0:6543/ui/add_interview_dates';
 export const getApiInterviewMarksEndPoint = 'http://0.0.0.0:6543/ui/add_interview_marks';
+export const getApiInterviewBoardDatescollectionEndPoint = (interviewid: number) => {
+  return `/ui/fetch_interview_dates/${interviewid}`;
+};

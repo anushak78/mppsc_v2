@@ -180,7 +180,8 @@
                     <div class="field">
                         <mat-form-field>
                             <mat-label>Board Name</mat-label>
-                            <mat-select [(ngModel)]="BoardInterviewMap.board_id" #board_id="ngModel" name="board_id" required>
+                            <mat-select [(ngModel)]="BoardInterviewMap.board_id" #board_id="ngModel" name="board_id"
+                                required>
                                 <mat-option *ngFor="let i of boardList;" [value]="i.id">
                                     {{i.boardName}}
                                 </mat-option>
@@ -189,10 +190,12 @@
                     </div>
                     <div class="field">
                         <div class="example-margin">
-                            <div *ngFor="let item of date; let i=index">
-                                <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
+                            <div *ngFor="let item of dateList; let i=index">
+                                <mat-checkbox [(ngModel)]="BoardInterviewMap.checked" #checked="ngModel"
+                                    [checked]="BoardInterviewMap.checked" name="{{i}}-date"
+                                    (change)="valueChange(item,$event)">
                                 </mat-checkbox>
-                                {{item.fromDate}} to {{item.toDate}}
+                                {{item.fromDate}} To {{item.toDate}}
                             </div>
                         </div>
                     </div>

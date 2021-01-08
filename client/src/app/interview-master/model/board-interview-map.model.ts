@@ -1,9 +1,14 @@
 import { BoardMaster } from 'src/app/board-master/model/board-master.model';
+import { DatesRange } from 'src/app/guest-master/model/DatesRange';
 
 export class BoardInterviewMap {
     interview_id: number;
+    checked: boolean
     board_id: number;
     board: BoardMaster;
+    dates: DatesRange[] = [];
+    fromDate: Date;
+    toDate: Date;
     // fromDate: Date;
     // toDate: Date;
     // {id: , boards: [{'board_id': , date: ''}]
@@ -11,6 +16,9 @@ export class BoardInterviewMap {
         const u: BoardInterviewMap = new BoardInterviewMap();
         u.interview_id = data['interview_id'];
         u.board_id = data['board_id'];
+        for (const l of data['dates']) {
+            u.dates.push(DatesRange.fromJson(l));
+        }
 
         return u;
     }
