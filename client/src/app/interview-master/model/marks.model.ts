@@ -10,7 +10,7 @@ export class Marks {
     max_marks_st: number;
     min_marks_sc: number;
     max_marks_sc: number;
-    interview_id: string;
+    interview_id: number;
 
     static fromJson(data: Map<string, any>): Marks {
         const u: Marks = new Marks();

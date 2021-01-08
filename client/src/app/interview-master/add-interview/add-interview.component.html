@@ -4,7 +4,7 @@
 <div class="box-container">
     <div class="grid-2">
         <div>
-            <h2 class="mat-h2">{{activity}} Guest User</h2>
+            <h2 class="mat-h2">{{activity}} Interview User</h2>
         </div>
     </div>
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
@@ -100,14 +100,16 @@
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="max_marks_unreserved" placeholder="Unreserved Max Marks" required
-                                    [(ngModel)]="Marks.max_marks_unreserved" #max_marks_unreserved="ngModel">
+                                <input matInput type="text" name="max_marks_unreserved"
+                                    placeholder="Unreserved Max Marks" required [(ngModel)]="Marks.max_marks_unreserved"
+                                    #max_marks_unreserved="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="min_marks_unreserved" placeholder="Unreserved Min Marks" required
-                                    [(ngModel)]="Marks.min_marks_unreserved" #min_marks_unreserved="ngModel">
+                                <input matInput type="text" name="min_marks_unreserved"
+                                    placeholder="Unreserved Min Marks" required [(ngModel)]="Marks.min_marks_unreserved"
+                                    #min_marks_unreserved="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
@@ -128,14 +130,14 @@
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="max_marks_obc" placeholder="OBC NCL Max Marks" required
-                                    [(ngModel)]="Marks.max_marks_obc" #max_marks_obc="ngModel">
+                                <input matInput type="text" name="max_marks_obc" placeholder="OBC NCL Max Marks"
+                                    required [(ngModel)]="Marks.max_marks_obc" #max_marks_obc="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="min_marks_obc" placeholder="OBC NCL Min Marks" required
-                                    [(ngModel)]="Marks.min_marks_obc" #min_marks_obc="ngModel">
+                                <input matInput type="text" name="min_marks_obc" placeholder="OBC NCL Min Marks"
+                                    required [(ngModel)]="Marks.min_marks_obc" #min_marks_obc="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
@@ -172,6 +174,32 @@
                     </div>
                 </form>
 
+            </mat-tab>
+            <mat-tab label="Step 5">{{f5.value| json}}
+                <form #f5="ngForm" (ngSubmit)="f5.form.valid && mapBoard()">
+                    <div class="field">
+                        <mat-form-field>
+                            <mat-label>Board Name</mat-label>
+                            <mat-select [(ngModel)]="BoardInterviewMap.board_id" #board_id="ngModel" name="board_id" required>
+                                <mat-option *ngFor="let i of boardList;" [value]="i.id">
+                                    {{i.boardName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="field">
+                        <div class="example-margin">
+                            <div *ngFor="let item of date; let i=index">
+                                <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
+                                </mat-checkbox>
+                                {{item.fromDate}} to {{item.toDate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
+                    </div>
+                </form>
             </mat-tab>
             <!-- <mat-tab label="Step 4">
                 <div class="field">

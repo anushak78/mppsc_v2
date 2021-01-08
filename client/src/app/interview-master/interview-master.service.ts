@@ -96,6 +96,7 @@ export class InterviewMasterService {
         return true;
       }).catch((error) => this);
   }
+
   errorHandler(error: HttpErrorResponse): boolean {
     if (error.status === 400) {
       this.httpErrorMessage = 'Server Error';

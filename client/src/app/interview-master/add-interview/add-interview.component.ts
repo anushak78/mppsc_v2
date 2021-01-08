@@ -3,9 +3,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BoardMasterService } from 'src/app/board-master/board-master.service';
+import { BoardMaster } from 'src/app/board-master/model/board-master.model';
 import { ConfirmDialogComponent } from 'src/app/dialogs/confirm/confirm.component';
 import { MessageDialogComponent } from 'src/app/dialogs/message/message.component';
 import { InterviewMasterService } from '../interview-master.service';
+import { BoardInterviewMap } from '../model/board-interview-map.model';
 import { DatesRange } from '../model/dates-range.model';
 import { InterviewMaster } from '../model/interview-master.model';
 import { MapVerficationOfficer } from '../model/map-verfication-officer.model';
@@ -21,6 +24,8 @@ export class AddInterviewComponent implements OnInit {
   dateRange = new DatesRange();
   Marks = new Marks();
   MapVerficationOfficer = new MapVerficationOfficer();
+  BoardInterviewMap= new BoardInterviewMap();
+
   tabIndex = 0
   activity: string
   id = 1
@@ -34,7 +39,7 @@ export class AddInterviewComponent implements OnInit {
   interviewId
   verficationofficername
   Interviewmarks: Marks[] = [];
-
+  boardList: BoardMaster[] = []
   @ViewChild('confirmDlg', { static: false })
   confirmDlg: ConfirmDialogComponent;
 
@@ -45,7 +50,7 @@ export class AddInterviewComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private httpClient: HttpClient) { }
+    private BoardMasterService: BoardMasterService) { }
 
   async openSubmitUser() {
     this.confirmDlg.openDialog('Add User',
@@ -53,13 +58,26 @@ export class AddInterviewComponent implements OnInit {
       await this.addInterviewData.bind(this));
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.addDateItem();
     if (this.route.snapshot.params.userId !== undefined) {
       this.activity = 'Edit';
     } else {
       this.activity = 'Add';
     }
+    await this.loadData();
+    
+  }
+
+  async loadData() {
+    const rel = await this.BoardMasterService.fetchBoardList();
+    if (rel) {
+      this.boardList = this.BoardMasterService.getBoardList;
+    } else {
+      alert(this.BoardMasterService.getErrorMessage);
+    }
+    console.log("date sssssssssssss",this.boardList);
+    
   }
 
   onNext() {
@@ -115,6 +133,10 @@ export class AddInterviewComponent implements OnInit {
   addmarks(){
     console.log("Marks",this.Marks);
   }
+  mapBoard(){
+
+  }
+  
   // async addmarks() {
   //   let rel
 
@@ -139,15 +161,15 @@ export class AddInterviewComponent implements OnInit {
   //   }
   // }
 
-  // valueChangeVerification(unit, $event) {
-  //   if ($event.checked) {
-  //     this.officer.push(unit);
-  //     console.log("officer", this.officer);
-  //   }
-  //   console.log("unit", unit);
-  //   console.log("$event", $event);
-  //   console.log("unit.checked = $event.checked;", unit.checked = $event.checked);
-  // }
+  valueChangeVerification(unit, $event) {
+    if ($event.checked) {
+      this.officer.push(unit);
+      console.log("officer", this.officer);
+    }
+    console.log("unit", unit);
+    console.log("$event", $event);
+    console.log("unit.checked = $event.checked;", unit.checked = $event.checked);
+  }
 }
 
 
