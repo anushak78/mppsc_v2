@@ -1,11 +1,12 @@
 export class DatesRange {
-    id: number;
+    interviewId: number;
     fromDate: Date;
     toDate: Date;
+    checked: boolean;
 
     static fromJson(data: Map<string, any>): DatesRange {
         const u: DatesRange = new DatesRange();
-        u.id = data['id'];
+        u.interviewId = data['id'];
         u.fromDate = new Date(data['from_date']);
         u.toDate = new Date(data['to_date']);
         return u;
@@ -13,7 +14,7 @@ export class DatesRange {
 
     toJSON(): Map<string, any> {
         const data: Map<string, any> = new Map<string, any>();
-        data['id'] = this.id;
+        data['id'] = this.interviewId;
         data['from_date'] = this.fromDate;
         data['to_date'] = this.toDate;
         return data;

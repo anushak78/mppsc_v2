@@ -1,5 +1,5 @@
-<!-- <pre>Form Values: {{interview.value | json}}</pre>
-<pre>Form Values: {{interview.controls.dates.status}}</pre> -->
+<!-- <pre>Form Values: {{f.value | json}}</pre>
+<pre>Form Values: {{f.status}}</pre> -->
 
 <div class="box-container">
     <div class="grid-2">
@@ -7,15 +7,16 @@
             <h2 class="mat-h2">{{activity}} Interview User</h2>
         </div>
     </div>
+
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChanged($event)">
         <div>
-            <mat-tab label="Step 1">
-                <form #f="ngForm" (ngSubmit)="f.form.valid && openSubmitUser()">
+            <form #f="ngForm" (ngSubmit)="f.form.valid">
+                <mat-tab label="Step 1">
                     <div class="field">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="id" placeholder="Interview Id"
-                                    [(ngModel)]="interviewMaster.name" #name="ngModel" required>
+                                <input matInput type="text" name="interviewId" placeholder="Interview Id"
+                                    [(ngModel)]="interviewMaster.interviewId" #interviewId="ngModel" required>
                             </mat-form-field>
                         </div>
                     </div>
@@ -23,21 +24,21 @@
                         <div>
                             <mat-form-field>
                                 <input matInput type="text" name="name" placeholder="Enter Name" required
-                                    [(ngModel)]="interviewMaster.interview_id" #interview_id="ngModel">
+                                    [(ngModel)]="interviewMaster.name" #name="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="field">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="notification_no" placeholder="Enter Notification No."
-                                    required [(ngModel)]="interviewMaster.notification_no" #notification_no="ngModel">
+                                <input matInput type="text" name="notificationNo" placeholder="Enter Notification No."
+                                    required [(ngModel)]="interviewMaster.notificationNo" #notificationNo="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="field">
                         <div class="center">
-                            <mat-radio-group name="status" [(ngModel)]="interviewMaster.status">
+                            <mat-radio-group name="status" [(ngModel)]="interviewMaster.status" required>
                                 <mat-label>Interview Status: </mat-label>
                                 <mat-radio-button class="margin-left" [value]="1">
                                     Active
@@ -49,141 +50,135 @@
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" [disabled]="!f.valid" type="submit">Next</button>
-                        <!--  -->
+                        <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
                     </div>
-                </form>
-            </mat-tab>
+                </mat-tab>
 
-            <mat-tab label="Step 2">
-                <div class="box-container" style="margin-top: 10px">
-                    <div *ngFor="let item of dateList; let i=index">
-                        <div class="grid-3" style="width: 50%">
-                            <div class="field">
-                                <mat-form-field>
-                                    <mat-label>From date</mat-label>
-                                    <input matInput [matDatepicker]="picker" [(ngModel)]="item.fromDate" required>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div class="field">
-                                <mat-form-field>
-                                    <mat-label>To date</mat-label>
-                                    <input matInput [matDatepicker]="topicker" [(ngModel)]="item.toDate" required>
-                                    <mat-datepicker-toggle matSuffix [for]="topicker">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #topicker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div *ngIf="i == dateList.length-1">
-                                <button mat-mini-fab color="default" (click)="addDateItem()">
-                                    <mat-icon>add</mat-icon>
-                                </button>
-                            </div>
-                            <div *ngIf="i != dateList.length-1">
-                                <button mat-mini-fab color="default" (click)="deleteDateItem(i)">
-                                    <mat-icon>remove</mat-icon>
-                                </button>
+                <mat-tab label="Step 2">
+                    <div class="box-container" style="margin-top: 10px">
+                        <div *ngFor="let item of dateList; let i=index">
+                            <div class="grid-3" style="width: 50%">
+                                <div class="field">
+                                    <mat-form-field>
+                                        <mat-label>From date</mat-label>
+                                        <input name="fromDate" matInput [matDatepicker]="picker"
+                                            [(ngModel)]="item.fromDate" required>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="field">
+                                    <mat-form-field>
+                                        <mat-label>To date</mat-label>
+                                        <input name="toDate" matInput [matDatepicker]="topicker"
+                                            [(ngModel)]="item.toDate" required>
+                                        <mat-datepicker-toggle matSuffix [for]="topicker">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #topicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div *ngIf="i == dateList.length-1">
+                                    <button mat-mini-fab color="default" (click)="addDateItem()">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                                <div *ngIf="i != dateList.length-1">
+                                    <button mat-mini-fab color="default" (click)="deleteDateItem(i)">
+                                        <mat-icon>remove</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <div class="right">
+                            <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                            <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
+                        </div>
                     </div>
-                    <div class="right">
-                        <button mat-raised-button color="primary" (click)="Dates()">Next
-                        </button>
-                    </div>
-                </div>
-            </mat-tab>
+                </mat-tab>
 
-            <mat-tab label="Step 3">{{f1.value | json}}
-                <form #f1="ngForm" (ngSubmit)="f1.form.valid && addmarks()">
+                <mat-tab label="Step 3">
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="max_marks_unreserved"
-                                    placeholder="Unreserved Max Marks" required [(ngModel)]="Marks.max_marks_unreserved"
-                                    #max_marks_unreserved="ngModel">
+                                <input matInput type="text" name="maxMarksUnreserved" placeholder="Unreserved Max Marks"
+                                    required [(ngModel)]="marks.maxMarksUnreserved" #maxMarksUnreserved="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="min_marks_unreserved"
-                                    placeholder="Unreserved Min Marks" required [(ngModel)]="Marks.min_marks_unreserved"
-                                    #min_marks_unreserved="ngModel">
+                                <input matInput type="text" name="minMarksUnreserved" placeholder="Unreserved Min Marks"
+                                    required [(ngModel)]="marks.minMarksUnreserved" #minMarksUnreserved="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="max_marks_ews" placeholder="EWS Max Marks" required
-                                    [(ngModel)]="Marks.max_marks_ews" #max_marks_ews="ngModel">
+                                <input matInput type="text" name="maxMarksEws" placeholder="EWS Max Marks" required
+                                    [(ngModel)]="marks.maxMarksEws" #maxMarksEws="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="min_marks_ews" placeholder="EWS Min Marks" required
-                                    [(ngModel)]="Marks.min_marks_ews" #min_marks_ews="ngModel">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="grid-3">
-                        <div>
-                            <mat-form-field>
-                                <input matInput type="text" name="max_marks_obc" placeholder="OBC NCL Max Marks"
-                                    required [(ngModel)]="Marks.max_marks_obc" #max_marks_obc="ngModel">
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <mat-form-field>
-                                <input matInput type="text" name="min_marks_obc" placeholder="OBC NCL Min Marks"
-                                    required [(ngModel)]="Marks.min_marks_obc" #min_marks_obc="ngModel">
+                                <input matInput type="text" name="minMarksEws" placeholder="EWS Min Marks" required
+                                    [(ngModel)]="marks.minMarksEws" #minMarksEws="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="max_marks_sc" placeholder="SC Max Marks" required
-                                    [(ngModel)]="Marks.max_marks_sc" #max_marks_sc="ngModel">
+                                <input matInput type="text" name="maxMarksObc" placeholder="OBC NCL Max Marks" required
+                                    [(ngModel)]="marks.maxMarksObc" #maxMarksObc="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="min_marks_sc" placeholder="SC Min Marks" required
-                                    [(ngModel)]="Marks.min_marks_sc" #min_marks_sc="ngModel">
+                                <input matInput type="text" name="minMarksObc" placeholder="OBC NCL Min Marks" required
+                                    [(ngModel)]="marks.minMarksObc" #minMarksObc="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="grid-3">
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="max_marks_st" placeholder="ST Max Marks" required
-                                    [(ngModel)]="Marks.max_marks_st" #max_marks_st="ngModel">
+                                <input matInput type="text" name="maxMarksSc" placeholder="SC Max Marks" required
+                                    [(ngModel)]="marks.maxMarksSc" #maxMarksSc="ngModel">
                             </mat-form-field>
                         </div>
                         <div>
                             <mat-form-field>
-                                <input matInput type="text" name="min_marks_st" placeholder="ST Min Marks" required
-                                    [(ngModel)]="Marks.min_marks_st" #min_marks_st="ngModel">
+                                <input matInput type="text" name="minMarksSc" placeholder="SC Min Marks" required
+                                    [(ngModel)]="marks.minMarksSc" #minMarksSc="ngModel">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="maxMarksSt" placeholder="ST Max Marks" required
+                                    [(ngModel)]="marks.maxMarksSt" #maxMarksSt="ngModel">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input matInput type="text" name="minMarksSt" placeholder="ST Min Marks" required
+                                    [(ngModel)]="marks.minMarksSt" #minMarksSt="ngModel">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" class="ml-10" [disabled]="!f1.valid">Next</button>
+                        <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                        <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
                     </div>
-                </form>
-
-            </mat-tab>
-            <mat-tab label="Step 5">{{f5.value| json}}
-                <form #f5="ngForm" (ngSubmit)="f5.form.valid && mapBoard()">
+                </mat-tab>
+                <mat-tab label="Step 4">
                     <div class="field">
                         <mat-form-field>
-                            <mat-label>Board Name</mat-label>
-                            <mat-select [(ngModel)]="BoardInterviewMap.board_id" #board_id="ngModel" name="board_id"
-                                required>
-                                <mat-option *ngFor="let i of boardList;" [value]="i.id">
-                                    {{i.boardName}}
+                            <mat-label>Verification Officer Name</mat-label>
+                            <mat-select [(ngModel)]="verificationOfficer.officer" name="officer">
+                                <mat-option *ngFor="let officer of verificationOfficerList" [value]="officer.name">
+                                    {{officer.name}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -191,8 +186,34 @@
                     <div class="field">
                         <div class="example-margin">
                             <div *ngFor="let item of dateList; let i=index">
-                                <mat-checkbox [(ngModel)]="BoardInterviewMap.checked" #checked="ngModel"
-                                    [checked]="BoardInterviewMap.checked" name="{{i}}-date"
+                                <mat-checkbox [checked]="boardInterview.checked" name="{{i}}-date"
+                                    (change)="valueChange(item,$event)">
+                                </mat-checkbox>
+                                {{item.fromDate}} to {{item.toDate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
+                        <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Step 5">
+                    <div class="field">
+                        <mat-form-field>
+                            <mat-label>Board Name</mat-label>
+                            <mat-select [(ngModel)]="boardInterview.boardName" #boardName="ngModel" name="boardName"
+                                required>
+                                <mat-option *ngFor="let board of boardList;" [value]="board.boardName">
+                                    {{board.boardName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="field">
+                        <div class="example-margin">
+                            <div *ngFor="let item of dateList; let i=index">
+                                <mat-checkbox [checked]="boardInterview.checked" name="{{i}}-date"
                                     (change)="valueChange(item,$event)">
                                 </mat-checkbox>
                                 {{item.fromDate}} To {{item.toDate}}
@@ -200,87 +221,38 @@
                         </div>
                     </div>
                     <div class="right">
+                        <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
                         <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
                     </div>
-                </form>
-            </mat-tab>
-            <!-- <mat-tab label="Step 4">
-                <div class="field">
-                    <mat-form-field>
-                        <mat-label>Verification Officer Name</mat-label>
-                        <mat-select [(ngModel)]="verficationofficername">
-                            <mat-option *ngFor="let office of Officer" [value]="office.name">
-                                {{office.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <div class="example-margin">
-                        <div *ngFor="let item of date; let i=index">
-                            <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
-                            </mat-checkbox>
-                            {{item.fromDate}} to {{item.toDate}}
+                </mat-tab>
+                <mat-tab label="Step 6">
+                    <div class="field">
+                        <mat-form-field>
+                            <mat-label>Select Board/Chairman</mat-label>
+                            <mat-select [(ngModel)]="chairmanBoard.chairmanBoardName" #chairmanBoardName="ngModel"
+                                name="chairmanBoardName" required>
+                                <mat-option *ngFor="let user of userList" [value]="user.name">
+                                    Chairman- {{user.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="field">
+                        <div class="example-margin">
+                            <div *ngFor="let item of guestList; let i=index">
+                                <mat-checkbox [checked]="chairmanBoard.checked" name="{{i}}-guest" (change)="valueChange(item,$event)">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="right">
-                    <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" class="ml-10">Next</button>
-                </div>
-            </mat-tab>
-            <mat-tab label="Step 5">
-                <div class="field">
-                    <mat-form-field>
-                        <mat-label>Board Name</mat-label>
-                        <mat-select name="board" formControlName="boardName">
-                            <mat-option *ngFor="let Board of board" [value]="Board.name">
-                                {{Board.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <div class="example-margin">
-                        <div *ngFor="let item of date; let i=index">
-                            <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
-                            </mat-checkbox>
-                            {{item.fromDate}} to {{item.toDate}}
-                        </div>
+                    <div class="right">
+                        <button mat-raised-button color="primary" (click)="openSubmitUser()">Submit</button>
                     </div>
-                </div>
-                <div class="right">
-                    <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
-                    <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
-                </div>
-            </mat-tab>
-            <mat-tab label="Step 6">
-                <div class="field">
-                    <mat-form-field>
-                        <mat-label>Select Board/Chairman</mat-label>
-                        <mat-select name="board">
-                            <mat-option *ngFor="let Chairman of chairman" [value]="Chairman.name">
-                                {{Chairman.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="field">
-                    <div class="example-margin">
-                        <div *ngFor="let item of date; let i=index">
-                            <mat-checkbox [checked]="item.checked" (change)="valueChangeVerification(item,$event)">
-                            </mat-checkbox>
-                            {{item.fromDate}} to {{item.toDate}}
-                        </div>
-                    </div>
-                </div>
-                <div class="right">
-                    <button mat-raised-button color="primary">Submit</button>
-                </div>
-            </mat-tab>
+                </mat-tab>
+            </form>
         </div>
     </mat-tab-group>
-</div> -->
-
-            <app-message-dialog #messageDlg></app-message-dialog>
-            <app-confirm-dialog #confirmDlg></app-confirm-dialog>
+</div>
+<app-message-dialog #messageDlg></app-message-dialog>
+<app-confirm-dialog #confirmDlg></app-confirm-dialog>

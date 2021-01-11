@@ -63,7 +63,7 @@ export class InterviewMasterComponent implements OnInit {
   async openDeleteInterview(u: InterviewMaster) {
     console.log("user",u);
     
-    this.deleteInterviewId = u.interview_id;
+    this.deleteInterviewId = u.interviewId;
     this.deleteInterviewName = u.name;
     this.confirmDlg.openDialog('Delete Interview',
       `Confirmation 1: Do you really want to delete Interview <b>${this.deleteInterviewName}</b>?`,
