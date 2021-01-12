@@ -1,9 +1,13 @@
+import { BoardMaster } from 'src/app/board-master/model/board-master.model';
+import { UserMaster } from 'src/app/user-master/model/UserMaster';
+
 export class DatesRange {
     interviewId: number;
     fromDate: Date;
     toDate: Date;
-    checked: boolean;
-
+    verificationOfficer: UserMaster[] = [];
+    boardMaster: BoardMaster[] = [];
+    
     static fromJson(data: Map<string, any>): DatesRange {
         const u: DatesRange = new DatesRange();
         u.interviewId = data['id'];

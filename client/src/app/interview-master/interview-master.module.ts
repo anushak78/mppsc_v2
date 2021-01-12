@@ -28,8 +28,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { InterviewMasterComponent } from './interview-master.component';
-import { sharedStylesheetJitUrl } from '@angular/compiler';
 import { SharedModule } from '../shared.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -66,8 +66,8 @@ import { SharedModule } from '../shared.module';
     MatSortModule,
     MatProgressBarModule,
     MatPaginatorModule,
-    SharedModule
-
+    SharedModule,
+    NgMultiSelectDropDownModule.forRoot()
   ]
 })
 export class InterviewMasterModule { }

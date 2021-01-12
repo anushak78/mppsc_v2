@@ -9,8 +9,8 @@ export class InterviewMaster {
     name: string;
     notificationNo: number;
     status = 1;
-    dates: DatesRange[] = [];
-    date: DatesRange = new DatesRange();
+    dates = [];
+    // date: DatesRange = new DatesRange();
     marks: Marks = new Marks();
     verificationOfficer: VerificationOfficer = new VerificationOfficer();
     boardInterview: BoardInterview = new BoardInterview();
@@ -38,6 +38,9 @@ export class InterviewMaster {
         data['name'] = this.name;
         data['notification_no'] = this.notificationNo;
         data['status'] = this.status;
+        // {
+        //     data['date'] = this.date;
+        // }
         // data['date'] = this.date;
         // data['marks'] = this.marks;
         // data['verification_officer'] = this.verificationOfficer;

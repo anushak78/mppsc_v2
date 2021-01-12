@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { element } from 'protractor';
 import { BoardMasterService } from 'src/app/board-master/board-master.service';
 import { BoardMaster } from 'src/app/board-master/model/board-master.model';
 import { ConfirmDialogComponent } from 'src/app/dialogs/confirm/confirm.component';
@@ -15,8 +15,7 @@ import { InterviewMasterService } from '../interview-master.service';
 import { BoardInterview } from '../model/board-interview.model';
 import { DatesRange } from '../model/dates-range.model';
 import { InterviewMaster } from '../model/interview-master.model';
-import { Marks } from '../model/marks.model';
-import { VerificationOfficer } from '../model/verification-officer.model';
+
 
 @Component({
   selector: 'app-add-interview',
@@ -26,6 +25,7 @@ import { VerificationOfficer } from '../model/verification-officer.model';
 export class AddInterviewComponent implements OnInit {
   interviewMaster = new InterviewMaster();
 
+  dates = this.interviewMaster.dates;
   marks = this.interviewMaster.marks;
   verificationOfficer = this.interviewMaster.verificationOfficer;
   boardInterview = this.interviewMaster.boardInterview;
@@ -33,12 +33,19 @@ export class AddInterviewComponent implements OnInit {
 
   dateRange = new DatesRange();
   dateList: DatesRange[] = [];
-  verificationOfficerList: VerificationOfficer[] = [];
+  verificationOfficerList: UserMaster[] = [];
   boardList: BoardMaster[] = [];
   userList: UserMaster[] = [];
   guestList: GuestUserMaster[] = [];
-  tabIndex = 0
-  activity: string
+  tabIndex = 0;
+  activity: string;
+  dropdownSettings = {};
+  dropdownSettings_1 = {};
+  selectedItems = [];
+  selectedItems_1 = [];
+  check_mat = true;
+  // selectedItems: Map<string, Array<any>> = [];
+  // selectedItems_1: Map<string, Array<any>> = [];
 
   @ViewChild('confirmDlg', { static: false })
   confirmDlg: ConfirmDialogComponent;
@@ -75,6 +82,7 @@ export class AddInterviewComponent implements OnInit {
       this.addDateItem();
     }
     await this.loadData();
+    await this.multiselect();
   }
 
   async loadData() {
@@ -85,6 +93,17 @@ export class AddInterviewComponent implements OnInit {
       this.boardList = this.BoardMasterService.getBoardList;
       this.userList = this.UserMasterService.getUserList;
       this.guestList = this.GuestUserServiceService.getGuestUserList;
+
+      this.verificationOfficerList = this.userList.filter(function (item) {
+        return item.role == 3;
+      })
+      this.userList = this.userList.filter(function (item) {
+        return item.role == 0 || item.role == 1;
+      })
+
+      console.log("this.verificationOfficerList", this.verificationOfficerList)
+      console.log("this.userList", this.userList);
+
     } else {
       alert("Error");
     }
@@ -132,10 +151,82 @@ export class AddInterviewComponent implements OnInit {
     }
   }
 
-  valueChange(unit, $event) {
-    if ($event.checked) {
-      console.log("officer", this.verificationOfficer);
+  // valueChange(unit, $event, i) {
+  //   if ($event.checked) {
+  //     let arr = this.dateList[i];
+  //     console.log("officer", this.verificationOfficer);
+  //     console.log("event", $event);
+  //     console.log("let arr", arr);
+
+  //   }
+  //   console.log("unit.checked = $event.checked;", unit.checked = $event.checked);
+  // }
+
+  async multiselect() {
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: "userId",
+      textField: "name",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
+    };
+
+    this.dropdownSettings_1 = {
+      singleSelection: false,
+      idField: "id",
+      textField: "boardName",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
     }
-    console.log("unit.checked = $event.checked;", unit.checked = $event.checked);
+  }
+
+  onItemSelect(item: any, i) {
+    this.dateList[i].verificationOfficer.push(item)
+    console.log("this.dateRange.verificationOffice.push(item);", this.dateRange)
+  }
+  onSelectAll(items: any, i) {
+    items.forEach(element => {
+      this.dateList[i].verificationOfficer.push(element)
+    });
+  }
+  onItemDeSelect(item: any, i) {
+    if (item.lenght == 1) {
+      this.dateList[i].verificationOfficer.splice(0, 1);
+    }
+    else {
+      this.onDeSelectAll(item, i);
+    }
+  }
+  onDeSelectAll(item: any, i) {
+    this.dateList[i].verificationOfficer.splice(0, this.verificationOfficerList.length)
+  }
+
+
+  onItemSelectboard(item: any, i) {
+    this.dateList[i].boardMaster.push(item)
+  }
+
+  onSelectAllboard(items: any, i) {
+    items.forEach(element => {
+      this.dateList[i].boardMaster.push(element)
+    });
+  }
+  onItemDeSelectboard(item: any, i) {
+    if (item.lenght == 1) {
+      this.dateList[i].boardMaster.splice(0, 1);
+    }
+    else {
+      this.onDeSelectAllboard(item, i);
+    }
+  }
+  onDeSelectAllboard(item: any, i) {
+    this.dateList[i].boardMaster.splice(0, this.boardList.length)
+  }
+  
+  a1() {
+    this.dateList.forEach(item =>
+      this.interviewMaster.dates.push(item)
+    )
+    console.log("this.interview", this.interviewMaster);
   }
 }

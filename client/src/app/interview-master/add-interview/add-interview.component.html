@@ -173,51 +173,53 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="Step 4">
-                    <div class="field">
-                        <mat-form-field>
-                            <mat-label>Verification Officer Name</mat-label>
-                            <mat-select [(ngModel)]="verificationOfficer.officer" name="officer">
-                                <mat-option *ngFor="let officer of verificationOfficerList" [value]="officer.name">
-                                    {{officer.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="field">
-                        <div class="example-margin">
-                            <div *ngFor="let item of dateList; let i=index">
-                                <mat-checkbox [checked]="boardInterview.checked" name="{{i}}-date"
-                                    (change)="valueChange(item,$event)">
-                                </mat-checkbox>
-                                {{item.fromDate}} to {{item.toDate}}
+                    <div class="grid-2" *ngFor="let item of dateList; let i=index">
+                        <div class="field">
+                            <div class="example-margin">
+                                <div>
+                                    <!-- (change)="valueChange(item,$event,i)"I -->
+                                    <mat-checkbox [checked]="verificationOfficer.checked" name="{{i}}-date">
+                                    </mat-checkbox>
+                                    {{item.fromDate}} to {{item.toDate}}
+                                </div>
                             </div>
                         </div>
+
+                        <div class="field multiselect">
+                            <ng-multiselect-dropdown name="h1" [settings]="dropdownSettings"
+                                [placeholder]="'Verification Officer'" [data]="verificationOfficerList"
+                                (ngModel)="item['verificationOffice'].userId" (onSelect)="onItemSelect($event,i)"
+                                (onSelectAll)="onSelectAll($event,i)" (onDeSelect)="onItemDeSelect($event,i)"
+                                (onDeSelectAll)="onDeSelectAll($event,i)">
+                            </ng-multiselect-dropdown>
+                        </div>
                     </div>
+
                     <div class="right">
                         <button mat-raised-button color="primary" (click)="previousStep()">Previous</button>
                         <button mat-raised-button color="primary" class="ml-10" (click)="nextStep()">Next</button>
                     </div>
                 </mat-tab>
                 <mat-tab label="Step 5">
-                    <div class="field">
-                        <mat-form-field>
-                            <mat-label>Board Name</mat-label>
-                            <mat-select [(ngModel)]="boardInterview.boardName" #boardName="ngModel" name="boardName"
-                                required>
-                                <mat-option *ngFor="let board of boardList;" [value]="board.boardName">
-                                    {{board.boardName}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="field">
-                        <div class="example-margin">
-                            <div *ngFor="let item of dateList; let i=index">
-                                <mat-checkbox [checked]="boardInterview.checked" name="{{i}}-date"
-                                    (change)="valueChange(item,$event)">
-                                </mat-checkbox>
-                                {{item.fromDate}} To {{item.toDate}}
+                    <div class="grid-2" *ngFor="let item of dateList; let i=index">
+                        <div class="field">
+                            <div class="example-margin">
+                                <div>
+                                    <!-- (change)="valueChange(item,$event,i)" -->
+                                    <mat-checkbox [checked]="boardInterview.checked" name="{{i}}-date">
+                                    </mat-checkbox>
+                                    {{item.fromDate}} To {{item.toDate}}
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="field multiselect">
+                            <ng-multiselect-dropdown name="b1" [settings]="dropdownSettings_1"
+                                [placeholder]="'Board Name'" [data]="boardList" (ngModel)="item['boardInterview'].id"
+                                (onSelect)="onItemSelectboard($event,i)"
+                                (onSelectAll)="onSelectAllboard($event,i)" (onDeSelect)="onItemDeSelectboard($event,i)"
+                                (onDeSelectAll)="onDeSelectAllboard($event,i)">
+                            </ng-multiselect-dropdown>
                         </div>
                     </div>
                     <div class="right">
@@ -226,28 +228,26 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="Step 6">
-                    <div class="field">
-                        <mat-form-field>
-                            <mat-label>Select Board/Chairman</mat-label>
-                            <mat-select [(ngModel)]="chairmanBoard.chairmanBoardName" #chairmanBoardName="ngModel"
-                                name="chairmanBoardName" required>
-                                <mat-option *ngFor="let user of userList" [value]="user.name">
-                                    Chairman- {{user.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="field">
-                        <div class="example-margin">
-                            <div *ngFor="let item of guestList; let i=index">
-                                <mat-checkbox [checked]="chairmanBoard.checked" name="{{i}}-guest" (change)="valueChange(item,$event)">
-                                </mat-checkbox>
-                                {{item.name}}
+                    <div class="grid-2" *ngFor="let item of guestList; let i=index">
+                        <div class="field multiselect" style="width: 90%;margin-top: 13px">
+                            <ng-multiselect-dropdown name="h1" [settings]="dropdownSettings_1"
+                                [placeholder]="'custom placeholder'" [data]="userList" [(ngModel)]="selectedItems"
+                                (onSelect)="onItemSelect($event,i)" (onSelectAll)="onSelectAll($event,i)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                        <div class="field">
+                            <div class="example-margin">
+                                <div>
+                                    <!-- (change)="valueChange(item,$event,i)" -->
+                                    <mat-checkbox [checked]="chairmanBoard.checked" name="{{i}}-guest">
+                                    </mat-checkbox>
+                                    {{item.name}}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" (click)="openSubmitUser()">Submit</button>
+                        <button mat-raised-button color="primary" (click)="a1()">Submit</button>
                     </div>
                 </mat-tab>
             </form>

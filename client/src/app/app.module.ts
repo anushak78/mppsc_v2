@@ -34,6 +34,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import {MatRadioModule} from '@angular/material/radio';
     BoardDashboardComponent,
     MessageDialog,
     ConfirmDialog,
-    LoaderComponent
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +75,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatSidenavModule,
     MatButtonModule,
     MatNativeDateModule,
-    MatRadioModule
+    MatRadioModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     LoaderService
