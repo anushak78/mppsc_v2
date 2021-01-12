@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 from cornice import Service
+import os
 
 from pyramid.security import (
     NO_PERMISSION_REQUIRED,
@@ -25,7 +26,15 @@ svc_upload_candidate = Service(
 def upload_candidate(request):
     action = request.json_body['action']
     interview_id = request.json_body['interview_id']
-    df = pd.read_excel('/home/anusha/Documents/sample.xlsx')
+
+    # file read from request
+    filename = request.POST['candidate_file'].filename
+    input_file = request.POST['candidate_file'].file
+
+    file_path = os.path.join(os.getcwd(), "../../static/")
+    with open(file_path + filename, 'wb') as output_file:
+        shutil.copyfileobj(input_file, output_file)
+    df = pd.read_excel(file_path + filename)
     columns = {'Application No.', 'Roll No.', 'Name', 
         'Gender (Male / Female)', 'Category (UR/EWS/SC/ST/OBC)', 
         'PH Status (Y / N)'}
