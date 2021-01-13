@@ -45,12 +45,14 @@ class InterviewMaster(Base):
 class InterviewVOMap(Base):
     __tablename__ = 'interview_vo_map'
     id = Column(Integer, primary_key=True)
-    user_id = Column(DateTime)
+    user_id = Column(Integer, ForeignKey('user_master.id'))
     interview_id = Column(Integer, ForeignKey('interview_master.id'))
+    date_id = Column(Integer, ForeignKey('interview_dates_master.id'))
 
-    def __init__(self, user_id, interview_id):
+    def __init__(self, user_id, interview_id, date_id):
         self.user_id = user_id
         self.interview_id = interview_id
+        self.date_id = date_id
         
 
 class InterviewDatesMaster(Base):
@@ -98,7 +100,7 @@ class InterviewMarksMaster(Base):
         marks = DBSession.query(InterviewMarksMaster).filter_by(interview_id=id).all()
         mark_list = []
         for ele in marks:
-            date_list({
+            date_list.append({
                 "id": ele.id,
                 "marks_type": ele.marks_type,
                 "min_marks": ele.min_marks,
@@ -113,57 +115,25 @@ class BoardInterviewMap(Base):
     id = Column(Integer, primary_key=True)
     interview_id = Column(Integer, ForeignKey('interview_master.id'))
     board_id = Column(Integer, ForeignKey('board_master.id'))
-    from_date = Column(DateTime)
-    to_date = Column(DateTime)
+    date_id = Column(Integer, ForeignKey('interview_dates_master.id'))
 
-    def __init__(self, interview_id, board_id, from_date, to_date):
+    def __init__(self, interview_id, board_id, date_id):
         self.interview_id = interview_id
         self.board_id = board_id
-        self.from_date = from_date
-        self.to_date = to_date
-        self.status = status
+        self.date_id = date_id
 
     @classmethod
-    def get_board_date(cls, DBSession, id):
-        board = DBSession.query(BoardInterviewMap).filter_by(id=id).first()
-        return {
-            "to_date": board.to_date,
-            "from_date": from_date
-        }
-
-    @classmethod
-    def get_interview_board(cls, DBSession, id):
-        boards = DBSession.query(BoardInterviewMap).join(BoardMaster).filter(
-            BoardInterviewMap.interview_id == id).all()
+    def get_board_interview_map(cls, DBSession, id):
+        interview_boards = DBSession.query(BoardInterviewMap).filter_by(interview_id=id).all()
         board_list = []
-        for ele, board in boards:
-            board_list({
+        for ele in interview_boards:
+            board_list.append({
                 "id": ele.id,
-                "board_id": ele.board_id,
-                "from_date": str(ele.from_date),
-                "to_date": str(ele.to_date),
                 "interview_id": ele.interview_id,
-                "board_name": board.board_name,
-                "login_id": board.login_id,
-                "status": board.status
+                "board_id": ele.board_id,
+                "date_id": ele.date_id
             })
-        return board_list
 
-    @classmethod
-    def get_user_board_map(cls, DBSession, id):
-        boards = DBSession.query(BoardUserMap).join(BoardInterviewMap).filter(
-            BoardInterviewMap.interview_id == id, 
-            BoardUserMap.boardmap_id == BoardInterviewMap.board_id).all()
-        for ele, board in boards:
-            board_list({
-                "id": ele.id,
-                "boardmap_id": ele.boardmap_id,
-                "user_id": ele.user_id,
-                "user_role": ele.user_role,
-                "board_id": board.board_id,
-                "date": board.date
-            })
-        return board_list
 
 
 class BoardUserMap(Base):

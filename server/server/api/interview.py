@@ -52,47 +52,9 @@ svc_add_interview = Service(
     name="api.add_interview", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_interview", cors_policy=cors.POLICY)
 
-svc_add_interview_dates = Service(
-    name="api.add_interview_dates", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/add_interview_dates", cors_policy=cors.POLICY)
-
-svc_add_interview_marks = Service(
-    name="api.add_interview_marks", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/add_interview_marks", cors_policy=cors.POLICY)
-
-svc_add_interview_vo = Service(
-    name="api.add_interview_vo", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/add_interview_vo", cors_policy=cors.POLICY)
-
-svc_add_interview_boards = Service(
-    name="api.add_interview_boards", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/add_interview_boards", cors_policy=cors.POLICY)
-
 svc_add_user_boards = Service(
     name="api.add_user_boards", permission=NO_PERMISSION_REQUIRED,
     path="/ui/add_user_boards", cors_policy=cors.POLICY)
-
-svc_edit_interview = Service(
-    name="api.edit_interview", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/edit_interview", cors_policy=cors.POLICY)
-
-svc_edit_interview_dates = Service(
-    name="api.edit_interview_dates", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/edit_interview_dates", cors_policy=cors.POLICY)
-
-
-svc_edit_interview_marks = Service(
-    name="api.edit_interview_marks", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/edit_interview_marks", cors_policy=cors.POLICY)
-
-
-svc_edit_interview_boards = Service(
-    name="api.edit_interview_boards", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/edit_interview_boards", cors_policy=cors.POLICY)
-
-svc_edit_user_boards = Service(
-    name="api.edit_user_boards", permission=NO_PERMISSION_REQUIRED,
-    path="/ui/edit_user_boards", cors_policy=cors.POLICY)
 
 svc_delete_interview = Service(
     name="api.delete_interview", permission=NO_PERMISSION_REQUIRED,
@@ -136,8 +98,6 @@ def get_interview_details(request):
     ele = InterviewMaster.get_interview(request.dbsession, id)
     dates = InterviewDatesMaster.get_interview_dates(request.dbsession, id)
     marks = InterviewMarksMaster.get_interview_marks(request.dbsession, id)
-    boards = BoardInterviewMap.get_interview_board(request.dbsession, id)
-    board_user_map = BoardUserMap.get_user_board_map(request.dbsession, id)
     interview_details = {
         "id": ele.id,
         "name": ele.name,
@@ -145,9 +105,7 @@ def get_interview_details(request):
         "interview_id": ele.interview_id,
         "status": ele.status,
         "dates": dates,
-        "marks": marks,
-        "boards": boards,
-        "board_user_map": board_user_map
+        "marks": marks
     }
     return {
         "code": 0,
@@ -156,29 +114,26 @@ def get_interview_details(request):
     }
 
 
-@svc_add_interview_vo.post(require_csrf=False)
-def add_interview_vo(request):
-    id = request.json_body['id']
-    user_id = request.json_body['user_id']
-    user_map = InterviewVOMap(interview_id=id, user_id=user_id)
-    request.dbsession.add(user_map)
-    return {
-        "code": 0,
-        "message": "success"
-    }
-
-
 @svc_fetch_users.get()
 def fetch_users(request):
     id = request.json_body['id']
-    date = BoardInterviewMap.get_board_date(request.dbsession, id)
-    guest_user_ids = get_guest_user_list(request, date)
+    guest_user_ids = GuestUserMaster.get_users(request.dbsession)
+    guest_user = []
+    for ele in guest_user_ids:
+        guest_user.append({
+            "id": ele.id,
+            "name": ele.name,
+            "title": ele.title,
+            "email": ele.email,
+            "phone_no": ele.phone_no,
+            "status": ele.status
+        })
     board_users = UserMaster.get_board_users(request.dbsession)
     return {
         "code": 0,
         "message": "success",
-        "guest_user_list": guest_user_ids,
-        "board_user_list": board_users
+        "board_user_list": board_users,
+        "guest_user_list": guest_user
     }
 
 
@@ -210,6 +165,8 @@ def add_interview(request):
         notification_no=notification_no, status=status, interview_id=interview_id)
     request.dbsession.add(interview)
     id = InterviewMaster.get_first(request.dbsession)
+    add_interview_dates(request, id)
+    add_interview_marks(request, id)
     return {
             "code": 0,
             "message": "success",
@@ -217,71 +174,55 @@ def add_interview(request):
         }
 
 
-@svc_add_interview_dates.post(require_csrf=False)
-def add_interview_dates(request):
+def add_interview_dates(request, id):
     dates = request.json_body['dates']
 
     for ele in dates:
-        id = ele['id']
         to_date = datetime.strptime(str(ele['to_date']), "%Y-%m-%dT%H:%M:%S.000z")
         from_date = datetime.strptime(str(ele['from_date']), "%Y-%m-%dT%H:%M:%S.000z")
         interview_date = InterviewDatesMaster(interview_id=id, 
             to_date=to_date, from_date=from_date)
         request.dbsession.add(interview_date)
+        
+        date_id = request.dbsession.query(InterviewDatesMaster).order_by(
+            InterviewDatesMaster.id.desc()).first()
+        boards = ele['boardMaster']
+        vo_users = ele['verificationOfficer']
+        for ele1 in boards:
+            interview_board = BoardInterviewMap(interview_id=id, 
+                board_id=ele1.id, date_id=date_id)
+            request.dbsession.add(interview_board)
+        
+        for ele1 in vo_users:
+            user_id = ele1['id']
+            user_map = InterviewVOMap(interview_id=id, user_id=user_id, date_id=date_id)
+            request.dbsession.add(user_map)
     
-    return {
-        "code": 0,
-        "message": "success"
-    }
+    return True
 
 
-@svc_add_interview_marks.post(require_csrf=False)
-def add_interview_marks(request):
-    interview_id = request.json_body['interview_id']
+def add_interview_marks(request, interview_id):
+    marks = request.json_body['marks']
     interview_marks_list = []
 
     interview_marks_list.append(InterviewMarksMaster(
-        interview_id=interview_id, min_marks=request.json_body['min_marks_unreserved'],
-        max_marks=request.json_body['min_marks_unreserved'], marks_type=MarksCategory.UR.value))
+        interview_id=interview_id, min_marks=marks['min_marks_unreserved'],
+        max_marks=marks['min_marks_unreserved'], marks_type=MarksCategory.UR.value))
     interview_marks_list.append(InterviewMarksMaster(
-        interview_id=interview_id, min_marks=request.json_body['min_marks_sc'],
-        max_marks=request.json_body['min_marks_sc'], marks_type=MarksCategory.SC.value))
+        interview_id=interview_id, min_marks=marks['min_marks_sc'],
+        max_marks=marks['min_marks_sc'], marks_type=MarksCategory.SC.value))
     interview_marks_list.append(InterviewMarksMaster(
-        interview_id=interview_id, min_marks=request.json_body['min_marks_st'],
-        max_marks=request.json_body['min_marks_st'], marks_type=MarksCategory.ST.value))
+        interview_id=interview_id, min_marks=marks['min_marks_st'],
+        max_marks=marks['min_marks_st'], marks_type=MarksCategory.ST.value))
     interview_marks_list.append(InterviewMarksMaster(
-        interview_id=interview_id, min_marks=request.json_body['min_marks_ews'],
-        max_marks=request.json_body['min_marks_ews'], marks_type=MarksCategory.EWS.value))
+        interview_id=interview_id, min_marks=marks['min_marks_ews'],
+        max_marks=marks['min_marks_ews'], marks_type=MarksCategory.EWS.value))
     interview_marks_list.append(InterviewMarksMaster(
-        interview_id=interview_id, min_marks=request.json_body['min_marks_obc'],
-        max_marks=request.json_body['min_marks_obc'], marks_type=MarksCategory.OBC.value))
+        interview_id=interview_id, min_marks=marks['min_marks_obc'],
+        max_marks=marks['min_marks_obc'], marks_type=MarksCategory.OBC.value))
 
     request.dbsession.add_all(interview_marks_list)
-    return {
-        "code": 0,
-        "message": "success"
-    }
-
-
-@svc_add_interview_boards.post(require_csrf=False)
-def add_interview_boards(request):
-    id = request.json_body['id']
-    boards = request.json_body['boards']
-
-    for ele in boards:
-        from_date = datetime.strptime(str(ele['from_date']), "%Y-%m-%dT%H:%M:%S.000z")
-        to_date = datetime.strptime(str(ele['to_date']), "%Y-%m-%dT%H:%M:%S.000z")
-        interview_board = BoardInterviewMap(interview_id=id, 
-            board_id=ele.board_id, from_date=from_date, to_date=to_date)
-        request.dbsession.add(interview_board)
-
-    board_map_list = get_board_interview_map_ids(request, id)
-    
-    return {
-        "code": 0,
-        "message": "success",
-        "data": board_map_list
-    }
+    return True
 
 
 @svc_add_user_boards.post(require_csrf=False)
@@ -299,29 +240,3 @@ def add_user_boards(request):
         "code": 0,
         "message": "success"
     }
-
-
-@svc_delete_interview.post(require_csrf=False)
-def delete_interview(request):
-    id = request.matchdict['id']
-    boards = BoardInterviewMap.get_interview_board(request.dbsession, id)
-    for ele in boards:
-        request.dbsession.query(BoardUserMap).filter(
-            BoardUserMap.boardmap_id == ele.id).delete()
-
-    request.dbsession.query(BoardInterviewMap).filter(
-        BoardInterviewMap.interview_id==id).delete()
-    request.dbsession.query(InterviewMarksMaster).filter(
-        InterviewMarksMaster.interview_id==id).delete()
-    request.dbsession.query(InterviewDatesMaster).filter(
-        InterviewDatesMaster.interview_id==id).delete()
-    request.dbsession.query(InterviewMaster).filter(
-        InterviewMaster.id==id).delete()
-
-
-def get_guest_user_list(request, date):
-    return GuestUserDateMap.filter_dates(request.dbsession, date)
-
-
-def get_board_interview_map_ids(request, id):
-    return BoardInterviewMap.get_interview_board(request.dbsession, id)

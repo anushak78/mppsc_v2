@@ -34,7 +34,9 @@ class AnswerMaster(Base):
     id = Column(Integer, primary_key=True)
     ques_id = Column(Integer, ForeignKey('question_master.id'))
     answer_text = Column(Text)
+    option_no = Column(Integer)
 
-    def __init__(self, ques_id, answer_text):
+    def __init__(self, ques_id, answer_text, option_no):
         self.ques_id = ques_id
         self.answer_text = answer_text
+        self.option_no = option_no
