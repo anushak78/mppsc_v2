@@ -24,7 +24,7 @@ requires = [
     'psycopg2-binary',
     'colander',
     'six',
-    'openxyl',
+    'openpyxl',
     'pandas',
     'xlrd'
 ]
