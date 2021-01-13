@@ -178,8 +178,7 @@
                             <div class="example-margin">
                                 <div>
                                     <!-- (change)="valueChange(item,$event,i)"I -->
-                                    <mat-checkbox [checked]="verificationOfficer.checked" name="{{i}}-date">
-                                    </mat-checkbox>
+                                    <mat-checkbox name="{{i}}-date"> </mat-checkbox>
                                     {{item.fromDate}} to {{item.toDate}}
                                 </div>
                             </div>
@@ -206,7 +205,7 @@
                             <div class="example-margin">
                                 <div>
                                     <!-- (change)="valueChange(item,$event,i)" -->
-                                    <mat-checkbox [checked]="boardInterview.checked" name="{{i}}-date">
+                                    <mat-checkbox name="{{i}}-date">
                                     </mat-checkbox>
                                     {{item.fromDate}} To {{item.toDate}}
                                 </div>
@@ -216,8 +215,8 @@
                         <div class="field multiselect">
                             <ng-multiselect-dropdown name="b1" [settings]="dropdownSettings_1"
                                 [placeholder]="'Board Name'" [data]="boardList" (ngModel)="item['boardInterview'].id"
-                                (onSelect)="onItemSelectboard($event,i)"
-                                (onSelectAll)="onSelectAllboard($event,i)" (onDeSelect)="onItemDeSelectboard($event,i)"
+                                (onSelect)="onItemSelectboard($event,i)" (onSelectAll)="onSelectAllboard($event,i)"
+                                (onDeSelect)="onItemDeSelectboard($event,i)"
                                 (onDeSelectAll)="onDeSelectAllboard($event,i)">
                             </ng-multiselect-dropdown>
                         </div>
@@ -228,21 +227,23 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="Step 6">
-                    <div class="grid-2" *ngFor="let item of guestList; let i=index">
-                        <div class="field multiselect" style="width: 90%;margin-top: 13px">
-                            <ng-multiselect-dropdown name="h1" [settings]="dropdownSettings_1"
-                                [placeholder]="'custom placeholder'" [data]="userList" [(ngModel)]="selectedItems"
-                                (onSelect)="onItemSelect($event,i)" (onSelectAll)="onSelectAll($event,i)">
-                            </ng-multiselect-dropdown>
+                    <div class="grid-2">
+                        <div class="field">
+                            <mat-form-field>
+                                <mat-select name="boardGuest" placeholder="Select Chairman For Board" [(ngModel)]="chairmanBoard.chairmanBoardName" #chairmanBoardName="ngModel">
+                                    <mat-option *ngFor="let list of userList" [value]="list.name">
+                                        {{roles[list.role]}}-{{list.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
                         </div>
                         <div class="field">
-                            <div class="example-margin">
-                                <div>
-                                    <!-- (change)="valueChange(item,$event,i)" -->
-                                    <mat-checkbox [checked]="chairmanBoard.checked" name="{{i}}-guest">
-                                    </mat-checkbox>
-                                    {{item.name}}
-                                </div>
+                            <div *ngFor="let item of guestList; let i=index">
+                                <mat-checkbox (ngModel)="chairmanBoard.guestMember[i]" (change)="onCheckboxChange(item,$event)"
+                                    name="{{i}}-guest">
+                                </mat-checkbox>
+                                {{item.name}}
                             </div>
                         </div>
                     </div>

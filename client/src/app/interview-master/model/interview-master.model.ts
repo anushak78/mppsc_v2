@@ -10,11 +10,10 @@ export class InterviewMaster {
     notificationNo: number;
     status = 1;
     dates = [];
-    // date: DatesRange = new DatesRange();
     marks: Marks = new Marks();
-    verificationOfficer: VerificationOfficer = new VerificationOfficer();
-    boardInterview: BoardInterview = new BoardInterview();
     chairmanBoard: ChairmanBoard = new ChairmanBoard();
+    // date: DatesRange = new DatesRange();
+
 
     static fromJson(data: Map<string, any>): InterviewMaster {
         const u: InterviewMaster = new InterviewMaster();
@@ -26,8 +25,6 @@ export class InterviewMaster {
             u.dates.push(DatesRange.fromJson(l));
         }
         u.marks = data['marks'];
-        u.verificationOfficer = data['verificationOfficer'];
-        u.boardInterview = data['boardOfficer'];
         u.chairmanBoard = data['chairmanBoard']
         return u;
     }

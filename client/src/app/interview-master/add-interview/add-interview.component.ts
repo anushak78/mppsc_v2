@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import { BoardMasterService } from 'src/app/board-master/board-master.service';
 import { BoardMaster } from 'src/app/board-master/model/board-master.model';
+import { Roles } from 'src/app/constant';
 import { ConfirmDialogComponent } from 'src/app/dialogs/confirm/confirm.component';
 import { MessageDialogComponent } from 'src/app/dialogs/message/message.component';
 import { GuestUserServiceService } from 'src/app/guest-master/guest-user-service.service';
@@ -27,8 +28,8 @@ export class AddInterviewComponent implements OnInit {
 
   dates = this.interviewMaster.dates;
   marks = this.interviewMaster.marks;
-  verificationOfficer = this.interviewMaster.verificationOfficer;
-  boardInterview = this.interviewMaster.boardInterview;
+  // verificationOfficer = this.interviewMaster.verificationOfficer;
+  // boardInterview = this.interviewMaster.boardInterview;
   chairmanBoard = this.interviewMaster.chairmanBoard;
 
   dateRange = new DatesRange();
@@ -44,6 +45,7 @@ export class AddInterviewComponent implements OnInit {
   selectedItems = [];
   selectedItems_1 = [];
   check_mat = true;
+  roles = Roles;
   // selectedItems: Map<string, Array<any>> = [];
   // selectedItems_1: Map<string, Array<any>> = [];
 
@@ -71,8 +73,8 @@ export class AddInterviewComponent implements OnInit {
       this.interviewMaster = this.InterviewMasterService.getInterviewDetailsData;
       this.dateList = this.interviewMaster.dates;
       this.marks = this.interviewMaster.marks;
-      this.verificationOfficer = this.interviewMaster.verificationOfficer;
-      this.boardInterview = this.interviewMaster.boardInterview;
+      // this.verificationOfficer = this.interviewMaster.verificationOfficer;
+      // this.boardInterview = this.interviewMaster.boardInterview;
       this.chairmanBoard = this.interviewMaster.chairmanBoard;
       if (this.dateList.length === 0) {
         this.addDateItem();
@@ -222,11 +224,27 @@ export class AddInterviewComponent implements OnInit {
   onDeSelectAllboard(item: any, i) {
     this.dateList[i].boardMaster.splice(0, this.boardList.length)
   }
+  // guest: GuestUserMaster[];
   
+  checkedList = [];
+  onCheckboxChange(option, event) {
+    if (event.target.checked) {
+      this.checkedList.push(option.id);
+    } else {
+      for (var i = 0; i < this.guestList.length; i++) {
+        if (this.checkedList[i] == option.id) {
+          this.checkedList.splice(i, 1);
+        }
+      }
+    }
+    console.log(this.checkedList);
+  }
+
   a1() {
     this.dateList.forEach(item =>
       this.interviewMaster.dates.push(item)
     )
+    // this.chairmanBoard.guestMember.push(this.guest)
     console.log("this.interview", this.interviewMaster);
   }
 }
