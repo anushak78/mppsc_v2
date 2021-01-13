@@ -227,10 +227,11 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="Step 6">
-                    <div class="grid-2">
+                    <div>
                         <div class="field">
                             <mat-form-field>
-                                <mat-select name="boardGuest" placeholder="Select Chairman For Board" [(ngModel)]="chairmanBoard.chairmanBoardName" #chairmanBoardName="ngModel">
+                                <mat-select name="boardGuest" placeholder="Select Chairman For Board"
+                                    [(ngModel)]="chairmanBoard.chairmanBoardName" #chairmanBoardName="ngModel">
                                     <mat-option *ngFor="let list of userList" [value]="list.name">
                                         {{roles[list.role]}}-{{list.name}}
                                     </mat-option>
@@ -239,16 +240,19 @@
 
                         </div>
                         <div class="field">
-                            <div *ngFor="let item of guestList; let i=index">
-                                <mat-checkbox (ngModel)="chairmanBoard.guestMember[i]" (change)="onCheckboxChange(item,$event)"
-                                    name="{{i}}-guest">
-                                </mat-checkbox>
-                                {{item.name}}
+                            <div class=" example-section">
+                                <label>Active Guest Member</label>
+                                <div *ngFor="let item of guestList; let i=index">
+                                    <mat-checkbox (ngModel)="chairmanBoard.guestMember[i]"
+                                        (change)="onCheckboxChange(item,$event)" name="{{i}}-guest">
+                                    </mat-checkbox>
+                                    {{item.name}}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="right">
-                        <button mat-raised-button color="primary" (click)="a1()">Submit</button>
+                        <button mat-raised-button color="primary" (click)="addInterviewData()">Submit</button>
                     </div>
                 </mat-tab>
             </form>

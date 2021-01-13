@@ -37,7 +37,8 @@ export class AddInterviewComponent implements OnInit {
   verificationOfficerList: UserMaster[] = [];
   boardList: BoardMaster[] = [];
   userList: UserMaster[] = [];
-  guestList: GuestUserMaster[] = [];
+  // guestList: GuestUserMaster[] = [];
+  guestList = [{name:'hello'},{name:'world'},{name:'full'}];
   tabIndex = 0;
   activity: string;
   dropdownSettings = {};
@@ -57,6 +58,7 @@ export class AddInterviewComponent implements OnInit {
 
   constructor(private InterviewMasterService: InterviewMasterService,
     private route: ActivatedRoute,
+    private router: Router,
     private BoardMasterService: BoardMasterService,
     private UserMasterService: UserMasterService,
     private GuestUserServiceService: GuestUserServiceService) { }
@@ -85,6 +87,8 @@ export class AddInterviewComponent implements OnInit {
     }
     await this.loadData();
     await this.multiselect();
+    console.log("guestList",this.guestList);
+    
   }
 
   async loadData() {
@@ -94,7 +98,7 @@ export class AddInterviewComponent implements OnInit {
     if (rel) {
       this.boardList = this.BoardMasterService.getBoardList;
       this.userList = this.UserMasterService.getUserList;
-      this.guestList = this.GuestUserServiceService.getGuestUserList;
+     // this.guestList = this.GuestUserServiceService.getGuestUserList;
 
       this.verificationOfficerList = this.userList.filter(function (item) {
         return item.role == 3;
@@ -144,30 +148,25 @@ export class AddInterviewComponent implements OnInit {
     if (this.activity === 'Edit') {
       rel = await this.InterviewMasterService.editInterview(this.interviewMaster)
     } else {
+      this.dateList.forEach(item =>
+        this.interviewMaster.dates.push(item)
+      )
+      console.log("this.interview", this.interviewMaster);
       rel = await this.InterviewMasterService.addInterview(this.interviewMaster)
     }
-    if (!rel) {
-      this.messageDlg.openDialog(this.InterviewMasterService.getErrorMessage);
-    } else {
+    if (rel) {
       this.messageDlg.openDialog("success");
+      this.router.navigate([`/interview-master`])
+    } else {
+      this.messageDlg.openDialog(this.InterviewMasterService.getErrorMessage);
+
     }
   }
-
-  // valueChange(unit, $event, i) {
-  //   if ($event.checked) {
-  //     let arr = this.dateList[i];
-  //     console.log("officer", this.verificationOfficer);
-  //     console.log("event", $event);
-  //     console.log("let arr", arr);
-
-  //   }
-  //   console.log("unit.checked = $event.checked;", unit.checked = $event.checked);
-  // }
 
   async multiselect() {
     this.dropdownSettings = {
       singleSelection: false,
-      idField: "userId",
+      idField: "id",
       textField: "name",
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
@@ -182,7 +181,7 @@ export class AddInterviewComponent implements OnInit {
     }
   }
 
-  onItemSelect(item: any, i) {
+  onItemSelect(item: any, i) { 
     this.dateList[i].verificationOfficer.push(item)
     console.log("this.dateRange.verificationOffice.push(item);", this.dateRange)
   }
@@ -224,27 +223,19 @@ export class AddInterviewComponent implements OnInit {
   onDeSelectAllboard(item: any, i) {
     this.dateList[i].boardMaster.splice(0, this.boardList.length)
   }
-  // guest: GuestUserMaster[];
-  
+
   checkedList = [];
   onCheckboxChange(option, event) {
-    if (event.target.checked) {
-      this.checkedList.push(option.id);
-    } else {
-      for (var i = 0; i < this.guestList.length; i++) {
-        if (this.checkedList[i] == option.id) {
-          this.checkedList.splice(i, 1);
-        }
-      }
-    }
-    console.log(this.checkedList);
-  }
-
-  a1() {
-    this.dateList.forEach(item =>
-      this.interviewMaster.dates.push(item)
-    )
-    // this.chairmanBoard.guestMember.push(this.guest)
-    console.log("this.interview", this.interviewMaster);
+    // if (event.target.checked) {
+    //   this.checkedList.push(option.id);
+    // } else {
+    //   for (var i = 0; i < this.guestList.length; i++) {
+    //     if (this.checkedList[i] == option.id) {
+    //       this.checkedList.splice(i, 1);
+    //     }
+    //   }
+    // }
+    console.log("this.guest",event.target.checked);
+    console.log("this.guest_option",option);
   }
 }

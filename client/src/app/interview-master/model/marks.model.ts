@@ -14,32 +14,32 @@ export class Marks {
     static fromJson(data: Map<string, any>): Marks {
         const u: Marks = new Marks();
         u.interviewId = data['interview_id']
-        u.minMarksUnreserved = data['minMarksUnreserved'];
-        u.maxMarksUnreserved = data['maxMarksUnreserved '];
-        u.minMarksEws = data['minMarksEws'];
-        u.maxMarksEws = data['maxMarksEws'];
-        u.minMarksObc = data['minMarksObc'];
-        u.maxMarksObc = data['maxMarksObc'];
-        u.minMarksSt = data['minMarksSt'];
-        u.maxMarksSt = data['maxMarksSt'];
-        u.minMarksSc = data['minMarksSc'];
-        u.maxMarksSc = data['maxMarksSc'];
+        u.minMarksUnreserved = data['min_marks_unreserved'];
+        u.maxMarksUnreserved = data['max_marks_unreserved'];
+        u.minMarksEws = data['min_marks_ews'];
+        u.maxMarksEws = data['max_marks_ews'];
+        u.minMarksObc = data['min_marks_obc'];
+        u.maxMarksObc = data['max_marks_obc'];
+        u.minMarksSt = data['min_marks_st'];
+        u.maxMarksSt = data['max_marks_st'];
+        u.minMarksSc = data['min_marks_sc'];
+        u.maxMarksSc = data['max_marks_sc'];
         return u;
     }
 
     toJSON(): Map<string, any> {
         const data: Map<string, any> = new Map<string, any>();
-        data['minMarksUnreserved'] = this.interviewId;
-        data['minMarksUnreserved'] = this.minMarksUnreserved;
-        data['maxMarksUnreserved '] = this.maxMarksUnreserved;
-        data['minMarksEws'] = this.minMarksEws;
-        data['maxMarksEws'] = this.maxMarksEws;
-        data['minMarksObc'] = this.minMarksObc;
-        data['maxMarksObc'] = this.maxMarksObc;
-        data['minMarksSt'] = this.minMarksSt;
-        data['maxMarksSt'] = this.maxMarksSt;
-        data['minMarksSc'] = this.minMarksSc;
-        data['maxMarksSc'] = this.maxMarksSc;
+        data['interviewId'] = this.interviewId;
+        data['min_marks_unreserved'] = this.minMarksUnreserved;
+        data['max_marks_unreserved'] = this.maxMarksUnreserved;
+        data['min_marks_ews'] = this.minMarksEws;
+        data['max_marks_ews'] = this.maxMarksEws;
+        data['min_marks_obc'] = this.minMarksObc;
+        data['max_marks_obc'] = this.maxMarksObc;
+        data['min_marks_st'] = this.minMarksSt;
+        data['max_marks_st'] = this.maxMarksSt;
+        data['min_marks_sc'] = this.minMarksSc;
+        data['max_marks_sc'] = this.maxMarksSc;
         return data;
     }
 }

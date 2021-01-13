@@ -9,7 +9,8 @@ export class InterviewMaster {
     name: string;
     notificationNo: number;
     status = 1;
-    dates = [];
+   dates  = []
+   // dates: DatesRange = new DatesRange();
     marks: Marks = new Marks();
     chairmanBoard: ChairmanBoard = new ChairmanBoard();
     // date: DatesRange = new DatesRange();
@@ -21,9 +22,10 @@ export class InterviewMaster {
         u.name = data['name'];
         u.notificationNo = data['notification_no'];
         u.status = data['status'];
-        for (const l of data['dates']) {
-            u.dates.push(DatesRange.fromJson(l));
-        }
+        // for (const l of data['dates']) {
+        //     u.dates.d
+        // }
+        u.dates = data['dates']
         u.marks = data['marks'];
         u.chairmanBoard = data['chairmanBoard']
         return u;
@@ -35,14 +37,9 @@ export class InterviewMaster {
         data['name'] = this.name;
         data['notification_no'] = this.notificationNo;
         data['status'] = this.status;
-        // {
-        //     data['date'] = this.date;
-        // }
-        // data['date'] = this.date;
-        // data['marks'] = this.marks;
-        // data['verification_officer'] = this.verificationOfficer;
-        // data['boardInterview'] = this.boardInterview;
-        // data['chairmanBoard']= this.chairmanBoard;
+
+        data['dates'] = this.dates;
+        data['marks'] = this.marks.toJSON();
         return data;
     }
 }

@@ -21,6 +21,8 @@ export class DatesRange {
         data['id'] = this.interviewId;
         data['from_date'] = this.fromDate;
         data['to_date'] = this.toDate;
+        data['boardMaster'] = this.boardMaster;
+        data['verificationOfficer'] = this.verificationOfficer;
         return data;
     }
 }
