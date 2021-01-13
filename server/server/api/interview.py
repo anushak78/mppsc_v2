@@ -190,12 +190,12 @@ def add_interview_dates(request, id):
         vo_users = ele['verificationOfficer']
         for ele1 in boards:
             interview_board = BoardInterviewMap(interview_id=id, 
-                board_id=ele1.id, date_id=date_id)
+                board_id=ele1['id'], date_id=date_id.id)
             request.dbsession.add(interview_board)
         
         for ele1 in vo_users:
             user_id = ele1['id']
-            user_map = InterviewVOMap(interview_id=id, user_id=user_id, date_id=date_id)
+            user_map = InterviewVOMap(interview_id=id, user_id=user_id, date_id=date_id.id)
             request.dbsession.add(user_map)
     
     return True
@@ -207,19 +207,19 @@ def add_interview_marks(request, interview_id):
 
     interview_marks_list.append(InterviewMarksMaster(
         interview_id=interview_id, min_marks=marks['min_marks_unreserved'],
-        max_marks=marks['min_marks_unreserved'], marks_type=MarksCategory.UR.value))
+        max_marks=marks['max_marks_unreserved'], marks_type=MarksCategory.UR.value))
     interview_marks_list.append(InterviewMarksMaster(
         interview_id=interview_id, min_marks=marks['min_marks_sc'],
-        max_marks=marks['min_marks_sc'], marks_type=MarksCategory.SC.value))
+        max_marks=marks['max_marks_sc'], marks_type=MarksCategory.SC.value))
     interview_marks_list.append(InterviewMarksMaster(
         interview_id=interview_id, min_marks=marks['min_marks_st'],
-        max_marks=marks['min_marks_st'], marks_type=MarksCategory.ST.value))
+        max_marks=marks['max_marks_st'], marks_type=MarksCategory.ST.value))
     interview_marks_list.append(InterviewMarksMaster(
         interview_id=interview_id, min_marks=marks['min_marks_ews'],
-        max_marks=marks['min_marks_ews'], marks_type=MarksCategory.EWS.value))
+        max_marks=marks['max_marks_ews'], marks_type=MarksCategory.EWS.value))
     interview_marks_list.append(InterviewMarksMaster(
         interview_id=interview_id, min_marks=marks['min_marks_obc'],
-        max_marks=marks['min_marks_obc'], marks_type=MarksCategory.OBC.value))
+        max_marks=marks['max_marks_obc'], marks_type=MarksCategory.OBC.value))
 
     request.dbsession.add_all(interview_marks_list)
     return True
