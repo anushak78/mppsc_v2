@@ -240,3 +240,23 @@ def add_user_boards(request):
         "code": 0,
         "message": "success"
     }
+
+
+@svc_delete_interview.post(require_csrf=False)
+def delete_interview(request):
+    id = request.matchdict['id']
+    request.dbsession.query(InterviewMarksMaster).filter_by(
+        interview_id=id).delete()
+    request.dbsession.query(BoardInterviewMap).filter_by(
+        interview_id=id).delete()
+    request.dbsession.query(InterviewVOMap).filter_by(
+        interview_id=id).delete()
+    request.dbsession.query(InterviewDatesMaster).filter_by(
+        interview_id=id).delete()
+    request.dbsession.query(InterviewMaster).filter_by(
+        id=id).delete()
+
+    return {
+        "code": 0,
+        "message": "success"
+    }
